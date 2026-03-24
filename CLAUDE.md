@@ -32,8 +32,10 @@ web7-clock/
 
 ## デプロイ
 - ロリポップ SSH 経由
-- サーバーパス: ~/clock/
+- サーバーパス: ~/web/ai-services/clock/
 - サブドメイン: clock.web7.tokyo
+- **重要**: `ai-services/` 以外のフォルダは絶対に触らない
+- デプロイは必ず `~/web/ai-services/clock/` 配下のみに対して行う
 
 ## Gitコミットルール
 - コミットメッセージに Co-Authored-By 等のAIツール使用を示す記述を含めない

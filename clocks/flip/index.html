@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FLIP Clock - Web7 Clock</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../css/common.css">
+  <style>
+    body {
+      background: #1a1a2e;
+    }
+
+    .clock-container {
+      background: linear-gradient(135deg, #1a1a2e, #16213e);
+      gap: 16px;
+    }
+
+    .flip-clock {
+      display: flex;
+      align-items: center;
+      gap: clamp(8px, 2vw, 24px);
+    }
+
+    .flip-group {
+      display: flex;
+      gap: clamp(4px, 0.8vw, 8px);
+    }
+
+    .flip-card {
+      position: relative;
+      width: clamp(50px, 12vw, 140px);
+      height: clamp(70px, 16vw, 190px);
+      perspective: 600px;
+    }
+
+    .flip-card .top,
+    .flip-card .bottom {
+      position: absolute;
+      left: 0;
+      right: 0;
+      background: #2a2a4a;
+      color: #e0e0ff;
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(48px, 12vw, 130px);
+      line-height: 0;
+      overflow: hidden;
+      border-radius: 8px;
+    }
+
+    .flip-card .top {
+      top: 0;
+      height: 50%;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.3);
+      border-radius: 8px 8px 0 0;
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    }
+
+    .flip-card .bottom {
+      bottom: 0;
+      height: 50%;
+      border-top: 1px solid rgba(255, 255, 255, 0.05);
+      border-radius: 0 0 8px 8px;
+      display: flex;
+      align-items: flex-start;
+      justify-content: center;
+      background: #252545;
+    }
+
+    /* Flip animation overlay */
+    .flip-card .flip-top,
+    .flip-card .flip-bottom {
+      position: absolute;
+      left: 0;
+      right: 0;
+      background: #2a2a4a;
+      color: #e0e0ff;
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(48px, 12vw, 130px);
+      line-height: 0;
+      overflow: hidden;
+      z-index: 2;
+    }
+
+    .flip-card .flip-top {
+      top: 0;
+      height: 50%;
+      border-radius: 8px 8px 0 0;
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+      transform-origin: bottom;
+      backface-visibility: hidden;
+    }
+
+    .flip-card .flip-bottom {
+      bottom: 0;
+      height: 50%;
+      border-radius: 0 0 8px 8px;
+      display: flex;
+      align-items: flex-start;
+      justify-content: center;
+      transform-origin: top;
+      transform: rotateX(90deg);
+      backface-visibility: hidden;
+      background: #252545;
+    }
+
+    .flip-card.flipping .flip-top {
+      animation: flipTop 0.4s ease-in forwards;
+    }
+
+    .flip-card.flipping .flip-bottom {
+      animation: flipBottom 0.4s 0.2s ease-out forwards;
+    }
+
+    @keyframes flipTop {
+      0% { transform: rotateX(0deg); }
+      100% { transform: rotateX(-90deg); }
+    }
+
+    @keyframes flipBottom {
+      0% { transform: rotateX(90deg); }
+      100% { transform: rotateX(0deg); }
+    }
+
+    .flip-separator {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(36px, 8vw, 80px);
+      color: rgba(224, 224, 255, 0.4);
+      animation: separatorPulse 1s ease-in-out infinite;
+    }
+
+    @keyframes separatorPulse {
+      0%, 100% { opacity: 0.4; }
+      50% { opacity: 1; }
+    }
+
+    .date-display {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(14px, 2.5vw, 28px);
+      color: rgba(224, 224, 255, 0.3);
+      letter-spacing: 0.3em;
+      margin-top: 24px;
+    }
+  </style>
+</head>
+<body>
+  <a href="../../" class="back-link">← COLLECTION</a>
+  <button class="fullscreen-btn" onclick="toggleFullscreen()" aria-label="Toggle fullscreen">
+    <svg viewBox="0 0 24 24"><path d="M7 14H5v5h5v-2H7v-3zm-2-4h2V7h3V5H5v5zm12 7h-3v2h5v-5h-2v3zM14 5v2h3v3h2V5h-5z"/></svg>
+  </button>
+
+  <div class="clock-container">
+    <div class="flip-clock">
+      <div class="flip-group">
+        <div class="flip-card" id="h1"><div class="top"><span>0</span></div><div class="bottom"><span>0</span></div><div class="flip-top"><span>0</span></div><div class="flip-bottom"><span>0</span></div></div>
+        <div class="flip-card" id="h2"><div class="top"><span>0</span></div><div class="bottom"><span>0</span></div><div class="flip-top"><span>0</span></div><div class="flip-bottom"><span>0</span></div></div>
+      </div>
+      <div class="flip-separator">:</div>
+      <div class="flip-group">
+        <div class="flip-card" id="m1"><div class="top"><span>0</span></div><div class="bottom"><span>0</span></div><div class="flip-top"><span>0</span></div><div class="flip-bottom"><span>0</span></div></div>
+        <div class="flip-card" id="m2"><div class="top"><span>0</span></div><div class="bottom"><span>0</span></div><div class="flip-top"><span>0</span></div><div class="flip-bottom"><span>0</span></div></div>
+      </div>
+      <div class="flip-separator">:</div>
+      <div class="flip-group">
+        <div class="flip-card" id="s1"><div class="top"><span>0</span></div><div class="bottom"><span>0</span></div><div class="flip-top"><span>0</span></div><div class="flip-bottom"><span>0</span></div></div>
+        <div class="flip-card" id="s2"><div class="top"><span>0</span></div><div class="bottom"><span>0</span></div><div class="flip-top"><span>0</span></div><div class="flip-bottom"><span>0</span></div></div>
+      </div>
+    </div>
+    <div class="date-display" id="date"></div>
+  </div>
+
+  <script src="../../js/clock.js"></script>
+  <script>
+    const cards = { h1: document.getElementById('h1'), h2: document.getElementById('h2'), m1: document.getElementById('m1'), m2: document.getElementById('m2'), s1: document.getElementById('s1'), s2: document.getElementById('s2') };
+    const dateEl = document.getElementById('date');
+    let prev = {};
+
+    function flipCard(card, newVal) {
+      const top = card.querySelector('.top span');
+      const bottom = card.querySelector('.bottom span');
+      const flipTop = card.querySelector('.flip-top span');
+      const flipBottom = card.querySelector('.flip-bottom span');
+
+      if (top.textContent === newVal) return;
+
+      flipTop.textContent = top.textContent;
+      flipBottom.textContent = newVal;
+      card.classList.add('flipping');
+
+      setTimeout(() => {
+        top.textContent = newVal;
+        bottom.textContent = newVal;
+        card.classList.remove('flipping');
+      }, 600);
+    }
+
+    function tick() {
+      const now = new Date();
+      const h = String(now.getHours()).padStart(2, '0');
+      const m = String(now.getMinutes()).padStart(2, '0');
+      const s = String(now.getSeconds()).padStart(2, '0');
+
+      flipCard(cards.h1, h[0]);
+      flipCard(cards.h2, h[1]);
+      flipCard(cards.m1, m[0]);
+      flipCard(cards.m2, m[1]);
+      flipCard(cards.s1, s[0]);
+      flipCard(cards.s2, s[1]);
+
+      const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+      dateEl.textContent = `${now.getFullYear()}.${String(now.getMonth()+1).padStart(2,'0')}.${String(now.getDate()).padStart(2,'0')}  ${days[now.getDay()]}`;
+    }
+
+    tick();
+    setInterval(tick, 1000);
+  </script>
+</body>
+</html>
