@@ -181,7 +181,6 @@
     <div class="clock-wrapper">
       <div class="time-display" id="time"></div>
       <div class="date-display" id="date"></div>
-      <div class="temp-display" id="ambient"></div>
     </div>
   </div>
 
@@ -249,8 +248,6 @@
     // Clock
     const timeEl = document.getElementById('time');
     const dateEl = document.getElementById('date');
-    const ambientEl = document.getElementById('ambient');
-
     const clock = new DigitalClock(timeEl, {
       showSeconds: false,
       use24Hour: true,
