@@ -4,3 +4,6 @@ Thumbs.db
 *.swo
 node_modules/
 .env
+src-tauri/target/
+dist/
+app-icon.png
