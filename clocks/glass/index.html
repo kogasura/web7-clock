@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GLASS Clock - Web7 Clock</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@100;200;300;400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../css/common.css">
+  <style>
+    body {
+      background: #0f0f23;
+    }
+
+    .bg-shapes {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+    }
+
+    .bg-shape {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(80px);
+      opacity: 0.6;
+      animation: floatShape 20s ease-in-out infinite;
+    }
+
+    .bg-shape:nth-child(1) {
+      width: 400px; height: 400px;
+      background: #7b2ff7;
+      top: -100px; left: -100px;
+      animation-delay: 0s;
+    }
+
+    .bg-shape:nth-child(2) {
+      width: 350px; height: 350px;
+      background: #ff2d95;
+      bottom: -100px; right: -50px;
+      animation-delay: -7s;
+    }
+
+    .bg-shape:nth-child(3) {
+      width: 300px; height: 300px;
+      background: #00d4ff;
+      top: 50%; left: 60%;
+      animation-delay: -14s;
+    }
+
+    @keyframes floatShape {
+      0%, 100% { transform: translate(0, 0) scale(1); }
+      25% { transform: translate(50px, -30px) scale(1.1); }
+      50% { transform: translate(-20px, 50px) scale(0.9); }
+      75% { transform: translate(30px, 20px) scale(1.05); }
+    }
+
+    .clock-container {
+      z-index: 1;
+      position: relative;
+    }
+
+    .glass-panel {
+      background: rgba(255, 255, 255, 0.08);
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 24px;
+      padding: clamp(32px, 6vw, 80px) clamp(48px, 8vw, 120px);
+      box-shadow:
+        0 8px 32px rgba(0, 0, 0, 0.3),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    }
+
+    .time-display {
+      font-family: 'Outfit', sans-serif;
+      font-size: clamp(56px, 16vw, 200px);
+      font-weight: 100;
+      color: rgba(255, 255, 255, 0.9);
+      letter-spacing: -0.02em;
+      line-height: 1;
+      text-align: center;
+    }
+
+    .separator {
+      opacity: 0.4;
+    }
+
+    .info-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 20px;
+      padding-top: 16px;
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .date-display {
+      font-family: 'Outfit', sans-serif;
+      font-size: clamp(12px, 2vw, 18px);
+      font-weight: 300;
+      color: rgba(255, 255, 255, 0.4);
+      letter-spacing: 0.1em;
+    }
+
+    .seconds-display {
+      font-family: 'Outfit', sans-serif;
+      font-size: clamp(18px, 3vw, 32px);
+      font-weight: 200;
+      color: rgba(255, 255, 255, 0.3);
+      letter-spacing: 0.05em;
+    }
+  </style>
+</head>
+<body>
+  <a href="../../" class="back-link">← COLLECTION</a>
+  <button class="fullscreen-btn" onclick="toggleFullscreen()" aria-label="Toggle fullscreen">
+    <svg viewBox="0 0 24 24"><path d="M7 14H5v5h5v-2H7v-3zm-2-4h2V7h3V5H5v5zm12 7h-3v2h5v-5h-2v3zM14 5v2h3v3h2V5h-5z"/></svg>
+  </button>
+
+  <div class="bg-shapes">
+    <div class="bg-shape"></div>
+    <div class="bg-shape"></div>
+    <div class="bg-shape"></div>
+  </div>
+
+  <div class="clock-container">
+    <div class="glass-panel">
+      <div class="time-display" id="time"></div>
+      <div class="info-row">
+        <div class="date-display" id="date"></div>
+        <div class="seconds-display" id="seconds"></div>
+      </div>
+    </div>
+  </div>
+
+  <script src="../../js/clock.js"></script>
+  <script>
+    const timeEl = document.getElementById('time');
+    const dateEl = document.getElementById('date');
+    const secondsEl = document.getElementById('seconds');
+
+    const clock = new DigitalClock(timeEl, {
+      showSeconds: false,
+      use24Hour: true,
+      onTick(data) {
+        timeEl.innerHTML = `${data.hours}<span class="separator">:</span>${data.minutes}`;
+        dateEl.textContent = `${data.date.dayOfWeek}  ${data.date.year}.${data.date.month}.${data.date.day}`;
+        secondsEl.textContent = `:${data.seconds}`;
+      }
+    });
+
+    clock.start();
+  </script>
+</body>
+</html>

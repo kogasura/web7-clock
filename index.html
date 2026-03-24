@@ -4,11 +4,33 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Web7 Clock - デジタル時計コレクション</title>
-  <meta name="description" content="ブラウザで表示するデザイン性の高いデジタル時計。常時表示・フルスクリーン対応。">
-  <meta property="og:title" content="Web7 Clock - デジタル時計コレクション">
-  <meta property="og:description" content="かっこいいデジタル時計をブラウザで。常時表示用に最適化。">
+  <meta name="description" content="ブラウザで表示するおしゃれなデジタル時計コレクション。ネオン、サイバーパンク、ミニマル、レトロLED等9種類。フルスクリーン対応・常時表示用。無料で利用可能。">
+  <meta name="keywords" content="デジタル時計,ブラウザ時計,オンライン時計,フルスクリーン時計,おしゃれ時計,デスクトップ時計,無料">
+  <meta name="author" content="WeBanana.SP">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://clock.web7.tokyo/">
+  <meta property="og:title" content="Web7 Clock - おしゃれなデジタル時計コレクション">
+  <meta property="og:description" content="9種類のデザインから選べるブラウザ時計。ネオン、サイバーパンク、フリップ、ターミナル風など。フルスクリーン・常時表示対応。">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://clock.web7.tokyo/">
+  <meta property="og:site_name" content="Web7 Clock">
+  <meta property="og:locale" content="ja_JP">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Web7 Clock - おしゃれなデジタル時計コレクション">
+  <meta name="twitter:description" content="9種類のデザインから選べるブラウザ時計。フルスクリーン・常時表示対応。">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "Web7 Clock",
+    "description": "ブラウザで表示するおしゃれなデジタル時計コレクション。9種類のデザインから選択可能。",
+    "url": "https://clock.web7.tokyo/",
+    "applicationCategory": "UtilitiesApplication",
+    "operatingSystem": "Any",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "JPY" },
+    "author": { "@type": "Organization", "name": "WeBanana.SP", "url": "https://web7.tokyo" }
+  }
+  </script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Orbitron:wght@400;500;700;900&display=swap" rel="stylesheet">
@@ -201,11 +223,37 @@
       </div>
     </a>
 
-    <div class="clock-card coming-soon">
+    <a href="clocks/flip/" class="clock-card" id="card-flip">
+      <iframe src="clocks/flip/" loading="lazy" tabindex="-1"></iframe>
       <div class="overlay">
-        <div class="card-title">MORE COMING SOON...</div>
+        <div class="card-title">FLIP</div>
+        <div class="card-desc">パタパタ時計風フリップアニメーション</div>
       </div>
-    </div>
+    </a>
+
+    <a href="clocks/cyber/" class="clock-card" id="card-cyber">
+      <iframe src="clocks/cyber/" loading="lazy" tabindex="-1"></iframe>
+      <div class="overlay">
+        <div class="card-title">CYBER</div>
+        <div class="card-desc">サイバーパンク / グリッチエフェクト</div>
+      </div>
+    </a>
+
+    <a href="clocks/terminal/" class="clock-card" id="card-terminal">
+      <iframe src="clocks/terminal/" loading="lazy" tabindex="-1"></iframe>
+      <div class="overlay">
+        <div class="card-title">TERMINAL</div>
+        <div class="card-desc">ターミナル風コマンドライン時計</div>
+      </div>
+    </a>
+
+    <a href="clocks/glass/" class="clock-card" id="card-glass">
+      <iframe src="clocks/glass/" loading="lazy" tabindex="-1"></iframe>
+      <div class="overlay">
+        <div class="card-title">GLASS</div>
+        <div class="card-desc">グラスモーフィズム + 浮遊背景</div>
+      </div>
+    </a>
   </main>
 
   <footer class="footer">
