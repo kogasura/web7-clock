@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Web7 Clock - デジタル時計コレクション</title>
+  <meta name="description" content="ブラウザで表示するデザイン性の高いデジタル時計。常時表示・フルスクリーン対応。">
+  <meta property="og:title" content="Web7 Clock - デジタル時計コレクション">
+  <meta property="og:description" content="かっこいいデジタル時計をブラウザで。常時表示用に最適化。">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://clock.web7.tokyo/">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Orbitron:wght@400;500;700;900&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      min-height: 100vh;
+      background: #0a0a0f;
+      color: #e0e0e0;
+      font-family: 'Inter', sans-serif;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* Header */
+    .header {
+      text-align: center;
+      padding: 80px 24px 40px;
+    }
+
+    .header h1 {
+      font-family: 'Orbitron', sans-serif;
+      font-size: clamp(28px, 5vw, 48px);
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      background: linear-gradient(135deg, #00d4ff, #7b2ff7, #ff2d95);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .header p {
+      margin-top: 16px;
+      font-size: 15px;
+      color: rgba(255, 255, 255, 0.5);
+      letter-spacing: 0.05em;
+      font-weight: 300;
+    }
+
+    /* Clock Grid */
+    .clock-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+      gap: 24px;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 40px 24px 80px;
+    }
+
+    /* Clock Card */
+    .clock-card {
+      position: relative;
+      border-radius: 16px;
+      overflow: hidden;
+      aspect-ratio: 16 / 9;
+      cursor: pointer;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      text-decoration: none;
+      display: block;
+    }
+
+    .clock-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+    }
+
+    .clock-card iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+      pointer-events: none;
+    }
+
+    .clock-card .overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(0,0,0,0.7) 0%, transparent 50%);
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 24px;
+      transition: background 0.3s ease;
+    }
+
+    .clock-card:hover .overlay {
+      background: linear-gradient(to top, rgba(0,0,0,0.5) 0%, transparent 40%);
+    }
+
+    .clock-card .card-title {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 18px;
+      font-weight: 600;
+      color: #fff;
+      letter-spacing: 0.08em;
+    }
+
+    .clock-card .card-desc {
+      font-size: 13px;
+      color: rgba(255, 255, 255, 0.6);
+      margin-top: 4px;
+    }
+
+    /* Coming Soon */
+    .clock-card.coming-soon {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px dashed rgba(255, 255, 255, 0.1);
+    }
+
+    .clock-card.coming-soon .overlay {
+      align-items: center;
+      justify-content: center;
+      background: none;
+    }
+
+    .clock-card.coming-soon .card-title {
+      color: rgba(255, 255, 255, 0.3);
+      font-size: 14px;
+    }
+
+    /* Footer */
+    .footer {
+      text-align: center;
+      padding: 40px 24px;
+      border-top: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .footer a {
+      color: rgba(255, 255, 255, 0.3);
+      text-decoration: none;
+      font-size: 13px;
+      letter-spacing: 0.05em;
+      transition: color 0.3s;
+    }
+
+    .footer a:hover {
+      color: rgba(255, 255, 255, 0.6);
+    }
+
+    @media (max-width: 480px) {
+      .clock-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="header">
+    <h1>WEB7 CLOCK</h1>
+    <p>ブラウザで表示するデジタル時計コレクション — フルスクリーン対応・常時表示用</p>
+  </header>
+
+  <main class="clock-grid">
+    <a href="clocks/neon/" class="clock-card" id="card-neon">
+      <iframe src="clocks/neon/" loading="lazy" tabindex="-1"></iframe>
+      <div class="overlay">
+        <div class="card-title">NEON</div>
+        <div class="card-desc">ネオンサイン風グロウエフェクト</div>
+      </div>
+    </a>
+
+    <a href="clocks/minimal/" class="clock-card" id="card-minimal">
+      <iframe src="clocks/minimal/" loading="lazy" tabindex="-1"></iframe>
+      <div class="overlay">
+        <div class="card-title">MINIMAL</div>
+        <div class="card-desc">洗練されたミニマルデザイン</div>
+      </div>
+    </a>
+
+    <a href="clocks/retro/" class="clock-card" id="card-retro">
+      <iframe src="clocks/retro/" loading="lazy" tabindex="-1"></iframe>
+      <div class="overlay">
+        <div class="card-title">RETRO LED</div>
+        <div class="card-desc">レトロ LED セグメントディスプレイ</div>
+      </div>
+    </a>
+
+    <a href="clocks/matrix/" class="clock-card" id="card-matrix">
+      <iframe src="clocks/matrix/" loading="lazy" tabindex="-1"></iframe>
+      <div class="overlay">
+        <div class="card-title">MATRIX</div>
+        <div class="card-desc">マトリックスコードレイン + 時計</div>
+      </div>
+    </a>
+
+    <a href="clocks/gradient/" class="clock-card" id="card-gradient">
+      <iframe src="clocks/gradient/" loading="lazy" tabindex="-1"></iframe>
+      <div class="overlay">
+        <div class="card-title">GRADIENT</div>
+        <div class="card-desc">時間で変化するグラデーション背景</div>
+      </div>
+    </a>
+
+    <div class="clock-card coming-soon">
+      <div class="overlay">
+        <div class="card-title">MORE COMING SOON...</div>
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <a href="https://web7.tokyo">web7.tokyo</a>
+  </footer>
+</body>
+</html>

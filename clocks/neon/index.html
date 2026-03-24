@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NEON Clock - Web7 Clock</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../css/common.css">
+  <style>
+    body {
+      background: #0a0a0f;
+    }
+
+    .clock-container {
+      background: radial-gradient(ellipse at center, #0f0f1a 0%, #0a0a0f 70%);
+    }
+
+    .time-display {
+      font-family: 'Orbitron', sans-serif;
+      font-size: clamp(48px, 15vw, 200px);
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      color: #00d4ff;
+      text-shadow:
+        0 0 10px #00d4ff,
+        0 0 20px #00d4ff,
+        0 0 40px #00d4ff,
+        0 0 80px #0077aa,
+        0 0 120px #0077aa;
+      animation: neonPulse 2s ease-in-out infinite alternate;
+    }
+
+    .separator {
+      display: inline-block;
+      animation: separatorBlink 1s step-end infinite;
+    }
+
+    .date-display {
+      font-family: 'Orbitron', sans-serif;
+      font-size: clamp(12px, 2.5vw, 24px);
+      font-weight: 400;
+      color: rgba(0, 212, 255, 0.4);
+      letter-spacing: 0.2em;
+      margin-top: 24px;
+      text-shadow: 0 0 10px rgba(0, 212, 255, 0.2);
+    }
+
+    .seconds-display {
+      font-family: 'Orbitron', sans-serif;
+      font-size: clamp(16px, 4vw, 48px);
+      font-weight: 400;
+      color: rgba(0, 212, 255, 0.5);
+      letter-spacing: 0.1em;
+      margin-top: 8px;
+      text-shadow:
+        0 0 10px rgba(0, 212, 255, 0.3),
+        0 0 20px rgba(0, 212, 255, 0.2);
+    }
+
+    @keyframes neonPulse {
+      from {
+        text-shadow:
+          0 0 10px #00d4ff,
+          0 0 20px #00d4ff,
+          0 0 40px #00d4ff,
+          0 0 80px #0077aa,
+          0 0 120px #0077aa;
+      }
+      to {
+        text-shadow:
+          0 0 5px #00d4ff,
+          0 0 10px #00d4ff,
+          0 0 20px #00d4ff,
+          0 0 40px #0077aa,
+          0 0 60px #0077aa;
+      }
+    }
+
+    @keyframes separatorBlink {
+      0%, 49% { opacity: 1; }
+      50%, 100% { opacity: 0.2; }
+    }
+
+    /* Reflection effect */
+    .reflection {
+      position: absolute;
+      bottom: 15%;
+      left: 50%;
+      transform: translateX(-50%) scaleY(-1);
+      font-family: 'Orbitron', sans-serif;
+      font-size: clamp(48px, 15vw, 200px);
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      color: #00d4ff;
+      opacity: 0.07;
+      filter: blur(4px);
+      pointer-events: none;
+      mask-image: linear-gradient(to bottom, rgba(0,0,0,0.5), transparent);
+      -webkit-mask-image: linear-gradient(to bottom, rgba(0,0,0,0.5), transparent);
+    }
+  </style>
+</head>
+<body>
+  <a href="../../" class="back-link">← COLLECTION</a>
+  <button class="fullscreen-btn" onclick="toggleFullscreen()" aria-label="Toggle fullscreen">
+    <svg viewBox="0 0 24 24"><path d="M7 14H5v5h5v-2H7v-3zm-2-4h2V7h3V5H5v5zm12 7h-3v2h5v-5h-2v3zM14 5v2h3v3h2V5h-5z"/></svg>
+  </button>
+
+  <div class="clock-container">
+    <div class="time-display" id="time"></div>
+    <div class="seconds-display" id="seconds"></div>
+    <div class="date-display" id="date"></div>
+    <div class="reflection" id="reflection" aria-hidden="true"></div>
+  </div>
+
+  <script src="../../js/clock.js"></script>
+  <script>
+    const timeEl = document.getElementById('time');
+    const secondsEl = document.getElementById('seconds');
+    const dateEl = document.getElementById('date');
+    const reflectionEl = document.getElementById('reflection');
+
+    const clock = new DigitalClock(timeEl, {
+      showSeconds: false,
+      use24Hour: true,
+      onTick(data) {
+        const timeStr = `${data.hours}<span class="separator">:</span>${data.minutes}`;
+        timeEl.innerHTML = timeStr;
+        secondsEl.textContent = data.seconds;
+        dateEl.textContent = `${data.date.year}.${data.date.month}.${data.date.day} ${data.date.dayOfWeek}`;
+        reflectionEl.textContent = `${data.hours}:${data.minutes}`;
+      }
+    });
+
+    clock.start();
+  </script>
+</body>
+</html>

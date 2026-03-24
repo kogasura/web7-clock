@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RETRO LED Clock - Web7 Clock</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../css/common.css">
+  <style>
+    body {
+      background: #1a0a0a;
+    }
+
+    .clock-container {
+      background: linear-gradient(180deg, #1a0a0a 0%, #0d0505 100%);
+    }
+
+    .led-panel {
+      background: #0d0505;
+      border: 2px solid #2a1515;
+      border-radius: 12px;
+      padding: clamp(24px, 5vw, 60px) clamp(32px, 6vw, 80px);
+      box-shadow:
+        inset 0 2px 8px rgba(0,0,0,0.5),
+        0 4px 20px rgba(0,0,0,0.3);
+    }
+
+    .time-display {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: clamp(48px, 14vw, 180px);
+      color: #ff2200;
+      letter-spacing: 0.08em;
+      text-shadow:
+        0 0 8px #ff2200,
+        0 0 20px rgba(255, 34, 0, 0.4);
+      position: relative;
+    }
+
+    /* Dim segments behind (like real LED) */
+    .time-display::before {
+      content: attr(data-ghost);
+      position: absolute;
+      left: 0;
+      top: 0;
+      color: rgba(255, 34, 0, 0.06);
+      text-shadow: none;
+      pointer-events: none;
+    }
+
+    .separator {
+      animation: ledBlink 1s step-end infinite;
+    }
+
+    .date-display {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: clamp(12px, 2.5vw, 22px);
+      color: rgba(255, 34, 0, 0.35);
+      letter-spacing: 0.15em;
+      margin-top: 16px;
+    }
+
+    @keyframes ledBlink {
+      0%, 49% { opacity: 1; }
+      50%, 100% { opacity: 0.1; }
+    }
+
+    /* Scanline effect */
+    .clock-container::after {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background: repeating-linear-gradient(
+        to bottom,
+        transparent,
+        transparent 2px,
+        rgba(0, 0, 0, 0.03) 2px,
+        rgba(0, 0, 0, 0.03) 4px
+      );
+      pointer-events: none;
+    }
+  </style>
+</head>
+<body>
+  <a href="../../" class="back-link">← COLLECTION</a>
+  <button class="fullscreen-btn" onclick="toggleFullscreen()" aria-label="Toggle fullscreen">
+    <svg viewBox="0 0 24 24"><path d="M7 14H5v5h5v-2H7v-3zm-2-4h2V7h3V5H5v5zm12 7h-3v2h5v-5h-2v3zM14 5v2h3v3h2V5h-5z"/></svg>
+  </button>
+
+  <div class="clock-container">
+    <div class="led-panel">
+      <div class="time-display" id="time" data-ghost="88:88:88"></div>
+      <div class="date-display" id="date"></div>
+    </div>
+  </div>
+
+  <script src="../../js/clock.js"></script>
+  <script>
+    const timeEl = document.getElementById('time');
+    const dateEl = document.getElementById('date');
+
+    const clock = new DigitalClock(timeEl, {
+      showSeconds: true,
+      use24Hour: true,
+      onTick(data) {
+        const timeStr = `${data.hours}<span class="separator">:</span>${data.minutes}<span class="separator">:</span>${data.seconds}`;
+        timeEl.innerHTML = timeStr;
+        timeEl.setAttribute('data-ghost', '88:88:88');
+        dateEl.textContent = `${data.date.year}-${data.date.month}-${data.date.day}`;
+      }
+    });
+
+    clock.start();
+  </script>
+</body>
+</html>

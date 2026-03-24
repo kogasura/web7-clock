@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MINIMAL Clock - Web7 Clock</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../css/common.css">
+  <style>
+    body {
+      background: #fafafa;
+    }
+
+    .clock-container {
+      background: #fafafa;
+    }
+
+    .back-link {
+      color: rgba(0, 0, 0, 0.2);
+    }
+    .back-link:hover {
+      color: rgba(0, 0, 0, 0.5);
+    }
+    body:hover .back-link { opacity: 1; }
+
+    .fullscreen-btn {
+      background: rgba(0, 0, 0, 0.03);
+      border-color: rgba(0, 0, 0, 0.08);
+      color: rgba(0, 0, 0, 0.3);
+    }
+    .fullscreen-btn:hover {
+      background: rgba(0, 0, 0, 0.06);
+      color: rgba(0, 0, 0, 0.5);
+    }
+
+    .time-display {
+      font-family: 'Inter', sans-serif;
+      font-size: clamp(64px, 18vw, 280px);
+      font-weight: 100;
+      letter-spacing: -0.02em;
+      color: #1a1a1a;
+      line-height: 1;
+    }
+
+    .date-display {
+      font-family: 'Inter', sans-serif;
+      font-size: clamp(11px, 2vw, 18px);
+      font-weight: 300;
+      color: rgba(0, 0, 0, 0.25);
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      margin-top: 24px;
+    }
+
+    .separator {
+      opacity: 0.3;
+    }
+
+    /* Dark mode support */
+    @media (prefers-color-scheme: dark) {
+      body, .clock-container { background: #111; }
+      .time-display { color: #eee; }
+      .date-display { color: rgba(255,255,255,0.25); }
+      .back-link { color: rgba(255,255,255,0.2); }
+      .back-link:hover { color: rgba(255,255,255,0.5); }
+      .fullscreen-btn {
+        background: rgba(255,255,255,0.05);
+        border-color: rgba(255,255,255,0.1);
+        color: rgba(255,255,255,0.3);
+      }
+    }
+  </style>
+</head>
+<body>
+  <a href="../../" class="back-link">← COLLECTION</a>
+  <button class="fullscreen-btn" onclick="toggleFullscreen()" aria-label="Toggle fullscreen">
+    <svg viewBox="0 0 24 24"><path d="M7 14H5v5h5v-2H7v-3zm-2-4h2V7h3V5H5v5zm12 7h-3v2h5v-5h-2v3zM14 5v2h3v3h2V5h-5z"/></svg>
+  </button>
+
+  <div class="clock-container">
+    <div class="time-display" id="time"></div>
+    <div class="date-display" id="date"></div>
+  </div>
+
+  <script src="../../js/clock.js"></script>
+  <script>
+    const timeEl = document.getElementById('time');
+    const dateEl = document.getElementById('date');
+
+    const clock = new DigitalClock(timeEl, {
+      showSeconds: false,
+      use24Hour: true,
+      onTick(data) {
+        timeEl.innerHTML = `${data.hours}<span class="separator">:</span>${data.minutes}`;
+        dateEl.textContent = `${data.date.dayOfWeek}  ${data.date.month}.${data.date.day}`;
+      }
+    });
+
+    clock.start();
+  </script>
+</body>
+</html>

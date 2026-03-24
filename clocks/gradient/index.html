@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GRADIENT Clock - Web7 Clock</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@200;300;400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../css/common.css">
+  <style>
+    body {
+      background: #000;
+      transition: background 60s linear;
+    }
+
+    .clock-container {
+      transition: background 60s linear;
+    }
+
+    .time-display {
+      font-family: 'Outfit', sans-serif;
+      font-size: clamp(64px, 18vw, 280px);
+      font-weight: 200;
+      color: rgba(255, 255, 255, 0.9);
+      letter-spacing: -0.02em;
+      line-height: 1;
+      mix-blend-mode: difference;
+    }
+
+    .seconds-bar {
+      width: clamp(120px, 30vw, 400px);
+      height: 2px;
+      background: rgba(255, 255, 255, 0.1);
+      margin-top: 32px;
+      border-radius: 1px;
+      overflow: hidden;
+    }
+
+    .seconds-bar-fill {
+      height: 100%;
+      background: rgba(255, 255, 255, 0.6);
+      border-radius: 1px;
+      transition: width 1s linear;
+    }
+
+    .date-display {
+      font-family: 'Outfit', sans-serif;
+      font-size: clamp(12px, 2vw, 20px);
+      font-weight: 300;
+      color: rgba(255, 255, 255, 0.35);
+      letter-spacing: 0.15em;
+      margin-top: 20px;
+      mix-blend-mode: difference;
+    }
+  </style>
+</head>
+<body>
+  <a href="../../" class="back-link">← COLLECTION</a>
+  <button class="fullscreen-btn" onclick="toggleFullscreen()" aria-label="Toggle fullscreen">
+    <svg viewBox="0 0 24 24"><path d="M7 14H5v5h5v-2H7v-3zm-2-4h2V7h3V5H5v5zm12 7h-3v2h5v-5h-2v3zM14 5v2h3v3h2V5h-5z"/></svg>
+  </button>
+
+  <div class="clock-container">
+    <div class="time-display" id="time"></div>
+    <div class="seconds-bar">
+      <div class="seconds-bar-fill" id="seconds-bar"></div>
+    </div>
+    <div class="date-display" id="date"></div>
+  </div>
+
+  <script src="../../js/clock.js"></script>
+  <script>
+    const timeEl = document.getElementById('time');
+    const dateEl = document.getElementById('date');
+    const secondsBar = document.getElementById('seconds-bar');
+
+    // Color palettes for different times of day
+    function getGradient(hours, minutes) {
+      const t = hours + minutes / 60;
+
+      // Dawn (5-7): deep purple → warm orange
+      if (t >= 5 && t < 7) {
+        return 'linear-gradient(135deg, #2d1b69, #e65c00, #f9a825)';
+      }
+      // Morning (7-10): warm gold → sky blue
+      if (t >= 7 && t < 10) {
+        return 'linear-gradient(135deg, #f9a825, #42a5f5, #80deea)';
+      }
+      // Midday (10-14): bright blue → white
+      if (t >= 10 && t < 14) {
+        return 'linear-gradient(135deg, #42a5f5, #e3f2fd, #81d4fa)';
+      }
+      // Afternoon (14-17): golden → amber
+      if (t >= 14 && t < 17) {
+        return 'linear-gradient(135deg, #ff8f00, #f4511e, #ffab40)';
+      }
+      // Sunset (17-19): orange → deep pink → purple
+      if (t >= 17 && t < 19) {
+        return 'linear-gradient(135deg, #f4511e, #ad1457, #6a1b9a)';
+      }
+      // Evening (19-22): deep purple → dark blue
+      if (t >= 19 && t < 22) {
+        return 'linear-gradient(135deg, #4a148c, #1a237e, #0d47a1)';
+      }
+      // Night (22-5): dark → midnight
+      return 'linear-gradient(135deg, #0d0d2b, #1a1a2e, #16213e)';
+    }
+
+    const clock = new DigitalClock(timeEl, {
+      showSeconds: false,
+      use24Hour: true,
+      onTick(data, now) {
+        timeEl.textContent = `${data.hours}:${data.minutes}`;
+        dateEl.textContent = `${data.date.dayOfWeek}  ${data.date.month}.${data.date.day}`;
+
+        // Seconds progress bar
+        const progress = (parseInt(data.seconds) + parseInt(data.milliseconds) / 1000) / 60 * 100;
+        secondsBar.style.width = `${progress}%`;
+
+        // Update background gradient based on time
+        const gradient = getGradient(now.getHours(), now.getMinutes());
+        document.body.style.background = gradient;
+        document.querySelector('.clock-container').style.background = gradient;
+      }
+    });
+
+    clock.start();
+  </script>
+</body>
+</html>

@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MATRIX Clock - Web7 Clock</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../css/common.css">
+  <style>
+    body { background: #000; overflow: hidden; }
+    canvas { position: fixed; inset: 0; z-index: 0; }
+    .clock-container { position: relative; z-index: 1; }
+
+    .time-display {
+      font-family: 'Orbitron', sans-serif;
+      font-size: clamp(48px, 14vw, 180px);
+      font-weight: 900;
+      color: #00ff41;
+      letter-spacing: 0.05em;
+      text-shadow:
+        0 0 20px rgba(0, 255, 65, 0.5),
+        0 0 40px rgba(0, 255, 65, 0.2);
+    }
+
+    .separator {
+      animation: matrixBlink 1s step-end infinite;
+    }
+
+    .date-display {
+      font-family: 'Orbitron', sans-serif;
+      font-size: clamp(11px, 2vw, 18px);
+      font-weight: 400;
+      color: rgba(0, 255, 65, 0.3);
+      letter-spacing: 0.2em;
+      margin-top: 16px;
+    }
+
+    @keyframes matrixBlink {
+      0%, 49% { opacity: 1; }
+      50%, 100% { opacity: 0.3; }
+    }
+  </style>
+</head>
+<body>
+  <a href="../../" class="back-link" style="color:rgba(0,255,65,0.3)">← COLLECTION</a>
+  <button class="fullscreen-btn" onclick="toggleFullscreen()" aria-label="Toggle fullscreen"
+    style="background:rgba(0,255,65,0.05);border-color:rgba(0,255,65,0.15);color:rgba(0,255,65,0.4)">
+    <svg viewBox="0 0 24 24"><path d="M7 14H5v5h5v-2H7v-3zm-2-4h2V7h3V5H5v5zm12 7h-3v2h5v-5h-2v3zM14 5v2h3v3h2V5h-5z"/></svg>
+  </button>
+
+  <canvas id="matrix"></canvas>
+
+  <div class="clock-container">
+    <div class="time-display" id="time"></div>
+    <div class="date-display" id="date"></div>
+  </div>
+
+  <script src="../../js/clock.js"></script>
+  <script>
+    // Matrix rain effect
+    const canvas = document.getElementById('matrix');
+    const ctx = canvas.getContext('2d');
+
+    function resizeCanvas() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    }
+    resizeCanvas();
+    window.addEventListener('resize', resizeCanvas);
+
+    const chars = 'アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン0123456789ABCDEF';
+    const fontSize = 14;
+    let columns = Math.floor(canvas.width / fontSize);
+    let drops = Array(columns).fill(1);
+
+    function drawMatrix() {
+      ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      ctx.fillStyle = '#00ff4120';
+      ctx.font = `${fontSize}px monospace`;
+
+      for (let i = 0; i < drops.length; i++) {
+        const char = chars[Math.floor(Math.random() * chars.length)];
+        ctx.fillText(char, i * fontSize, drops[i] * fontSize);
+
+        if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+          drops[i] = 0;
+        }
+        drops[i]++;
+      }
+
+      requestAnimationFrame(drawMatrix);
+    }
+
+    drawMatrix();
+
+    window.addEventListener('resize', () => {
+      columns = Math.floor(canvas.width / fontSize);
+      drops = Array(columns).fill(1);
+    });
+
+    // Clock
+    const timeEl = document.getElementById('time');
+    const dateEl = document.getElementById('date');
+
+    const clock = new DigitalClock(timeEl, {
+      showSeconds: true,
+      use24Hour: true,
+      onTick(data) {
+        timeEl.innerHTML = `${data.hours}<span class="separator">:</span>${data.minutes}<span class="separator">:</span>${data.seconds}`;
+        dateEl.textContent = `${data.date.year}.${data.date.month}.${data.date.day}`;
+      }
+    });
+
+    clock.start();
+  </script>
+</body>
+</html>

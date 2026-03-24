@@ -1,0 +1,87 @@
+/* Web7 Clock - Common Styles */
+
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  font-family: 'Inter', 'Helvetica Neue', Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Fullscreen button */
+.fullscreen-btn {
+  position: fixed;
+  top: 16px;
+  right: 16px;
+  z-index: 100;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: rgba(255, 255, 255, 0.6);
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  opacity: 0;
+}
+
+.fullscreen-btn:hover {
+  background: rgba(255, 255, 255, 0.2);
+  color: rgba(255, 255, 255, 0.9);
+}
+
+body:hover .fullscreen-btn {
+  opacity: 1;
+}
+
+.fullscreen-btn svg {
+  width: 20px;
+  height: 20px;
+  fill: currentColor;
+}
+
+/* Back to top link */
+.back-link {
+  position: fixed;
+  top: 16px;
+  left: 16px;
+  z-index: 100;
+  color: rgba(255, 255, 255, 0.4);
+  text-decoration: none;
+  font-size: 13px;
+  letter-spacing: 0.05em;
+  transition: all 0.3s ease;
+  opacity: 0;
+}
+
+.back-link:hover {
+  color: rgba(255, 255, 255, 0.8);
+}
+
+body:hover .back-link {
+  opacity: 1;
+}
+
+/* Clock container */
+.clock-container {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  user-select: none;
+  cursor: default;
+}
