@@ -7,7 +7,7 @@ use std::path::PathBuf;
 use std::sync::Mutex;
 use tauri::{
     image::Image,
-    menu::{CheckMenuItem, Menu, MenuItem, Submenu},
+    menu::{CheckMenuItem, Menu, MenuItem, PredefinedMenuItem, Submenu},
     tray::TrayIconBuilder,
     webview::WebviewWindowBuilder,
     Manager, WebviewUrl, WindowEvent,
@@ -223,8 +223,8 @@ fn build_clock_menu(
         CheckMenuItem::with_id(app, "always_on_top", "Always on Top", true, always_on_top, None::<&str>)?;
     let transparent_item =
         CheckMenuItem::with_id(app, "transparent", "Transparent", true, transparent, None::<&str>)?;
-    let separator1 = MenuItem::with_id(app, "sep1", "─────────────", false, None::<&str>)?;
-    let separator2 = MenuItem::with_id(app, "sep2", "─────────────", false, None::<&str>)?;
+    let separator1 = PredefinedMenuItem::separator(app)?;
+    let separator2 = PredefinedMenuItem::separator(app)?;
     let quit_item = MenuItem::with_id(app, "quit", "Quit", true, None::<&str>)?;
 
     let menu = Menu::with_items(
@@ -296,6 +296,10 @@ fn handle_menu_action(app: &tauri::AppHandle, menu_id: &str) {
         }
 
         if let Some(clock_id) = menu_id_owned.strip_prefix("clock_") {
+            // Validate clock_id against known list
+            if !CLOCKS.iter().any(|(id, _, _)| *id == clock_id) {
+                return;
+            }
             let state = app.state::<AppState>();
             let mut s = state.settings.lock().unwrap();
             s.clock_id = clock_id.to_string();
@@ -398,6 +402,8 @@ fn main() {
 
 // --- Tray ---
 
+const TRAY_ID: &str = "main-tray";
+
 fn build_tray(
     app: &tauri::AppHandle,
     current_clock: &str,
@@ -407,10 +413,10 @@ fn build_tray(
     let menu = build_clock_menu(app, current_clock, always_on_top, transparent)?;
 
     let icon_bytes = include_bytes!("../icons/icon.png");
-    let icon = Image::new_owned(icon_bytes.to_vec(), 128, 128);
+    let icon = Image::from_bytes(icon_bytes)?;
 
     let app_handle = app.clone();
-    TrayIconBuilder::new()
+    TrayIconBuilder::with_id(TRAY_ID)
         .icon(icon)
         .menu(&menu)
         .tooltip("Web7 Clock")
@@ -423,5 +429,7 @@ fn build_tray(
 }
 
 fn rebuild_tray(app: &tauri::AppHandle, current_clock: &str, always_on_top: bool, transparent: bool) {
+    // Remove old tray, then create new one
+    app.remove_tray_by_id(TRAY_ID);
     build_tray(app, current_clock, always_on_top, transparent).ok();
 }
