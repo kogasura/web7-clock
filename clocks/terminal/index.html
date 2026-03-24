@@ -137,6 +137,8 @@
     const loadavgEl = document.getElementById('loadavg');
 
     const startTime = Date.now();
+    let prevSeconds = '';
+    let pid = Math.floor(Math.random() * 9000 + 1000);
 
     const clock = new DigitalClock(timeEl, {
       use24Hour: true,
@@ -153,10 +155,14 @@
         const upS = elapsed % 60;
         uptimeEl.textContent = `up ${upH} hours, ${upM} minutes, ${upS} seconds`;
 
+        if (data.seconds !== prevSeconds) {
+          pid = Math.floor(Math.random() * 9000 + 1000);
+          prevSeconds = data.seconds;
+        }
         const load1 = (Math.sin(Date.now() / 10000) * 0.3 + 0.5).toFixed(2);
         const load2 = (Math.sin(Date.now() / 15000) * 0.2 + 0.4).toFixed(2);
         const load3 = (Math.sin(Date.now() / 20000) * 0.15 + 0.35).toFixed(2);
-        loadavgEl.textContent = `${load1} ${load2} ${load3} 2/128 ${Math.floor(Math.random() * 9000 + 1000)}`;
+        loadavgEl.textContent = `${load1} ${load2} ${load3} 2/128 ${pid}`;
       }
     });
 

@@ -194,11 +194,14 @@
       flipBottom.textContent = newVal;
       card.classList.add('flipping');
 
-      setTimeout(() => {
+      const flipBottomEl = card.querySelector('.flip-bottom');
+      function onAnimEnd() {
         top.textContent = newVal;
         bottom.textContent = newVal;
         card.classList.remove('flipping');
-      }, 600);
+        flipBottomEl.removeEventListener('animationend', onAnimEnd);
+      }
+      flipBottomEl.addEventListener('animationend', onAnimEnd);
     }
 
     function tick() {
