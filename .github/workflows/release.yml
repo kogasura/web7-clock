@@ -1,0 +1,45 @@
+name: Release Desktop App
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  release:
+    runs-on: windows-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install frontend dependencies
+        run: npm ci
+
+      - uses: dtolnay/rust-toolchain@stable
+
+      - uses: Swatinem/rust-cache@v2
+        with:
+          workspaces: src-tauri
+
+      - uses: tauri-apps/tauri-action@v0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tagName: ${{ github.ref_name }}
+          releaseName: 'Web7 Clock ${{ github.ref_name }}'
+          releaseBody: |
+            Windows デスクトップアプリ ${{ github.ref_name }}
+
+            ## ダウンロード
+            - **NSIS インストーラー (.exe)** - 推奨。インストール/アンインストール対応
+            - **MSI パッケージ (.msi)** - IT管理者向け。グループポリシー配布対応
+
+            ※ 未署名アプリのため、初回起動時に SmartScreen 警告が表示されます。
+            「詳細情報」→「実行」で起動できます。
+          releaseDraft: false
+          prerelease: false

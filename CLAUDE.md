@@ -101,5 +101,13 @@ npx tauri build
 - デプロイは必ず `~/web/ai-services/clock/` 配下のみに対して行う
 - デプロイ対象外: `src-tauri/`, `node_modules/`, `dist/`, `scripts/`, `package.json`, `package-lock.json`
 
+## デスクトップアプリ リリース手順
+1. バージョン番号を更新: `tauri.conf.json`, `Cargo.toml`, `package.json`
+2. 変更をコミット & push
+3. タグ作成: `git tag v{X.Y.Z} && git push origin v{X.Y.Z}`
+4. GitHub Actions が自動でビルド → GitHub Releases にインストーラーをアップロード
+5. clock.web7.tokyo のダウンロードセクションが GitHub API 経由で自動更新
+6. Web版の変更がある場合はロリポップにデプロイ
+
 ## Gitコミットルール
 - コミットメッセージに Co-Authored-By 等のAIツール使用を示す記述を含めない

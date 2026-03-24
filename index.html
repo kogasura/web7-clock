@@ -150,6 +150,102 @@
       font-size: 14px;
     }
 
+    /* Download Section */
+    .download-section {
+      max-width: 700px;
+      margin: 0 auto;
+      padding: 80px 24px;
+      text-align: center;
+    }
+
+    .download-section h2 {
+      font-family: 'Orbitron', sans-serif;
+      font-size: clamp(22px, 4vw, 36px);
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      background: linear-gradient(135deg, #00d4ff, #7b2ff7);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .download-desc {
+      margin-top: 12px;
+      font-size: 14px;
+      color: rgba(255, 255, 255, 0.5);
+      line-height: 1.6;
+    }
+
+    .download-content {
+      margin-top: 32px;
+    }
+
+    .download-version {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 14px;
+      color: rgba(255, 255, 255, 0.4);
+      letter-spacing: 0.08em;
+      margin-bottom: 16px;
+    }
+
+    .download-buttons {
+      display: flex;
+      gap: 16px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .download-btn {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 20px 32px;
+      border-radius: 12px;
+      text-decoration: none;
+      transition: transform 0.2s, box-shadow 0.2s;
+      min-width: 220px;
+    }
+
+    .download-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 30px rgba(0, 212, 255, 0.2);
+    }
+
+    .download-btn.primary {
+      background: linear-gradient(135deg, rgba(0, 212, 255, 0.15), rgba(123, 47, 247, 0.15));
+      border: 1px solid rgba(0, 212, 255, 0.3);
+    }
+
+    .download-btn.secondary {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .btn-label {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 14px;
+      font-weight: 600;
+      color: #fff;
+      letter-spacing: 0.05em;
+    }
+
+    .btn-size {
+      font-size: 12px;
+      color: rgba(255, 255, 255, 0.4);
+      margin-top: 4px;
+    }
+
+    .download-note {
+      margin-top: 24px;
+      font-size: 12px;
+      color: rgba(255, 255, 255, 0.3);
+    }
+
+    .download-loading {
+      font-size: 13px;
+      color: rgba(255, 255, 255, 0.3);
+    }
+
     /* Footer */
     .footer {
       text-align: center;
@@ -280,8 +376,55 @@
     </a>
   </main>
 
+  <section id="download" class="download-section">
+    <h2>DESKTOP APP</h2>
+    <p class="download-desc">Windows デスクトップアプリ — 常時最前面表示・ボーダーレスウィンドウ・12種類のデザイン切替</p>
+    <div id="download-content" class="download-content">
+      <div class="download-loading">リリース情報を取得中...</div>
+    </div>
+    <p class="download-note">※ 未署名アプリのため、初回起動時に SmartScreen 警告が表示される場合があります</p>
+  </section>
+
   <footer class="footer">
     <a href="https://web7.tokyo">web7.tokyo</a>
   </footer>
+
+  <script>
+    (async () => {
+      const container = document.getElementById('download-content');
+      const API_URL = 'https://api.github.com/repos/kogasura/web7-clock/releases/latest';
+      const FALLBACK_URL = 'https://github.com/kogasura/web7-clock/releases';
+
+      try {
+        const res = await fetch(API_URL);
+        if (!res.ok) throw new Error(res.status);
+        const release = await res.json();
+
+        const version = release.tag_name;
+        const assets = release.assets || [];
+        const nsis = assets.find(a => a.name.endsWith('-setup.exe'));
+        const msi = assets.find(a => a.name.endsWith('.msi'));
+
+        const formatSize = (bytes) => (bytes / (1024 * 1024)).toFixed(1) + ' MB';
+
+        let html = '<div class="download-version">Version ' + version + '</div><div class="download-buttons">';
+        if (nsis) {
+          html += '<a href="' + nsis.browser_download_url + '" class="download-btn primary">'
+            + '<span class="btn-label">Installer (.exe)</span>'
+            + '<span class="btn-size">' + formatSize(nsis.size) + '</span></a>';
+        }
+        if (msi) {
+          html += '<a href="' + msi.browser_download_url + '" class="download-btn secondary">'
+            + '<span class="btn-label">MSI Package (.msi)</span>'
+            + '<span class="btn-size">' + formatSize(msi.size) + '</span></a>';
+        }
+        html += '</div>';
+        container.innerHTML = html;
+      } catch (e) {
+        container.innerHTML = '<a href="' + FALLBACK_URL + '" class="download-btn primary" target="_blank" rel="noopener">'
+          + '<span class="btn-label">GitHub Releases からダウンロード</span></a>';
+      }
+    })();
+  </script>
 </body>
 </html>
