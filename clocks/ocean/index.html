@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>OCEAN Clock - Web7 Clock</title>
+  <meta name="description" content="海をイメージしたネイチャーデジタル時計。波のアニメーションと水面の反射が美しい癒しのデザイン。">
+  <link rel="canonical" href="https://clock.web7.tokyo/clocks/ocean/">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../css/common.css">
+  <style>
+    body {
+      background: #040810;
+    }
+
+    .clock-container {
+      background: linear-gradient(180deg, #06101e 0%, #0a1628 40%, #0e2040 70%, #122848 100%);
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Stars */
+    .stars {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    .star {
+      position: absolute;
+      width: 2px;
+      height: 2px;
+      background: #fff;
+      border-radius: 50%;
+      animation: twinkle 3s ease-in-out infinite alternate;
+    }
+
+    .star:nth-child(1) { top: 5%; left: 10%; animation-delay: 0s; }
+    .star:nth-child(2) { top: 12%; left: 30%; animation-delay: -1s; width: 1px; height: 1px; }
+    .star:nth-child(3) { top: 8%; left: 55%; animation-delay: -2s; }
+    .star:nth-child(4) { top: 15%; left: 75%; animation-delay: -0.5s; width: 1px; height: 1px; }
+    .star:nth-child(5) { top: 3%; left: 85%; animation-delay: -1.5s; }
+    .star:nth-child(6) { top: 18%; left: 45%; animation-delay: -2.5s; width: 1px; height: 1px; }
+    .star:nth-child(7) { top: 10%; left: 65%; animation-delay: -0.8s; }
+    .star:nth-child(8) { top: 20%; left: 20%; animation-delay: -1.8s; width: 1px; height: 1px; }
+
+    @keyframes twinkle {
+      0% { opacity: 0.2; }
+      100% { opacity: 0.8; }
+    }
+
+    /* Moon */
+    .moon {
+      position: fixed;
+      top: 8%;
+      right: 15%;
+      width: clamp(30px, 5vw, 60px);
+      height: clamp(30px, 5vw, 60px);
+      background: radial-gradient(circle at 35% 35%, #f0e8d0, #d4c8a0);
+      border-radius: 50%;
+      box-shadow: 0 0 30px rgba(240, 232, 208, 0.15), 0 0 80px rgba(240, 232, 208, 0.05);
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    /* Moon reflection on water */
+    .moon-reflection {
+      position: fixed;
+      bottom: 20%;
+      right: 14%;
+      width: clamp(4px, 1vw, 8px);
+      height: clamp(60px, 15vw, 120px);
+      background: linear-gradient(180deg, rgba(240, 232, 208, 0.1), transparent);
+      filter: blur(3px);
+      z-index: 2;
+      pointer-events: none;
+      animation: reflectionShimmer 4s ease-in-out infinite;
+    }
+
+    @keyframes reflectionShimmer {
+      0%, 100% { opacity: 0.5; transform: scaleX(1); }
+      50% { opacity: 0.8; transform: scaleX(1.5); }
+    }
+
+    /* Waves */
+    .waves {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 35%;
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    .wave {
+      position: absolute;
+      bottom: 0;
+      left: -5%;
+      width: 110%;
+      height: 100%;
+      background: transparent;
+      border-radius: 50% 50% 0 0;
+    }
+
+    .wave svg {
+      position: absolute;
+      bottom: 0;
+      width: 200%;
+      height: 100%;
+    }
+
+    .wave-path {
+      animation: waveMove 8s ease-in-out infinite;
+    }
+
+    .wave:nth-child(1) .wave-path { animation-duration: 7s; fill: rgba(10, 30, 60, 0.6); }
+    .wave:nth-child(2) .wave-path { animation-duration: 9s; animation-delay: -2s; fill: rgba(14, 35, 65, 0.5); }
+    .wave:nth-child(3) .wave-path { animation-duration: 11s; animation-delay: -4s; fill: rgba(18, 40, 72, 0.4); }
+
+    @keyframes waveMove {
+      0%, 100% { transform: translateX(0); }
+      50% { transform: translateX(-25%); }
+    }
+
+    /* Clock */
+    .clock-wrapper {
+      position: relative;
+      z-index: 3;
+      text-align: center;
+      margin-top: -10%;
+    }
+
+    .time-display {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(56px, 16vw, 220px);
+      font-weight: 300;
+      color: rgba(200, 220, 240, 0.85);
+      letter-spacing: 0.02em;
+      line-height: 1;
+      text-shadow:
+        0 0 30px rgba(100, 160, 220, 0.1),
+        0 0 60px rgba(60, 120, 200, 0.05);
+    }
+
+    .separator {
+      opacity: 0.3;
+    }
+
+    .date-display {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(13px, 2.2vw, 22px);
+      font-weight: 400;
+      color: rgba(160, 190, 220, 0.3);
+      letter-spacing: 0.25em;
+      margin-top: 20px;
+    }
+
+    .tide-label {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(10px, 1.5vw, 14px);
+      color: rgba(140, 170, 210, 0.2);
+      letter-spacing: 0.3em;
+      margin-top: 12px;
+    }
+
+    .back-link { color: rgba(140, 170, 210, 0.2); }
+    .back-link:hover { color: rgba(140, 170, 210, 0.5); }
+    .fullscreen-btn {
+      background: rgba(80, 140, 220, 0.05);
+      border-color: rgba(80, 140, 220, 0.12);
+      color: rgba(140, 170, 210, 0.3);
+    }
+  </style>
+</head>
+<body>
+  <a href="../../" class="back-link">← COLLECTION</a>
+  <button class="fullscreen-btn" onclick="toggleFullscreen()" aria-label="Toggle fullscreen">
+    <svg viewBox="0 0 24 24"><path d="M7 14H5v5h5v-2H7v-3zm-2-4h2V7h3V5H5v5zm12 7h-3v2h5v-5h-2v3zM14 5v2h3v3h2V5h-5z"/></svg>
+  </button>
+
+  <div class="stars">
+    <div class="star"></div><div class="star"></div><div class="star"></div><div class="star"></div>
+    <div class="star"></div><div class="star"></div><div class="star"></div><div class="star"></div>
+  </div>
+  <div class="moon"></div>
+  <div class="moon-reflection"></div>
+
+  <div class="waves">
+    <div class="wave">
+      <svg viewBox="0 0 1440 320" preserveAspectRatio="none">
+        <path class="wave-path" d="M0,224 C240,100,480,280,720,200 C960,120,1200,260,1440,180 L1440,320 L0,320 Z"></path>
+      </svg>
+    </div>
+    <div class="wave">
+      <svg viewBox="0 0 1440 320" preserveAspectRatio="none">
+        <path class="wave-path" d="M0,256 C180,180,420,300,660,230 C900,160,1140,290,1440,220 L1440,320 L0,320 Z"></path>
+      </svg>
+    </div>
+    <div class="wave">
+      <svg viewBox="0 0 1440 320" preserveAspectRatio="none">
+        <path class="wave-path" d="M0,288 C200,220,440,310,680,260 C920,210,1160,300,1440,250 L1440,320 L0,320 Z"></path>
+      </svg>
+    </div>
+  </div>
+
+  <div class="clock-container">
+    <div class="clock-wrapper">
+      <div class="time-display" id="time"></div>
+      <div class="date-display" id="date"></div>
+      <div class="tide-label" id="tide"></div>
+    </div>
+  </div>
+
+  <script src="../../js/clock.js"></script>
+  <script>
+    const timeEl = document.getElementById('time');
+    const dateEl = document.getElementById('date');
+    const tideEl = document.getElementById('tide');
+
+    function getTide(hours) {
+      const cycle = Math.sin(hours / 6.2 * Math.PI);
+      if (cycle > 0.3) return 'High Tide';
+      if (cycle < -0.3) return 'Low Tide';
+      return cycle > 0 ? 'Rising' : 'Falling';
+    }
+
+    const clock = new DigitalClock(timeEl, {
+      showSeconds: false,
+      use24Hour: true,
+      onTick(data, now) {
+        timeEl.innerHTML = `${data.hours}<span class="separator">:</span>${data.minutes}`;
+        dateEl.textContent = `${data.date.dayOfWeek}  ${data.date.month}.${data.date.day}`;
+        tideEl.textContent = getTide(now.getHours() + now.getMinutes() / 60);
+      }
+    });
+
+    clock.start();
+  </script>
+</body>
+</html>

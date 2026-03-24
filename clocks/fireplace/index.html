@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FIREPLACE Clock - Web7 Clock</title>
+  <meta name="description" content="焚き火をイメージしたネイチャーデジタル時計。揺れる炎と舞う火の粉の癒しデザイン。">
+  <link rel="canonical" href="https://clock.web7.tokyo/clocks/fireplace/">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../css/common.css">
+  <style>
+    body {
+      background: #0f0804;
+    }
+
+    .clock-container {
+      background: radial-gradient(ellipse at 50% 80%, #1a0e05 0%, #0f0804 60%);
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Fire glow on bottom */
+    .fire-glow {
+      position: fixed;
+      bottom: -10%;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 80%;
+      height: 50%;
+      background: radial-gradient(ellipse at center bottom, rgba(255, 120, 20, 0.08) 0%, transparent 70%);
+      pointer-events: none;
+      z-index: 0;
+      animation: glowPulse 3s ease-in-out infinite alternate;
+    }
+
+    @keyframes glowPulse {
+      0% { opacity: 0.6; transform: translateX(-50%) scale(1); }
+      100% { opacity: 1; transform: translateX(-50%) scale(1.05); }
+    }
+
+    /* Flame canvas */
+    canvas#flames {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 40%;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    /* Sparks */
+    .spark {
+      position: fixed;
+      width: 3px;
+      height: 3px;
+      background: #ffaa33;
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 2;
+      animation: sparkFloat linear infinite;
+      box-shadow: 0 0 4px #ff8800;
+    }
+
+    .spark:nth-child(1) { left: 42%; animation-duration: 4s; animation-delay: 0s; }
+    .spark:nth-child(2) { left: 48%; animation-duration: 5s; animation-delay: -1s; width: 2px; height: 2px; }
+    .spark:nth-child(3) { left: 52%; animation-duration: 3.5s; animation-delay: -2s; }
+    .spark:nth-child(4) { left: 45%; animation-duration: 6s; animation-delay: -0.5s; width: 2px; height: 2px; }
+    .spark:nth-child(5) { left: 55%; animation-duration: 4.5s; animation-delay: -3s; }
+    .spark:nth-child(6) { left: 50%; animation-duration: 5.5s; animation-delay: -1.5s; width: 2px; height: 2px; }
+    .spark:nth-child(7) { left: 47%; animation-duration: 3s; animation-delay: -4s; }
+    .spark:nth-child(8) { left: 53%; animation-duration: 7s; animation-delay: -2.5s; width: 2px; height: 2px; }
+
+    @keyframes sparkFloat {
+      0% {
+        bottom: 30%;
+        opacity: 1;
+        transform: translateX(0) scale(1);
+      }
+      50% {
+        opacity: 0.8;
+      }
+      100% {
+        bottom: 90%;
+        opacity: 0;
+        transform: translateX(calc(var(--drift, 20px))) scale(0.3);
+      }
+    }
+
+    .spark:nth-child(1) { --drift: -30px; }
+    .spark:nth-child(2) { --drift: 25px; }
+    .spark:nth-child(3) { --drift: -15px; }
+    .spark:nth-child(4) { --drift: 40px; }
+    .spark:nth-child(5) { --drift: -35px; }
+    .spark:nth-child(6) { --drift: 10px; }
+    .spark:nth-child(7) { --drift: -20px; }
+    .spark:nth-child(8) { --drift: 30px; }
+
+    /* Clock display */
+    .clock-wrapper {
+      position: relative;
+      z-index: 3;
+      text-align: center;
+    }
+
+    .time-display {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(56px, 16vw, 220px);
+      font-weight: 300;
+      color: rgba(255, 210, 160, 0.9);
+      letter-spacing: 0.02em;
+      line-height: 1;
+      text-shadow:
+        0 0 20px rgba(255, 140, 40, 0.2),
+        0 0 50px rgba(255, 100, 20, 0.1);
+      animation: fireTextFlicker 2s ease-in-out infinite alternate;
+    }
+
+    @keyframes fireTextFlicker {
+      0%, 100% {
+        text-shadow:
+          0 0 20px rgba(255, 140, 40, 0.2),
+          0 0 50px rgba(255, 100, 20, 0.1);
+      }
+      33% {
+        text-shadow:
+          0 0 25px rgba(255, 140, 40, 0.25),
+          0 0 60px rgba(255, 100, 20, 0.12);
+      }
+      66% {
+        text-shadow:
+          0 0 18px rgba(255, 140, 40, 0.18),
+          0 0 45px rgba(255, 100, 20, 0.08);
+      }
+    }
+
+    .separator {
+      opacity: 0.4;
+    }
+
+    .date-display {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(13px, 2.2vw, 22px);
+      font-weight: 400;
+      color: rgba(255, 180, 120, 0.3);
+      letter-spacing: 0.25em;
+      margin-top: 20px;
+    }
+
+    .temp-display {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(10px, 1.5vw, 14px);
+      color: rgba(255, 160, 100, 0.2);
+      letter-spacing: 0.3em;
+      margin-top: 12px;
+    }
+
+    .back-link { color: rgba(255, 160, 100, 0.2); }
+    .back-link:hover { color: rgba(255, 160, 100, 0.5); }
+    .fullscreen-btn {
+      background: rgba(255, 120, 40, 0.05);
+      border-color: rgba(255, 120, 40, 0.12);
+      color: rgba(255, 160, 100, 0.3);
+    }
+  </style>
+</head>
+<body>
+  <a href="../../" class="back-link">← COLLECTION</a>
+  <button class="fullscreen-btn" onclick="toggleFullscreen()" aria-label="Toggle fullscreen">
+    <svg viewBox="0 0 24 24"><path d="M7 14H5v5h5v-2H7v-3zm-2-4h2V7h3V5H5v5zm12 7h-3v2h5v-5h-2v3zM14 5v2h3v3h2V5h-5z"/></svg>
+  </button>
+
+  <div class="fire-glow"></div>
+  <div class="spark"></div><div class="spark"></div><div class="spark"></div><div class="spark"></div>
+  <div class="spark"></div><div class="spark"></div><div class="spark"></div><div class="spark"></div>
+  <canvas id="flames"></canvas>
+
+  <div class="clock-container">
+    <div class="clock-wrapper">
+      <div class="time-display" id="time"></div>
+      <div class="date-display" id="date"></div>
+      <div class="temp-display" id="ambient"></div>
+    </div>
+  </div>
+
+  <script src="../../js/clock.js"></script>
+  <script>
+    // Flame rendering
+    const canvas = document.getElementById('flames');
+    const ctx = canvas.getContext('2d');
+
+    function resizeCanvas() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight * 0.4;
+    }
+    resizeCanvas();
+    window.addEventListener('resize', resizeCanvas);
+
+    const particles = [];
+    const PARTICLE_COUNT = 60;
+
+    for (let i = 0; i < PARTICLE_COUNT; i++) {
+      particles.push({
+        x: canvas.width * 0.4 + Math.random() * canvas.width * 0.2,
+        y: canvas.height,
+        vx: (Math.random() - 0.5) * 1,
+        vy: -Math.random() * 3 - 1,
+        life: Math.random(),
+        maxLife: 0.6 + Math.random() * 0.4,
+        size: Math.random() * 20 + 10,
+      });
+    }
+
+    function drawFlames() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      for (const p of particles) {
+        p.x += p.vx + Math.sin(Date.now() / 500 + p.life * 10) * 0.5;
+        p.y += p.vy;
+        p.life += 0.008;
+
+        if (p.life >= p.maxLife) {
+          p.x = canvas.width * 0.4 + Math.random() * canvas.width * 0.2;
+          p.y = canvas.height;
+          p.life = 0;
+          p.vx = (Math.random() - 0.5) * 1;
+          p.vy = -Math.random() * 3 - 1;
+        }
+
+        const progress = p.life / p.maxLife;
+        const alpha = Math.sin(progress * Math.PI) * 0.12;
+        const r = 255;
+        const g = Math.floor(100 + (1 - progress) * 100);
+        const b = Math.floor(20 * (1 - progress));
+
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.size * (1 - progress * 0.5), 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(${r}, ${g}, ${b}, ${alpha})`;
+        ctx.fill();
+      }
+
+      requestAnimationFrame(drawFlames);
+    }
+
+    drawFlames();
+
+    // Clock
+    const timeEl = document.getElementById('time');
+    const dateEl = document.getElementById('date');
+    const ambientEl = document.getElementById('ambient');
+
+    const clock = new DigitalClock(timeEl, {
+      showSeconds: false,
+      use24Hour: true,
+      onTick(data) {
+        timeEl.innerHTML = `${data.hours}<span class="separator">:</span>${data.minutes}`;
+        dateEl.textContent = `${data.date.dayOfWeek}  ${data.date.month}.${data.date.day}.${data.date.year}`;
+      }
+    });
+
+    clock.start();
+  </script>
+</body>
+</html>

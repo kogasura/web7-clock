@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FOREST Clock - Web7 Clock</title>
+  <meta name="description" content="深い森をイメージしたネイチャーデジタル時計。木漏れ日と霧のパーティクルが漂う癒しのデザイン。">
+  <link rel="canonical" href="https://clock.web7.tokyo/clocks/forest/">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../css/common.css">
+  <style>
+    body {
+      background: #0a1a0a;
+    }
+
+    .clock-container {
+      background: linear-gradient(180deg, #0a1a0a 0%, #0d2610 30%, #122a14 60%, #0a1a0a 100%);
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Fog particles */
+    .fog {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .fog-layer {
+      position: absolute;
+      width: 200%;
+      height: 100%;
+      background: repeating-linear-gradient(
+        90deg,
+        transparent,
+        rgba(144, 200, 130, 0.015) 20%,
+        transparent 40%
+      );
+      animation: fogDrift 30s linear infinite;
+    }
+
+    .fog-layer:nth-child(2) {
+      animation-duration: 45s;
+      animation-direction: reverse;
+      opacity: 0.7;
+    }
+
+    .fog-layer:nth-child(3) {
+      animation-duration: 60s;
+      opacity: 0.5;
+      background: repeating-linear-gradient(
+        90deg,
+        transparent,
+        rgba(180, 220, 160, 0.02) 15%,
+        transparent 30%
+      );
+    }
+
+    @keyframes fogDrift {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+
+    /* Sunbeams */
+    .sunbeams {
+      position: fixed;
+      top: -20%;
+      left: 30%;
+      width: 40%;
+      height: 120%;
+      background: linear-gradient(
+        180deg,
+        rgba(200, 230, 130, 0.06) 0%,
+        rgba(200, 230, 130, 0.02) 40%,
+        transparent 70%
+      );
+      transform: rotate(-15deg);
+      pointer-events: none;
+      z-index: 0;
+      animation: sunbeamPulse 8s ease-in-out infinite alternate;
+    }
+
+    .sunbeams::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 30%;
+      width: 30%;
+      height: 100%;
+      background: linear-gradient(
+        180deg,
+        rgba(220, 240, 150, 0.04) 0%,
+        transparent 50%
+      );
+      transform: rotate(8deg);
+    }
+
+    @keyframes sunbeamPulse {
+      0% { opacity: 0.6; }
+      100% { opacity: 1; }
+    }
+
+    /* Floating leaves */
+    .leaf {
+      position: fixed;
+      width: 8px;
+      height: 8px;
+      background: rgba(100, 160, 80, 0.3);
+      border-radius: 0 50% 50% 50%;
+      pointer-events: none;
+      z-index: 1;
+      animation: leafFall linear infinite;
+    }
+
+    .leaf:nth-child(1) { left: 15%; animation-duration: 18s; animation-delay: 0s; width: 6px; height: 6px; }
+    .leaf:nth-child(2) { left: 35%; animation-duration: 22s; animation-delay: -5s; width: 10px; height: 10px; opacity: 0.5; }
+    .leaf:nth-child(3) { left: 55%; animation-duration: 25s; animation-delay: -10s; }
+    .leaf:nth-child(4) { left: 75%; animation-duration: 20s; animation-delay: -3s; width: 7px; height: 7px; }
+    .leaf:nth-child(5) { left: 90%; animation-duration: 28s; animation-delay: -15s; opacity: 0.4; }
+
+    @keyframes leafFall {
+      0% { top: -5%; transform: rotate(0deg) translateX(0); opacity: 0; }
+      10% { opacity: 0.6; }
+      90% { opacity: 0.4; }
+      100% { top: 105%; transform: rotate(720deg) translateX(80px); opacity: 0; }
+    }
+
+    /* Clock display */
+    .clock-wrapper {
+      position: relative;
+      z-index: 2;
+      text-align: center;
+    }
+
+    .time-display {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(56px, 16vw, 220px);
+      font-weight: 300;
+      color: rgba(200, 230, 170, 0.85);
+      letter-spacing: 0.02em;
+      line-height: 1;
+      text-shadow:
+        0 0 30px rgba(100, 180, 80, 0.15),
+        0 0 60px rgba(80, 140, 60, 0.08);
+    }
+
+    .separator {
+      opacity: 0.4;
+    }
+
+    .date-display {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(13px, 2.2vw, 22px);
+      font-weight: 400;
+      color: rgba(160, 200, 140, 0.35);
+      letter-spacing: 0.25em;
+      margin-top: 20px;
+      text-transform: uppercase;
+    }
+
+    .season-label {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(10px, 1.5vw, 14px);
+      color: rgba(140, 180, 120, 0.25);
+      letter-spacing: 0.4em;
+      margin-top: 12px;
+      text-transform: uppercase;
+    }
+
+    .back-link { color: rgba(140, 180, 120, 0.25); }
+    .back-link:hover { color: rgba(140, 180, 120, 0.5); }
+    .fullscreen-btn {
+      background: rgba(100, 160, 80, 0.05);
+      border-color: rgba(100, 160, 80, 0.12);
+      color: rgba(140, 180, 120, 0.3);
+    }
+  </style>
+</head>
+<body>
+  <a href="../../" class="back-link">← COLLECTION</a>
+  <button class="fullscreen-btn" onclick="toggleFullscreen()" aria-label="Toggle fullscreen">
+    <svg viewBox="0 0 24 24"><path d="M7 14H5v5h5v-2H7v-3zm-2-4h2V7h3V5H5v5zm12 7h-3v2h5v-5h-2v3zM14 5v2h3v3h2V5h-5z"/></svg>
+  </button>
+
+  <div class="fog">
+    <div class="fog-layer"></div>
+    <div class="fog-layer"></div>
+    <div class="fog-layer"></div>
+  </div>
+  <div class="sunbeams"></div>
+  <div class="leaf"></div>
+  <div class="leaf"></div>
+  <div class="leaf"></div>
+  <div class="leaf"></div>
+  <div class="leaf"></div>
+
+  <div class="clock-container">
+    <div class="clock-wrapper">
+      <div class="time-display" id="time"></div>
+      <div class="date-display" id="date"></div>
+      <div class="season-label" id="season"></div>
+    </div>
+  </div>
+
+  <script src="../../js/clock.js"></script>
+  <script>
+    const timeEl = document.getElementById('time');
+    const dateEl = document.getElementById('date');
+    const seasonEl = document.getElementById('season');
+
+    function getSeason(month) {
+      if (month >= 3 && month <= 5) return 'Spring';
+      if (month >= 6 && month <= 8) return 'Summer';
+      if (month >= 9 && month <= 11) return 'Autumn';
+      return 'Winter';
+    }
+
+    const clock = new DigitalClock(timeEl, {
+      showSeconds: false,
+      use24Hour: true,
+      onTick(data, now) {
+        timeEl.innerHTML = `${data.hours}<span class="separator">:</span>${data.minutes}`;
+        const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+        dateEl.textContent = `${data.date.day} ${months[now.getMonth()]} ${data.date.year}`;
+        seasonEl.textContent = getSeason(now.getMonth() + 1);
+      }
+    });
+
+    clock.start();
+  </script>
+</body>
+</html>
