@@ -7,18 +7,17 @@ use std::path::PathBuf;
 use std::sync::Mutex;
 use tauri::{
     image::Image,
-    menu::{CheckMenuItem, Menu, MenuItem, PredefinedMenuItem, Submenu},
+    menu::{Menu, MenuItem, PredefinedMenuItem, Submenu},
     tray::TrayIconBuilder,
     webview::WebviewWindowBuilder,
     Manager, WebviewUrl, WindowEvent,
 };
-use tauri::utils::config::Color;
 
 #[derive(Debug, Serialize, Deserialize, Clone)]
 struct Settings {
     clock_id: String,
     always_on_top: bool,
-    transparent: bool,
+    opacity: f64,
     width: f64,
     height: f64,
     x: Option<f64>,
@@ -30,7 +29,7 @@ impl Default for Settings {
         Self {
             clock_id: "neon".to_string(),
             always_on_top: true,
-            transparent: true,
+            opacity: 0.0,
             width: 520.0,
             height: 240.0,
             x: None,
@@ -56,6 +55,14 @@ const CLOCKS: &[(&str, &str, bool)] = &[
     ("forest", "FOREST", false),
     ("fireplace", "FIREPLACE", false),
     ("ocean", "OCEAN", false),
+];
+
+const OPACITY_PRESETS: &[(f64, &str)] = &[
+    (0.0, "0% (Transparent)"),
+    (0.25, "25%"),
+    (0.5, "50%"),
+    (0.75, "75%"),
+    (1.0, "100% (Opaque)"),
 ];
 
 fn settings_path() -> PathBuf {
@@ -97,28 +104,38 @@ fn is_transparent_capable(clock_id: &str) -> bool {
         .unwrap_or(false)
 }
 
-fn build_init_script(transparent: bool, clock_id: &str) -> String {
-    let transparent_css = if transparent && is_transparent_capable(clock_id) {
-        "html, body { background: transparent !important; } .clock-container { background: transparent !important; }"
+/// Build JS to apply background opacity
+fn opacity_js(opacity: f64) -> String {
+    if opacity <= 0.0 {
+        "document.body.style.setProperty('background', 'transparent', 'important'); \
+         var cc = document.querySelector('.clock-container'); \
+         if (cc) cc.style.setProperty('background', 'transparent', 'important');".to_string()
     } else {
-        ""
+        format!(
+            "document.body.style.setProperty('background', 'rgba(0,0,0,{o})', 'important'); \
+             var cc = document.querySelector('.clock-container'); \
+             if (cc) cc.style.setProperty('background', 'rgba(0,0,0,{o})', 'important');",
+            o = opacity
+        )
+    }
+}
+
+fn build_init_script(opacity: f64, clock_id: &str) -> String {
+    let apply_opacity = if is_transparent_capable(clock_id) {
+        opacity_js(opacity)
+    } else {
+        String::new()
     };
 
     format!(
         r#"
         function __desktopInit() {{
-            var prev = document.getElementById('desktop-override');
-            if (prev) prev.remove();
-
             var backLink = document.querySelector('.back-link');
             if (backLink) backLink.style.display = 'none';
             var fsBtn = document.querySelector('.fullscreen-btn');
             if (fsBtn) fsBtn.style.display = 'none';
 
-            var style = document.createElement('style');
-            style.id = 'desktop-override';
-            style.textContent = `{transparent_css}`;
-            document.head.appendChild(style);
+            {apply_opacity}
 
             var container = document.querySelector('.clock-container');
             if (container) {{
@@ -151,7 +168,7 @@ fn build_init_script(transparent: bool, clock_id: &str) -> String {
             __desktopInit();
         }}
         "#,
-        transparent_css = transparent_css
+        apply_opacity = apply_opacity
     )
 }
 
@@ -160,7 +177,7 @@ fn build_init_script(transparent: bool, clock_id: &str) -> String {
 fn create_clock_window(
     app: &tauri::AppHandle,
     clock_id: &str,
-    transparent: bool,
+    opacity: f64,
     always_on_top: bool,
     width: f64,
     height: f64,
@@ -169,7 +186,7 @@ fn create_clock_window(
 ) -> Result<tauri::WebviewWindow, Box<dyn std::error::Error>> {
     let url_str = clock_url(clock_id);
     let url = WebviewUrl::App(url_str.into());
-    let init_script = build_init_script(transparent, clock_id);
+    let init_script = build_init_script(opacity, clock_id);
 
     let mut builder = WebviewWindowBuilder::new(app, "main", url)
         .title("Web7 Clock")
@@ -180,8 +197,7 @@ fn create_clock_window(
         .inner_size(width, height)
         .min_inner_size(200.0, 100.0)
         .skip_taskbar(false)
-        .initialization_script(&init_script)
-        .background_color(Color(0, 0, 0, 0));
+        .initialization_script(&init_script);
 
     if let (Some(x), Some(y)) = (x, y) {
         builder = builder.position(x, y);
@@ -196,7 +212,7 @@ fn build_clock_menu(
     app: &tauri::AppHandle,
     current_clock: &str,
     always_on_top: bool,
-    transparent: bool,
+    current_opacity: f64,
 ) -> Result<Menu<tauri::Wry>, Box<dyn std::error::Error>> {
     let mut clock_items: Vec<MenuItem<tauri::Wry>> = Vec::new();
     for (id, name, _) in CLOCKS {
@@ -219,10 +235,30 @@ fn build_clock_menu(
         submenu
     };
 
-    let always_on_top_item =
-        CheckMenuItem::with_id(app, "always_on_top", "Always on Top", true, always_on_top, None::<&str>)?;
-    let transparent_item =
-        CheckMenuItem::with_id(app, "transparent", "Transparent", true, transparent, None::<&str>)?;
+    // Opacity submenu
+    let opacity_submenu = {
+        let submenu = Submenu::with_id(app, "opacity", "Transparency", true)?;
+        for (value, label) in OPACITY_PRESETS {
+            let prefix = if (*value - current_opacity).abs() < 0.01 { "● " } else { "  " };
+            let item = MenuItem::with_id(
+                app,
+                format!("opacity_{}", (*value * 100.0) as u32),
+                format!("{}{}", prefix, label),
+                true,
+                None::<&str>,
+            )?;
+            submenu.append(&item)?;
+        }
+        submenu
+    };
+
+    let always_on_top_item = MenuItem::with_id(
+        app,
+        "always_on_top",
+        if always_on_top { "● Always on Top" } else { "  Always on Top" },
+        true,
+        None::<&str>,
+    )?;
     let separator1 = PredefinedMenuItem::separator(app)?;
     let separator2 = PredefinedMenuItem::separator(app)?;
     let quit_item = MenuItem::with_id(app, "quit", "Quit", true, None::<&str>)?;
@@ -231,9 +267,9 @@ fn build_clock_menu(
         app,
         &[
             &clock_submenu,
+            &opacity_submenu,
             &separator1,
             &always_on_top_item,
-            &transparent_item,
             &separator2,
             &quit_item,
         ],
@@ -266,32 +302,37 @@ fn handle_menu_action(app: &tauri::AppHandle, menu_id: &str) {
 
             let clock_id = s.clock_id.clone();
             let aot = s.always_on_top;
-            let trans = s.transparent;
+            let opacity = s.opacity;
             drop(s);
 
             if let Some(window) = app.get_webview_window("main") {
                 window.set_always_on_top(aot).ok();
             }
-            rebuild_tray(app, &clock_id, aot, trans);
+            rebuild_tray(app, &clock_id, aot, opacity);
             return;
         }
 
-        if menu_id_owned == "transparent" {
-            let state = app.state::<AppState>();
-            let mut s = state.settings.lock().unwrap();
-            s.transparent = !s.transparent;
-            save_settings(&s);
+        // Handle opacity presets
+        if let Some(pct) = menu_id_owned.strip_prefix("opacity_") {
+            if let Ok(pct_val) = pct.parse::<u32>() {
+                let new_opacity = pct_val as f64 / 100.0;
+                let state = app.state::<AppState>();
+                let mut s = state.settings.lock().unwrap();
+                s.opacity = new_opacity;
+                save_settings(&s);
 
-            let clock_id = s.clock_id.clone();
-            let trans = s.transparent;
-            let aot = s.always_on_top;
-            drop(s);
+                let clock_id = s.clock_id.clone();
+                let aot = s.always_on_top;
+                drop(s);
 
-            if let Some(window) = app.get_webview_window("main") {
-                let js = build_init_script(trans, &clock_id);
-                window.eval(&js).ok();
+                if let Some(window) = app.get_webview_window("main") {
+                    if is_transparent_capable(&clock_id) {
+                        let js = opacity_js(new_opacity);
+                        window.eval(&js).ok();
+                    }
+                }
+                rebuild_tray(app, &clock_id, aot, new_opacity);
             }
-            rebuild_tray(app, &clock_id, aot, trans);
             return;
         }
 
@@ -305,7 +346,7 @@ fn handle_menu_action(app: &tauri::AppHandle, menu_id: &str) {
             s.clock_id = clock_id.to_string();
             save_settings(&s);
 
-            let transparent = s.transparent;
+            let opacity = s.opacity;
             let aot = s.always_on_top;
             let cid = clock_id.to_string();
             drop(s);
@@ -314,7 +355,7 @@ fn handle_menu_action(app: &tauri::AppHandle, menu_id: &str) {
                 let js = format!("window.location.href = '/clocks/{}/index.html'", cid);
                 window.eval(&js).ok();
             }
-            rebuild_tray(app, &cid, aot, transparent);
+            rebuild_tray(app, &cid, aot, opacity);
         }
     });
 }
@@ -331,10 +372,10 @@ fn show_context_menu(window: tauri::WebviewWindow, state: tauri::State<'_, AppSt
     let s = state.settings.lock().unwrap();
     let clock_id = s.clock_id.clone();
     let aot = s.always_on_top;
-    let trans = s.transparent;
+    let opacity = s.opacity;
     drop(s);
 
-    if let Ok(menu) = build_clock_menu(window.app_handle(), &clock_id, aot, trans) {
+    if let Ok(menu) = build_clock_menu(window.app_handle(), &clock_id, aot, opacity) {
         window.popup_menu(&menu).ok();
     }
 }
@@ -345,7 +386,7 @@ fn main() {
     let settings = load_settings();
     let initial_clock = settings.clock_id.clone();
     let initial_always_on_top = settings.always_on_top;
-    let initial_transparent = settings.transparent;
+    let initial_opacity = settings.opacity;
     let initial_width = settings.width;
     let initial_height = settings.height;
     let initial_x = settings.x;
@@ -364,7 +405,7 @@ fn main() {
             create_clock_window(
                 app.handle(),
                 &initial_clock,
-                initial_transparent,
+                initial_opacity,
                 initial_always_on_top,
                 initial_width,
                 initial_height,
@@ -373,7 +414,7 @@ fn main() {
             )?;
 
             let app_handle = app.handle().clone();
-            build_tray(&app_handle, &initial_clock, initial_always_on_top, initial_transparent)?;
+            build_tray(&app_handle, &initial_clock, initial_always_on_top, initial_opacity)?;
 
             Ok(())
         })
@@ -408,9 +449,9 @@ fn build_tray(
     app: &tauri::AppHandle,
     current_clock: &str,
     always_on_top: bool,
-    transparent: bool,
+    opacity: f64,
 ) -> Result<(), Box<dyn std::error::Error>> {
-    let menu = build_clock_menu(app, current_clock, always_on_top, transparent)?;
+    let menu = build_clock_menu(app, current_clock, always_on_top, opacity)?;
 
     let icon_bytes = include_bytes!("../icons/icon.png");
     let icon = Image::from_bytes(icon_bytes)?;
@@ -428,8 +469,7 @@ fn build_tray(
     Ok(())
 }
 
-fn rebuild_tray(app: &tauri::AppHandle, current_clock: &str, always_on_top: bool, transparent: bool) {
-    // Remove old tray, then create new one
+fn rebuild_tray(app: &tauri::AppHandle, current_clock: &str, always_on_top: bool, opacity: f64) {
     app.remove_tray_by_id(TRAY_ID);
-    build_tray(app, current_clock, always_on_top, transparent).ok();
+    build_tray(app, current_clock, always_on_top, opacity).ok();
 }
