@@ -1,7 +1,7 @@
 {
   "$schema": "https://raw.githubusercontent.com/nicklasmoeller/tauri-v2-schema/main/schema.json",
   "productName": "Web7 Clock",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "identifier": "tokyo.web7.clock",
   "build": {
     "frontendDist": "../dist",
