@@ -17,6 +17,7 @@ use tauri::{
 struct Settings {
     clock_id: String,
     always_on_top: bool,
+    #[serde(default)]
     opacity: f64,
     width: f64,
     height: f64,
@@ -352,8 +353,19 @@ fn handle_menu_action(app: &tauri::AppHandle, menu_id: &str) {
             drop(s);
 
             if let Some(window) = app.get_webview_window("main") {
-                let js = format!("window.location.href = '/clocks/{}/index.html'", cid);
-                window.eval(&js).ok();
+                let nav_js = format!("window.location.href = '/clocks/{}/index.html'", cid);
+                window.eval(&nav_js).ok();
+
+                // Re-apply opacity after navigation
+                if is_transparent_capable(&cid) {
+                    let win = window.clone();
+                    let op = opacity;
+                    std::thread::spawn(move || {
+                        std::thread::sleep(std::time::Duration::from_millis(500));
+                        let js = opacity_js(op);
+                        win.eval(&js).ok();
+                    });
+                }
             }
             rebuild_tray(app, &cid, aot, opacity);
         }
