@@ -277,7 +277,6 @@
   <script>
     const cards = { h1: document.getElementById('h1'), h2: document.getElementById('h2'), m1: document.getElementById('m1'), m2: document.getElementById('m2'), s1: document.getElementById('s1'), s2: document.getElementById('s2') };
     const dateEl = document.getElementById('date');
-    let prev = {};
 
     function flipCard(card, newVal) {
       const top = card.querySelector('.top span');
@@ -301,25 +300,24 @@
       flipBottomEl.addEventListener('animationend', onAnimEnd);
     }
 
-    function tick() {
-      const now = new Date();
-      const h = String(now.getHours()).padStart(2, '0');
-      const m = String(now.getMinutes()).padStart(2, '0');
-      const s = String(now.getSeconds()).padStart(2, '0');
+    // 共通の DigitalClock を使う（独自の setInterval だと 24H/12H 切替と
+    // AM/PM 表示が他デザインと揃わないため）
+    const clock = new DigitalClock(null, {
+      showSeconds: true,
+      use24Hour: true,
+      onTick(data) {
+        flipCard(cards.h1, data.hours[0]);
+        flipCard(cards.h2, data.hours[1]);
+        flipCard(cards.m1, data.minutes[0]);
+        flipCard(cards.m2, data.minutes[1]);
+        flipCard(cards.s1, data.seconds[0]);
+        flipCard(cards.s2, data.seconds[1]);
 
-      flipCard(cards.h1, h[0]);
-      flipCard(cards.h2, h[1]);
-      flipCard(cards.m1, m[0]);
-      flipCard(cards.m2, m[1]);
-      flipCard(cards.s1, s[0]);
-      flipCard(cards.s2, s[1]);
+        dateEl.textContent = `${data.date.year}.${data.date.month}.${data.date.day}  ${data.date.dayOfWeek}`;
+      }
+    });
 
-      const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
-      dateEl.textContent = `${now.getFullYear()}.${String(now.getMonth()+1).padStart(2,'0')}.${String(now.getDate()).padStart(2,'0')}  ${days[now.getDay()]}`;
-    }
-
-    tick();
-    setInterval(tick, 1000);
+    clock.start();
   </script>
   <script src="../../js/pwa.js"></script>
 </body>

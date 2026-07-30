@@ -84,6 +84,51 @@ body:hover .fullscreen-btn {
   fill: currentColor;
 }
 
+/* 24H / 12H 切り替え（フルスクリーンボタンの隣。ホバーで表示） */
+.format-toggle {
+  position: fixed;
+  top: 16px;
+  right: 64px;
+  z-index: 100;
+  height: 40px;
+  min-width: 44px;
+  padding: 0 10px;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 8px;
+  color: rgba(255, 255, 255, 0.6);
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  opacity: 0;
+}
+
+.format-toggle:hover {
+  background: rgba(255, 255, 255, 0.2);
+  color: rgba(255, 255, 255, 0.9);
+}
+
+body:hover .format-toggle {
+  opacity: 1;
+}
+
+/* 12時間表記のときだけ出る AM / PM。配色は各デザインの文字色を継承する */
+.meridiem-display {
+  margin-top: 12px;
+  font-size: clamp(11px, 1.6vw, 16px);
+  font-weight: 400;
+  letter-spacing: 0.35em;
+  text-indent: 0.35em;
+  opacity: 0.45;
+}
+
+.meridiem-display:empty {
+  display: none;
+}
+
 /* Back to top link */
 .back-link {
   position: fixed;

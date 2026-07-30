@@ -42,7 +42,7 @@ const FROZEN = new Date('2026-01-15T10:09:36').getTime();
 function overlayCss() {
   return `
     /* 画面上のUIはOGP画像に写さない */
-    .back-link, .fullscreen-btn, .design-switcher, .noscript-message {
+    .back-link, .fullscreen-btn, .format-toggle, .design-switcher, .noscript-message {
       display: none !important;
     }
     #__ogp {

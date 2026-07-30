@@ -265,6 +265,8 @@
 
     const clock = new DigitalClock(timeEl, {
       showSeconds: false,
+      // ミリ秒を表示するため毎フレーム描画する
+      precision: 'frame',
       use24Hour: true,
       onTick(data) {
         timeEl.innerHTML = `${data.hours}<span class="separator">:</span>${data.minutes}`;

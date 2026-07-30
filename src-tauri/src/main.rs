@@ -138,6 +138,10 @@ fn build_init_script(opacity: f64, clock_id: &str) -> String {
             // デザイン切替はWeb版向けのバー。デスクトップ版は右クリックメニューを使う
             var switcher = document.querySelector('.design-switcher');
             if (switcher) switcher.style.display = 'none';
+            // 24H/12H ボタンもWeb版向け。DOMContentLoaded 時点では
+            // clock.start() が生成済みなのでここで消せる
+            var fmt = document.querySelector('.format-toggle');
+            if (fmt) fmt.style.display = 'none';
 
             {apply_opacity}
 

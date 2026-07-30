@@ -14,7 +14,7 @@
  * ★ css/js/fonts/画像を変更したら VERSION を上げること。
  *   上げ忘れると古いアセットが配信され続ける。
  */
-const VERSION = 'v1';
+const VERSION = 'v2';
 const STATIC_CACHE = `web7clock-static-${VERSION}`;
 const RUNTIME_CACHE = `web7clock-runtime-${VERSION}`;
 const OFFLINE_FALLBACK = '/';
