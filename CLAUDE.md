@@ -30,7 +30,14 @@ web7-clock/
 │   └── common.css      # 共通スタイル
 ├── js/
 │   └── clock.js        # 共通時計ロジック（DigitalClock クラス）
-├── images/             # OGP画像等
+├── images/             # OGP画像・favicon
+│   ├── og.png          # OGP画像 1200x630（Web版専用・dist へは非同梱）
+│   ├── favicon.svg     # ファビコン
+│   └── apple-touch-icon.png
+├── robots.txt          # クロール許可 + sitemap 参照（Web版のみ）
+├── sitemap.xml         # 13URL（トップ + 時計12ページ）（Web版のみ）
+├── llms.txt            # AIO向け構造化サマリ（Web版のみ）
+├── .htaccess           # gzip圧縮・キャッシュ制御（Web版のみ）
 ├── package.json        # Tauri CLI 依存
 ├── scripts/
 │   └── copy-assets.js  # ビルド時に dist/ へWebアセットをコピー
@@ -88,6 +95,32 @@ npx tauri build
 ### 設定ファイル
 `%APPDATA%/web7-clock/settings.json` に自動保存
 
+## SEO / AIO 対策
+
+### 構成
+- **メタ情報**: 全13ページ（トップ + 時計12種）に title / description / canonical / OGP / Twitter Card を個別設定
+- **OGP画像**: `images/og.png`（1200x630）を全ページ共通で使用。`summary_large_image`
+- **構造化データ（JSON-LD）**:
+  - トップ: `Organization` / `WebSite` / `WebApplication` / `SoftwareApplication`（アプリ版）/ `ItemList`（12デザイン）/ `FAQPage`
+  - 各時計ページ: `WebApplication` / `BreadcrumbList`
+- **クロール制御**: `robots.txt` で検索エンジンとAIクローラ（GPTBot, ClaudeBot, PerplexityBot 等）を明示的に許可、`sitemap.xml` を参照
+- **AIO**: `llms.txt` にサイト概要・12デザインの説明・アプリ版の機能・FAQ をプレーンテキストで記述
+- **本文コンテンツ**: トップページに特徴 / 使い方 / 用途 / FAQ セクションを配置（AIに抽出させるための本文を確保）
+- **時計ページの本文**: 画面は時計のみのため、`.visually-hidden` の h1 と説明文でページ内容を伝える。JS無効時は `noscript` で案内
+
+### 時計デザインを追加・変更したときの更新箇所
+新しい時計を追加した場合は、`clocks/<id>/` の作成だけでなく以下も必ず更新する:
+1. `index.html` — カード追加 + JSON-LD の `ItemList`（`numberOfItems` と `itemListElement`）
+2. `sitemap.xml` — URL 追加 + `lastmod` 更新
+3. `llms.txt` — デザイン一覧に追記
+4. `clocks/<id>/index.html` — 他ページと同じメタ情報一式（title / description / canonical / OGP / JSON-LD）と、`.visually-hidden` の h1・説明文
+5. `src-tauri/src/main.rs` の `CLOCKS`、`scripts/copy-assets.js` の `TRANSPARENT_CLOCKS`（透過対応する場合）
+
+### 未対応・任意項目
+- HTTP → HTTPS 転送はロリポップのコントロールパネル側で設定する（`.htaccess` には入れていない）
+- Google Search Console / Bing Webmaster Tools への `sitemap.xml` 登録は手動
+- 時計ページごとの個別OGP画像は未作成（共通の `og.png` を使用）
+
 ## 開発フロー
 - GitHub Flow（main + feature ブランチ）
 - feature ブランチから PR 作成時にレビューエージェントがレビュー
@@ -100,6 +133,7 @@ npx tauri build
 - **重要**: `ai-services/` 以外のフォルダは絶対に触らない
 - デプロイは必ず `~/web/ai-services/clock/` 配下のみに対して行う
 - デプロイ対象外: `src-tauri/`, `node_modules/`, `dist/`, `scripts/`, `package.json`, `package-lock.json`
+- デプロイ対象に含める: `robots.txt`, `sitemap.xml`, `llms.txt`, `.htaccess`, `images/`（SEO/AIO用。ドットファイルなので rsync 等で漏れやすい点に注意）
 
 ## デスクトップアプリ リリース手順
 1. バージョン番号を更新: `tauri.conf.json`, `Cargo.toml`, `package.json`

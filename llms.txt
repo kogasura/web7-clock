@@ -1,0 +1,70 @@
+# Web7 Clock
+
+> ブラウザで開くだけで使える無料のデジタル時計コレクション。12種類のデザインから選び、フルスクリーンにして常時表示（サブモニター・作業用BGV・配信画面・店頭ディスプレイなど）に使えます。インストール・会員登録・ログインは不要。Windows 向けのデスクトップアプリ版もあり、Web版と同じ12デザインを常時最前面のボーダーレスウィンドウで表示できます。
+
+- サイトURL: https://clock.web7.tokyo/
+- 提供元: WeBanana.SP (https://web7.tokyo)
+- 料金: 完全無料（課金・会員登録なし）
+- 対応環境: モダンブラウザ全般（Chrome / Edge / Safari / Firefox）、スマートフォン・タブレット含む
+- 表示時刻: 閲覧している端末のシステム時刻（ローカルタイムゾーン）を使用。サーバー時刻の取得やNTP同期は行いません
+- 時刻表示形式: 24時間表記、年月日と曜日を併記
+- 技術: HTML5 / CSS3 / Vanilla JavaScript（フレームワーク不使用）。デスクトップ版は Tauri v2
+- ソースコード: https://github.com/kogasura/web7-clock
+
+## 使い方
+
+1. https://clock.web7.tokyo/ を開く
+2. 一覧から好きなデザインのカードをクリックして時計ページへ移動する
+3. 画面右上のボタン（マウスを乗せると表示）でフルスクリーンに切り替える
+4. 左上の「← COLLECTION」から一覧に戻る
+
+各時計ページは単体のURLを持つので、ブックマークやキオスク端末の起動URLに直接指定できます。
+
+## 時計デザイン一覧（全12種類）
+
+- [NEON](https://clock.web7.tokyo/clocks/neon/): ネオンサイン風のグロー（発光）エフェクト。暗い部屋でも視認しやすい定番デザイン
+- [MINIMAL](https://clock.web7.tokyo/clocks/minimal/): 洗練されたミニマルデザイン。12種類の中で唯一のライトテーマで、OSのダークモード設定に追従して暗い配色にも切り替わる
+- [RETRO LED](https://clock.web7.tokyo/clocks/retro/): レトロなLEDセグメントディスプレイ風。電光掲示板のような表示
+- [MATRIX](https://clock.web7.tokyo/clocks/matrix/): 緑のコードレイン（降り注ぐ文字）アニメーションと時計の組み合わせ
+- [GRADIENT](https://clock.web7.tokyo/clocks/gradient/): 時間帯に応じて背景のグラデーションが変化する
+- [FLIP](https://clock.web7.tokyo/clocks/flip/): パタパタ時計（フリップクロック）風のめくれるアニメーション
+- [CYBER](https://clock.web7.tokyo/clocks/cyber/): サイバーパンク風のグリッチエフェクト
+- [TERMINAL](https://clock.web7.tokyo/clocks/terminal/): ターミナル / コマンドライン風の等幅表示
+- [GLASS](https://clock.web7.tokyo/clocks/glass/): グラスモーフィズム（すりガラス）と浮遊する背景
+- [FOREST](https://clock.web7.tokyo/clocks/forest/): 深い森の木漏れ日と霧。自然系の癒しデザイン
+- [FIREPLACE](https://clock.web7.tokyo/clocks/fireplace/): 揺れる炎と舞う火の粉。暖炉の映像のような自然系デザイン
+- [OCEAN](https://clock.web7.tokyo/clocks/ocean/): 月夜の海と波のアニメーション。自然系の癒しデザイン
+
+## Windows デスクトップアプリ版
+
+- ダウンロード: https://clock.web7.tokyo/#download （配布元は GitHub Releases: https://github.com/kogasura/web7-clock/releases）
+- 形式: NSIS インストーラー (.exe) と MSI パッケージ (.msi)
+- 対応OS: Windows（WebView2 使用）
+- 機能:
+  - タイトルバーのないボーダーレスウィンドウ
+  - 常時最前面表示（右クリックメニューでON/OFF切替）
+  - ウィンドウのドラッグ移動と自由なリサイズ
+  - 右クリックメニューから12デザインを切替
+  - 背景の透明度を 0% / 25% / 50% / 75% / 100% から選択（NEON・MINIMAL・RETRO・MATRIX・GRADIENT・FLIP・CYBER・TERMINAL・GLASS の9デザインが透過対応。FOREST・FIREPLACE・OCEAN は背景画が主役のため非対応）
+  - システムトレイアイコンからの操作
+  - 選択中のデザイン・ウィンドウ位置・サイズ・透明度を自動保存（設定ファイル: %APPDATA%/web7-clock/settings.json）
+- 注意: コード署名を行っていないため、初回起動時に Windows SmartScreen の警告が表示されます。「詳細情報」→「実行」で起動できます
+
+## よくある質問
+
+- **無料ですか？** はい。Web版・デスクトップ版ともに完全無料で、会員登録も不要です。
+- **インストールは必要ですか？** Web版は不要です。ブラウザでURLを開くだけで使えます。常時最前面表示などが必要な場合のみ Windows デスクトップアプリ版を利用してください。
+- **スマートフォンでも使えますか？** 使えます。文字サイズが画面幅に追従するレスポンシブ対応です。ただしフルスクリーンボタンはブラウザのFullscreen APIを使うため、iPhone の Safari では動作しません（Android の Chrome や iPad では動作します）。
+- **オフラインでも動きますか？** 一度読み込んだ後はJavaScriptが端末内で時刻を描画するため動作しますが、Webフォントの読み込みに通信が必要なため、初回アクセスはオンラインで行ってください。
+- **時刻はどこから取得していますか？** 閲覧端末のシステム時刻です。表示精度は端末の時計設定に依存します。厳密な時刻合わせ用途（時報・電波時計の代替）には向きません。
+- **タイムゾーンや12時間表記に変更できますか？** 現在は端末のローカルタイムゾーン・24時間表記に固定です。
+- **アラームやタイマー機能はありますか？** ありません。時刻表示に特化しています。
+- **焼き付き（バーンイン）は心配ないですか？** 常時表示用途では有機ELディスプレイの焼き付きに注意してください。GRADIENT や MATRIX など背景が動くデザインの方がリスクを抑えられます。
+- **商用利用や店頭ディスプレイで使えますか？** ブラウザで表示して使う分には制限していません。ソースコードの再配布・改変については GitHub リポジトリを確認してください。
+
+## リンク
+
+- [トップページ（時計一覧）](https://clock.web7.tokyo/): 12デザインをプレビュー付きで一覧表示
+- [デスクトップアプリのダウンロード](https://clock.web7.tokyo/#download): Windows版インストーラーの入手
+- [GitHub リポジトリ](https://github.com/kogasura/web7-clock): ソースコード・リリース履歴・不具合報告
+- [運営元 web7.tokyo](https://web7.tokyo): 提供元 WeBanana.SP のサイト

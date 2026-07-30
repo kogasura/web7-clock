@@ -3,32 +3,166 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Web7 Clock - デジタル時計コレクション</title>
-  <meta name="description" content="ブラウザで表示するおしゃれなデジタル時計コレクション。ネオン、サイバーパンク、ミニマル、レトロLED等12種類。フルスクリーン対応・常時表示用。無料で利用可能。">
+  <title>デジタル時計 12デザイン - ブラウザで使える無料時計 | Web7 Clock</title>
+  <meta name="description" content="ブラウザで開くだけの無料デジタル時計。ネオン・サイバーパンク・ミニマル・レトロLEDなど12デザインをフルスクリーン表示できます。インストール・会員登録は不要。常時最前面表示できるWindowsアプリ版もあります。">
   <meta name="keywords" content="デジタル時計,ブラウザ時計,オンライン時計,フルスクリーン時計,おしゃれ時計,デスクトップ時計,無料">
   <meta name="author" content="WeBanana.SP">
-  <meta name="robots" content="index, follow">
+  <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1">
   <link rel="canonical" href="https://clock.web7.tokyo/">
-  <meta property="og:title" content="Web7 Clock - おしゃれなデジタル時計コレクション">
-  <meta property="og:description" content="12種類のデザインから選べるブラウザ時計。ネオン、サイバーパンク、フリップ、ターミナル風など。フルスクリーン・常時表示対応。">
+  <meta name="theme-color" content="#0a0a0f">
+  <meta name="format-detection" content="telephone=no">
+  <link rel="icon" href="images/favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+  <meta property="og:title" content="Web7 Clock - ブラウザで使える無料デジタル時計 12デザイン">
+  <meta property="og:description" content="ネオン、サイバーパンク、フリップ、ターミナル風など12デザインから選べるブラウザ時計。フルスクリーン・常時表示対応。インストール不要・無料。">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://clock.web7.tokyo/">
   <meta property="og:site_name" content="Web7 Clock">
   <meta property="og:locale" content="ja_JP">
-  <meta name="twitter:card" content="summary">
-  <meta name="twitter:title" content="Web7 Clock - おしゃれなデジタル時計コレクション">
-  <meta name="twitter:description" content="12種類のデザインから選べるブラウザ時計。フルスクリーン・常時表示対応。">
+  <meta property="og:image" content="https://clock.web7.tokyo/images/og.png">
+  <meta property="og:image:type" content="image/png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Web7 Clock - ブラウザで使える無料デジタル時計 12デザイン">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Web7 Clock - ブラウザで使える無料デジタル時計 12デザイン">
+  <meta name="twitter:description" content="12デザインから選べるブラウザ時計。フルスクリーン・常時表示対応。インストール不要・無料。">
+  <meta name="twitter:image" content="https://clock.web7.tokyo/images/og.png">
+  <meta name="twitter:image:alt" content="Web7 Clock - ブラウザで使える無料デジタル時計 12デザイン">
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
-    "@type": "WebApplication",
-    "name": "Web7 Clock",
-    "description": "ブラウザで表示するおしゃれなデジタル時計コレクション。12種類のデザインから選択可能。",
-    "url": "https://clock.web7.tokyo/",
-    "applicationCategory": "UtilitiesApplication",
-    "operatingSystem": "Any",
-    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "JPY" },
-    "author": { "@type": "Organization", "name": "WeBanana.SP", "url": "https://web7.tokyo" }
+    "@graph": [
+      {
+        "@type": "Organization",
+        "@id": "https://web7.tokyo/#organization",
+        "name": "WeBanana.SP",
+        "url": "https://web7.tokyo"
+      },
+      {
+        "@type": "WebSite",
+        "@id": "https://clock.web7.tokyo/#website",
+        "url": "https://clock.web7.tokyo/",
+        "name": "Web7 Clock",
+        "description": "ブラウザで使える無料デジタル時計コレクション",
+        "inLanguage": "ja",
+        "publisher": { "@id": "https://web7.tokyo/#organization" }
+      },
+      {
+        "@type": "WebApplication",
+        "@id": "https://clock.web7.tokyo/#webapp",
+        "name": "Web7 Clock",
+        "url": "https://clock.web7.tokyo/",
+        "description": "ブラウザで開くだけで使える無料のデジタル時計コレクション。12デザインをフルスクリーンで常時表示できます。インストール・会員登録は不要です。",
+        "applicationCategory": "UtilitiesApplication",
+        "operatingSystem": "Any",
+        "browserRequirements": "JavaScript が有効なモダンブラウザ",
+        "isAccessibleForFree": true,
+        "inLanguage": "ja",
+        "image": "https://clock.web7.tokyo/images/og.png",
+        "screenshot": "https://clock.web7.tokyo/images/og.png",
+        "featureList": [
+          "12種類のデジタル時計デザイン",
+          "ワンクリックでフルスクリーン表示",
+          "端末のローカルタイムゾーンで24時間表記の時刻・日付・曜日を表示",
+          "画面幅に追従するレスポンシブ表示",
+          "インストール・会員登録不要"
+        ],
+        "isPartOf": { "@id": "https://clock.web7.tokyo/#website" },
+        "publisher": { "@id": "https://web7.tokyo/#organization" },
+        "offers": { "@type": "Offer", "price": "0", "priceCurrency": "JPY" }
+      },
+      {
+        "@type": "SoftwareApplication",
+        "@id": "https://clock.web7.tokyo/#desktop-app",
+        "name": "Web7 Clock for Windows",
+        "url": "https://clock.web7.tokyo/#download",
+        "description": "Web版と同じ12デザインを、常時最前面のボーダーレスウィンドウで表示できるWindowsデスクトップアプリ。背景の透過にも対応します。",
+        "applicationCategory": "UtilitiesApplication",
+        "operatingSystem": "Windows",
+        "downloadUrl": "https://github.com/kogasura/web7-clock/releases/latest",
+        "installUrl": "https://clock.web7.tokyo/#download",
+        "isAccessibleForFree": true,
+        "inLanguage": "ja",
+        "featureList": [
+          "常時最前面表示（切替可能）",
+          "タイトルバーのないボーダーレスウィンドウ",
+          "右クリックメニューで12デザインを切替",
+          "背景の透明度を0〜100%で選択（9デザイン対応）",
+          "システムトレイアイコンから操作",
+          "デザイン・位置・サイズ・透明度を自動保存"
+        ],
+        "publisher": { "@id": "https://web7.tokyo/#organization" },
+        "offers": { "@type": "Offer", "price": "0", "priceCurrency": "JPY" }
+      },
+      {
+        "@type": "ItemList",
+        "@id": "https://clock.web7.tokyo/#clock-list",
+        "name": "デジタル時計デザイン一覧",
+        "numberOfItems": 12,
+        "itemListOrder": "https://schema.org/ItemListOrderAscending",
+        "itemListElement": [
+          { "@type": "ListItem", "position": 1, "url": "https://clock.web7.tokyo/clocks/neon/", "name": "NEON - ネオンサイン風グロウエフェクト" },
+          { "@type": "ListItem", "position": 2, "url": "https://clock.web7.tokyo/clocks/minimal/", "name": "MINIMAL - 洗練されたミニマルデザイン" },
+          { "@type": "ListItem", "position": 3, "url": "https://clock.web7.tokyo/clocks/retro/", "name": "RETRO LED - レトロLEDセグメントディスプレイ" },
+          { "@type": "ListItem", "position": 4, "url": "https://clock.web7.tokyo/clocks/matrix/", "name": "MATRIX - マトリックスコードレイン" },
+          { "@type": "ListItem", "position": 5, "url": "https://clock.web7.tokyo/clocks/gradient/", "name": "GRADIENT - 時間で変化するグラデーション背景" },
+          { "@type": "ListItem", "position": 6, "url": "https://clock.web7.tokyo/clocks/flip/", "name": "FLIP - パタパタ時計風フリップアニメーション" },
+          { "@type": "ListItem", "position": 7, "url": "https://clock.web7.tokyo/clocks/cyber/", "name": "CYBER - サイバーパンク／グリッチエフェクト" },
+          { "@type": "ListItem", "position": 8, "url": "https://clock.web7.tokyo/clocks/terminal/", "name": "TERMINAL - ターミナル風コマンドライン時計" },
+          { "@type": "ListItem", "position": 9, "url": "https://clock.web7.tokyo/clocks/glass/", "name": "GLASS - グラスモーフィズム＋浮遊背景" },
+          { "@type": "ListItem", "position": 10, "url": "https://clock.web7.tokyo/clocks/forest/", "name": "FOREST - 深い森の木漏れ日と霧" },
+          { "@type": "ListItem", "position": 11, "url": "https://clock.web7.tokyo/clocks/fireplace/", "name": "FIREPLACE - 揺れる炎と舞う火の粉" },
+          { "@type": "ListItem", "position": 12, "url": "https://clock.web7.tokyo/clocks/ocean/", "name": "OCEAN - 月夜の海と波のアニメーション" }
+        ]
+      },
+      {
+        "@type": "FAQPage",
+        "@id": "https://clock.web7.tokyo/#faq",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "料金はかかりますか？",
+            "acceptedAnswer": { "@type": "Answer", "text": "Web版・Windowsデスクトップアプリ版ともに完全無料です。会員登録やログインも必要ありません。" }
+          },
+          {
+            "@type": "Question",
+            "name": "インストールは必要ですか？",
+            "acceptedAnswer": { "@type": "Answer", "text": "Web版は不要です。ブラウザで clock.web7.tokyo を開くだけで使えます。常時最前面表示や背景の透過が必要な場合のみ、Windowsデスクトップアプリ版をご利用ください。" }
+          },
+          {
+            "@type": "Question",
+            "name": "スマートフォンやタブレットでも使えますか？",
+            "acceptedAnswer": { "@type": "Answer", "text": "使えます。文字サイズが画面幅に追従するレスポンシブ表示です。ただしフルスクリーンボタンはブラウザのFullscreen APIを利用しているため、iPhoneのSafariでは動作しません。AndroidのChromeやiPad、PCでは動作します。" }
+          },
+          {
+            "@type": "Question",
+            "name": "表示される時刻はどこから取得していますか？",
+            "acceptedAnswer": { "@type": "Answer", "text": "閲覧している端末のシステム時刻（ローカルタイムゾーン）です。サーバー時刻の取得やNTP同期は行っていないため、表示精度は端末の時計設定に依存します。厳密な時刻合わせの用途には向きません。" }
+          },
+          {
+            "@type": "Question",
+            "name": "タイムゾーンや12時間表記に変更できますか？",
+            "acceptedAnswer": { "@type": "Answer", "text": "現在は端末のローカルタイムゾーン・24時間表記に固定されています。表示形式の切り替え機能はありません。" }
+          },
+          {
+            "@type": "Question",
+            "name": "アラームやタイマー機能はありますか？",
+            "acceptedAnswer": { "@type": "Answer", "text": "ありません。時刻表示に特化したサービスです。" }
+          },
+          {
+            "@type": "Question",
+            "name": "常時表示させても画面の焼き付きは心配ありませんか？",
+            "acceptedAnswer": { "@type": "Answer", "text": "有機EL（OLED）ディスプレイで長時間表示する場合は焼き付きにご注意ください。GRADIENTやMATRIXのように背景が動き続けるデザインを選ぶと、リスクを抑えられます。" }
+          },
+          {
+            "@type": "Question",
+            "name": "オフラインでも動きますか？",
+            "acceptedAnswer": { "@type": "Answer", "text": "一度読み込んだあとはJavaScriptが端末内で時刻を描画するため動作します。ただしWebフォントの読み込みに通信が必要なため、初回アクセスはオンラインで行ってください。" }
+          }
+        ]
+      }
+    ]
   }
   </script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -70,14 +204,59 @@
       font-weight: 300;
     }
 
+    /* Screen-reader only */
+    .visually-hidden {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      margin: -1px;
+      padding: 0;
+      overflow: hidden;
+      clip-path: inset(50%);
+      white-space: nowrap;
+      border: 0;
+    }
+
+    /* Section heading */
+    .section-title {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      font-family: 'Orbitron', sans-serif;
+      font-size: clamp(17px, 2.6vw, 24px);
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      color: rgba(255, 255, 255, 0.85);
+    }
+
+    .section-title::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: linear-gradient(90deg, rgba(0, 212, 255, 0.35), transparent);
+    }
+
+    .section-count {
+      font-family: 'Inter', sans-serif;
+      font-size: 12px;
+      font-weight: 400;
+      letter-spacing: 0.05em;
+      color: rgba(255, 255, 255, 0.4);
+      white-space: nowrap;
+    }
+
     /* Clock Grid */
+    .clock-section {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
     .clock-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
       gap: 24px;
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 40px 24px 80px;
+      padding: 24px 0 40px;
     }
 
     /* Clock Card */
@@ -148,6 +327,120 @@
     .clock-card.coming-soon .card-title {
       color: rgba(255, 255, 255, 0.3);
       font-size: 14px;
+    }
+
+    /* Text content sections */
+    .content-section {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 56px 24px 0;
+    }
+
+    .content-section p,
+    .content-section li,
+    .content-section dd {
+      font-size: 14px;
+      line-height: 1.85;
+      color: rgba(255, 255, 255, 0.6);
+      font-weight: 300;
+    }
+
+    .feature-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 20px;
+      margin-top: 24px;
+    }
+
+    .feature-card {
+      padding: 22px 24px;
+      border-radius: 12px;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.07);
+    }
+
+    .feature-card h3 {
+      font-size: 15px;
+      font-weight: 600;
+      letter-spacing: 0.03em;
+      color: rgba(255, 255, 255, 0.9);
+      margin-bottom: 10px;
+    }
+
+    .steps {
+      margin-top: 24px;
+      padding-left: 1.4em;
+    }
+
+    .steps li {
+      margin-bottom: 10px;
+    }
+
+    .steps li::marker {
+      color: #00d4ff;
+      font-family: 'Orbitron', sans-serif;
+      font-size: 13px;
+    }
+
+    .note-text {
+      margin-top: 18px;
+      font-size: 13px !important;
+      color: rgba(255, 255, 255, 0.4) !important;
+    }
+
+    .usecase-list {
+      margin-top: 24px;
+      list-style: none;
+    }
+
+    .usecase-list li {
+      padding: 16px 0 16px 18px;
+      border-left: 2px solid rgba(0, 212, 255, 0.25);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .usecase-list li:last-child {
+      border-bottom: none;
+    }
+
+    .usecase-list strong {
+      display: block;
+      font-size: 14px;
+      font-weight: 600;
+      color: rgba(255, 255, 255, 0.88);
+      margin-bottom: 4px;
+    }
+
+    .faq {
+      margin-top: 24px;
+    }
+
+    .faq dt {
+      position: relative;
+      padding: 20px 0 8px 26px;
+      font-size: 15px;
+      font-weight: 500;
+      color: rgba(255, 255, 255, 0.9);
+      border-top: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    .faq dt:first-child {
+      border-top: none;
+      padding-top: 0;
+    }
+
+    .faq dt::before {
+      content: 'Q';
+      position: absolute;
+      left: 0;
+      font-family: 'Orbitron', sans-serif;
+      font-size: 13px;
+      font-weight: 700;
+      color: #00d4ff;
+    }
+
+    .faq dd {
+      padding: 0 0 20px 26px;
     }
 
     /* Download Section */
@@ -265,6 +558,20 @@
       color: rgba(255, 255, 255, 0.6);
     }
 
+    .footer-nav {
+      display: flex;
+      gap: 24px;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-bottom: 18px;
+    }
+
+    .footer-credit {
+      font-size: 13px;
+      color: rgba(255, 255, 255, 0.25);
+      letter-spacing: 0.05em;
+    }
+
     @media (max-width: 480px) {
       .clock-grid {
         grid-template-columns: 1fr;
@@ -274,107 +581,156 @@
 </head>
 <body>
   <header class="header">
-    <h1>WEB7 CLOCK</h1>
-    <p>ブラウザで表示するデジタル時計コレクション — フルスクリーン対応・常時表示用</p>
+    <h1>
+      <span class="brand">WEB7 CLOCK</span>
+      <span class="visually-hidden"> — ブラウザで使える無料デジタル時計 12デザイン</span>
+    </h1>
+    <p>ブラウザで開くだけの無料デジタル時計 — 12デザイン・フルスクリーン対応・常時表示向け</p>
   </header>
 
-  <main class="clock-grid">
-    <a href="clocks/neon/" class="clock-card" id="card-neon">
-      <iframe src="clocks/neon/" loading="lazy" tabindex="-1"></iframe>
-      <div class="overlay">
-        <div class="card-title">NEON</div>
-        <div class="card-desc">ネオンサイン風グロウエフェクト</div>
-      </div>
-    </a>
+  <main>
+  <section id="clocks" class="clock-section">
+    <h2 class="section-title">時計デザイン一覧<span class="section-count">（全12種類）</span></h2>
+    <div class="clock-grid">
+    <a href="clocks/neon/" class="clock-card" id="card-neon" aria-label="NEON — ネオンサイン風グロウエフェクトのデジタル時計を開く">
+        <iframe src="clocks/neon/" loading="lazy" tabindex="-1" title="NEON デジタル時計のプレビュー"></iframe>
+        <div class="overlay">
+          <h3 class="card-title">NEON</h3>
+          <p class="card-desc">ネオンサイン風グロウエフェクト</p>
+        </div>
+      </a>
 
-    <a href="clocks/minimal/" class="clock-card" id="card-minimal">
-      <iframe src="clocks/minimal/" loading="lazy" tabindex="-1"></iframe>
-      <div class="overlay">
-        <div class="card-title">MINIMAL</div>
-        <div class="card-desc">洗練されたミニマルデザイン</div>
-      </div>
-    </a>
+    <a href="clocks/minimal/" class="clock-card" id="card-minimal" aria-label="MINIMAL — 洗練されたミニマルデザインのデジタル時計を開く">
+        <iframe src="clocks/minimal/" loading="lazy" tabindex="-1" title="MINIMAL デジタル時計のプレビュー"></iframe>
+        <div class="overlay">
+          <h3 class="card-title">MINIMAL</h3>
+          <p class="card-desc">洗練されたミニマルデザイン</p>
+        </div>
+      </a>
 
-    <a href="clocks/retro/" class="clock-card" id="card-retro">
-      <iframe src="clocks/retro/" loading="lazy" tabindex="-1"></iframe>
-      <div class="overlay">
-        <div class="card-title">RETRO LED</div>
-        <div class="card-desc">レトロ LED セグメントディスプレイ</div>
-      </div>
-    </a>
+    <a href="clocks/retro/" class="clock-card" id="card-retro" aria-label="RETRO LED — レトロ LED セグメントディスプレイのデジタル時計を開く">
+        <iframe src="clocks/retro/" loading="lazy" tabindex="-1" title="RETRO LED デジタル時計のプレビュー"></iframe>
+        <div class="overlay">
+          <h3 class="card-title">RETRO LED</h3>
+          <p class="card-desc">レトロ LED セグメントディスプレイ</p>
+        </div>
+      </a>
 
-    <a href="clocks/matrix/" class="clock-card" id="card-matrix">
-      <iframe src="clocks/matrix/" loading="lazy" tabindex="-1"></iframe>
-      <div class="overlay">
-        <div class="card-title">MATRIX</div>
-        <div class="card-desc">マトリックスコードレイン + 時計</div>
-      </div>
-    </a>
+    <a href="clocks/matrix/" class="clock-card" id="card-matrix" aria-label="MATRIX — マトリックスコードレイン + 時計のデジタル時計を開く">
+        <iframe src="clocks/matrix/" loading="lazy" tabindex="-1" title="MATRIX デジタル時計のプレビュー"></iframe>
+        <div class="overlay">
+          <h3 class="card-title">MATRIX</h3>
+          <p class="card-desc">マトリックスコードレイン + 時計</p>
+        </div>
+      </a>
 
-    <a href="clocks/gradient/" class="clock-card" id="card-gradient">
-      <iframe src="clocks/gradient/" loading="lazy" tabindex="-1"></iframe>
-      <div class="overlay">
-        <div class="card-title">GRADIENT</div>
-        <div class="card-desc">時間で変化するグラデーション背景</div>
-      </div>
-    </a>
+    <a href="clocks/gradient/" class="clock-card" id="card-gradient" aria-label="GRADIENT — 時間で変化するグラデーション背景のデジタル時計を開く">
+        <iframe src="clocks/gradient/" loading="lazy" tabindex="-1" title="GRADIENT デジタル時計のプレビュー"></iframe>
+        <div class="overlay">
+          <h3 class="card-title">GRADIENT</h3>
+          <p class="card-desc">時間で変化するグラデーション背景</p>
+        </div>
+      </a>
 
-    <a href="clocks/flip/" class="clock-card" id="card-flip">
-      <iframe src="clocks/flip/" loading="lazy" tabindex="-1"></iframe>
-      <div class="overlay">
-        <div class="card-title">FLIP</div>
-        <div class="card-desc">パタパタ時計風フリップアニメーション</div>
-      </div>
-    </a>
+    <a href="clocks/flip/" class="clock-card" id="card-flip" aria-label="FLIP — パタパタ時計風フリップアニメーションのデジタル時計を開く">
+        <iframe src="clocks/flip/" loading="lazy" tabindex="-1" title="FLIP デジタル時計のプレビュー"></iframe>
+        <div class="overlay">
+          <h3 class="card-title">FLIP</h3>
+          <p class="card-desc">パタパタ時計風フリップアニメーション</p>
+        </div>
+      </a>
 
-    <a href="clocks/cyber/" class="clock-card" id="card-cyber">
-      <iframe src="clocks/cyber/" loading="lazy" tabindex="-1"></iframe>
-      <div class="overlay">
-        <div class="card-title">CYBER</div>
-        <div class="card-desc">サイバーパンク / グリッチエフェクト</div>
-      </div>
-    </a>
+    <a href="clocks/cyber/" class="clock-card" id="card-cyber" aria-label="CYBER — サイバーパンク / グリッチエフェクトのデジタル時計を開く">
+        <iframe src="clocks/cyber/" loading="lazy" tabindex="-1" title="CYBER デジタル時計のプレビュー"></iframe>
+        <div class="overlay">
+          <h3 class="card-title">CYBER</h3>
+          <p class="card-desc">サイバーパンク / グリッチエフェクト</p>
+        </div>
+      </a>
 
-    <a href="clocks/terminal/" class="clock-card" id="card-terminal">
-      <iframe src="clocks/terminal/" loading="lazy" tabindex="-1"></iframe>
-      <div class="overlay">
-        <div class="card-title">TERMINAL</div>
-        <div class="card-desc">ターミナル風コマンドライン時計</div>
-      </div>
-    </a>
+    <a href="clocks/terminal/" class="clock-card" id="card-terminal" aria-label="TERMINAL — ターミナル風コマンドライン時計のデジタル時計を開く">
+        <iframe src="clocks/terminal/" loading="lazy" tabindex="-1" title="TERMINAL デジタル時計のプレビュー"></iframe>
+        <div class="overlay">
+          <h3 class="card-title">TERMINAL</h3>
+          <p class="card-desc">ターミナル風コマンドライン時計</p>
+        </div>
+      </a>
 
-    <a href="clocks/glass/" class="clock-card" id="card-glass">
-      <iframe src="clocks/glass/" loading="lazy" tabindex="-1"></iframe>
-      <div class="overlay">
-        <div class="card-title">GLASS</div>
-        <div class="card-desc">グラスモーフィズム + 浮遊背景</div>
-      </div>
-    </a>
+    <a href="clocks/glass/" class="clock-card" id="card-glass" aria-label="GLASS — グラスモーフィズム + 浮遊背景のデジタル時計を開く">
+        <iframe src="clocks/glass/" loading="lazy" tabindex="-1" title="GLASS デジタル時計のプレビュー"></iframe>
+        <div class="overlay">
+          <h3 class="card-title">GLASS</h3>
+          <p class="card-desc">グラスモーフィズム + 浮遊背景</p>
+        </div>
+      </a>
 
-    <a href="clocks/forest/" class="clock-card" id="card-forest">
-      <iframe src="clocks/forest/" loading="lazy" tabindex="-1"></iframe>
-      <div class="overlay">
-        <div class="card-title">FOREST</div>
-        <div class="card-desc">深い森の木漏れ日と霧</div>
-      </div>
-    </a>
+    <a href="clocks/forest/" class="clock-card" id="card-forest" aria-label="FOREST — 深い森の木漏れ日と霧のデジタル時計を開く">
+        <iframe src="clocks/forest/" loading="lazy" tabindex="-1" title="FOREST デジタル時計のプレビュー"></iframe>
+        <div class="overlay">
+          <h3 class="card-title">FOREST</h3>
+          <p class="card-desc">深い森の木漏れ日と霧</p>
+        </div>
+      </a>
 
-    <a href="clocks/fireplace/" class="clock-card" id="card-fireplace">
-      <iframe src="clocks/fireplace/" loading="lazy" tabindex="-1"></iframe>
-      <div class="overlay">
-        <div class="card-title">FIREPLACE</div>
-        <div class="card-desc">揺れる炎と舞う火の粉</div>
-      </div>
-    </a>
+    <a href="clocks/fireplace/" class="clock-card" id="card-fireplace" aria-label="FIREPLACE — 揺れる炎と舞う火の粉のデジタル時計を開く">
+        <iframe src="clocks/fireplace/" loading="lazy" tabindex="-1" title="FIREPLACE デジタル時計のプレビュー"></iframe>
+        <div class="overlay">
+          <h3 class="card-title">FIREPLACE</h3>
+          <p class="card-desc">揺れる炎と舞う火の粉</p>
+        </div>
+      </a>
 
-    <a href="clocks/ocean/" class="clock-card" id="card-ocean">
-      <iframe src="clocks/ocean/" loading="lazy" tabindex="-1"></iframe>
-      <div class="overlay">
-        <div class="card-title">OCEAN</div>
-        <div class="card-desc">月夜の海と波のアニメーション</div>
-      </div>
-    </a>
-  </main>
+    <a href="clocks/ocean/" class="clock-card" id="card-ocean" aria-label="OCEAN — 月夜の海と波のアニメーションのデジタル時計を開く">
+        <iframe src="clocks/ocean/" loading="lazy" tabindex="-1" title="OCEAN デジタル時計のプレビュー"></iframe>
+        <div class="overlay">
+          <h3 class="card-title">OCEAN</h3>
+          <p class="card-desc">月夜の海と波のアニメーション</p>
+        </div>
+      </a>
+    </div>
+  </section>
+
+  <section id="features" class="content-section">
+    <h2 class="section-title">Web7 Clock の特徴</h2>
+    <div class="feature-grid">
+      <article class="feature-card">
+        <h3>インストール不要・完全無料</h3>
+        <p>ブラウザで開くだけで時計が動きます。会員登録もログインも課金もありません。デザインごとに個別のURLがあるので、ブックマークやキオスク端末の起動URLに直接指定できます。</p>
+      </article>
+      <article class="feature-card">
+        <h3>12デザインから選べる</h3>
+        <p>ネオン、サイバーパンク、レトロLED、パタパタ時計風のフリップ、ターミナル風、グラスモーフィズムに加え、森・暖炉・海といった自然系まで。用途と部屋の雰囲気で選べます。</p>
+      </article>
+      <article class="feature-card">
+        <h3>フルスクリーンで常時表示</h3>
+        <p>画面右上のボタンひと押しでフルスクリーンに切り替わります。文字サイズは画面幅に追従するので、スマートフォンから大型ディスプレイまで同じ見た目で表示できます。</p>
+      </article>
+      <article class="feature-card">
+        <h3>Windowsアプリ版もある</h3>
+        <p>常時最前面表示・ボーダーレスウィンドウ・背景の透過に対応したデスクトップアプリ版を無料配布しています。Web版と同じ12デザインをそのまま使えます。</p>
+      </article>
+    </div>
+  </section>
+
+  <section id="how-to-use" class="content-section">
+    <h2 class="section-title">使い方</h2>
+    <ol class="steps">
+      <li>上の一覧から好きなデザインのカードをクリックして、時計ページを開きます。</li>
+      <li>画面にマウスを乗せると右上にボタンが出ます。クリックするとフルスクリーンになります。</li>
+      <li>一覧に戻るときは、画面左上の「← COLLECTION」をクリックします。</li>
+    </ol>
+    <p class="note-text">表示される時刻は、閲覧している端末のシステム時刻（ローカルタイムゾーン）です。24時間表記で、日付と曜日も合わせて表示します。</p>
+  </section>
+
+  <section id="use-cases" class="content-section">
+    <h2 class="section-title">こんな用途に</h2>
+    <ul class="usecase-list">
+      <li><strong>サブモニターの常時表示</strong>作業中のメインモニターを塞がずに、いつでも時刻が目に入る位置に置けます。</li>
+      <li><strong>配信・録画の画面づくり</strong>デスクトップアプリ版なら背景を透過できるので、配信画面に時計だけを重ねられます。</li>
+      <li><strong>店舗・受付のディスプレイ</strong>タブレットや余ったPCをフルスクリーンにするだけで、そのまま時計として設置できます。</li>
+      <li><strong>作業用の環境映像として</strong>森・暖炉・海の自然系デザインは、動きのある背景そのものが作業BGVになります。</li>
+    </ul>
+  </section>
 
   <section id="download" class="download-section">
     <h2>DESKTOP APP</h2>
@@ -385,8 +741,46 @@
     <p class="download-note">※ 未署名アプリのため、初回起動時に SmartScreen 警告が表示される場合があります</p>
   </section>
 
+  <section id="faq" class="content-section">
+    <h2 class="section-title">よくある質問</h2>
+    <dl class="faq">
+      <dt>料金はかかりますか？</dt>
+      <dd>Web版・Windowsデスクトップアプリ版ともに完全無料です。会員登録やログインも必要ありません。</dd>
+
+      <dt>インストールは必要ですか？</dt>
+      <dd>Web版は不要です。ブラウザで clock.web7.tokyo を開くだけで使えます。常時最前面表示や背景の透過が必要な場合のみ、Windowsデスクトップアプリ版をご利用ください。</dd>
+
+      <dt>スマートフォンやタブレットでも使えますか？</dt>
+      <dd>使えます。文字サイズが画面幅に追従するレスポンシブ表示です。ただしフルスクリーンボタンはブラウザの Fullscreen API を利用しているため、iPhone の Safari では動作しません。Android の Chrome や iPad、PC では動作します。</dd>
+
+      <dt>表示される時刻はどこから取得していますか？</dt>
+      <dd>閲覧している端末のシステム時刻（ローカルタイムゾーン）です。サーバー時刻の取得や NTP 同期は行っていないため、表示精度は端末の時計設定に依存します。厳密な時刻合わせの用途には向きません。</dd>
+
+      <dt>タイムゾーンや12時間表記に変更できますか？</dt>
+      <dd>現在は端末のローカルタイムゾーン・24時間表記に固定されています。表示形式の切り替え機能はありません。</dd>
+
+      <dt>アラームやタイマー機能はありますか？</dt>
+      <dd>ありません。時刻表示に特化したサービスです。</dd>
+
+      <dt>常時表示させても画面の焼き付きは心配ありませんか？</dt>
+      <dd>有機EL（OLED）ディスプレイで長時間表示する場合は焼き付きにご注意ください。GRADIENT や MATRIX のように背景が動き続けるデザインを選ぶと、リスクを抑えられます。</dd>
+
+      <dt>オフラインでも動きますか？</dt>
+      <dd>一度読み込んだあとは JavaScript が端末内で時刻を描画するため動作します。ただし Web フォントの読み込みに通信が必要なため、初回アクセスはオンラインで行ってください。</dd>
+    </dl>
+  </section>
+  </main>
+
   <footer class="footer">
-    <a href="https://web7.tokyo">web7.tokyo</a>
+    <nav class="footer-nav" aria-label="フッターナビゲーション">
+      <a href="#clocks">時計一覧</a>
+      <a href="#download">アプリ版</a>
+      <a href="#faq">よくある質問</a>
+      <a href="https://github.com/kogasura/web7-clock" rel="noopener">GitHub</a>
+    </nav>
+    <p class="footer-credit">
+      <a href="https://web7.tokyo">web7.tokyo</a> — WeBanana.SP
+    </p>
   </footer>
 
   <script>
