@@ -62,6 +62,7 @@ class DigitalClock {
     if (!this.controlsReady) {
       this.controlsReady = true;
       setupTimeFormatControl(this);
+      setupWakeLock();
     }
     this.tick();
   }
@@ -151,6 +152,63 @@ class DigitalClock {
     }
     this.element.textContent = display;
   }
+}
+
+/**
+ * 画面の自動消灯を防ぐ（Screen Wake Lock API）。
+ *
+ * 常時表示が主用途なので、ユーザーが「置きっぱなしにする」意思を示したとき
+ * ＝フルスクリーン中、またはインストール済みアプリとして起動しているときだけ
+ * 画面を点けたままにする。常に取得しないのはバッテリーを勝手に消費しないため。
+ *
+ * 非対応ブラウザや拒否された場合は何もしない（その場合はOS側の設定で対応する）。
+ */
+let wakeLockSentinel = null;
+
+async function requestWakeLock() {
+  if (!('wakeLock' in navigator) || wakeLockSentinel) return;
+  try {
+    wakeLockSentinel = await navigator.wakeLock.request('screen');
+    wakeLockSentinel.addEventListener('release', function () {
+      wakeLockSentinel = null;
+    });
+  } catch (err) {
+    wakeLockSentinel = null;
+  }
+}
+
+async function releaseWakeLock() {
+  if (!wakeLockSentinel) return;
+  try {
+    await wakeLockSentinel.release();
+  } catch (err) {
+    /* 既に解放済みでも問題ない */
+  }
+  wakeLockSentinel = null;
+}
+
+/** 置き時計として使っている状態か */
+function isAlwaysOnIntent() {
+  if (document.fullscreenElement) return true;
+  return window.matchMedia('(display-mode: fullscreen)').matches
+    || window.matchMedia('(display-mode: standalone)').matches;
+}
+
+function setupWakeLock() {
+  if (!('wakeLock' in navigator)) return;
+
+  function sync() {
+    if (isAlwaysOnIntent()) requestWakeLock();
+    else releaseWakeLock();
+  }
+
+  document.addEventListener('fullscreenchange', sync);
+  // タブを離れるとロックは自動解放されるので、戻ってきたら取り直す
+  document.addEventListener('visibilitychange', function () {
+    if (document.visibilityState === 'visible') sync();
+  });
+
+  sync();
 }
 
 /**

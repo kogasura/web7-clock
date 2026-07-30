@@ -13,6 +13,7 @@ Web版とWindowsデスクトップアプリ版を同一リポジトリで管理�
 ```
 web7-clock/
 ├── index.html          # Web版トップページ（時計一覧・選択画面）
+├── guide/              # 常時表示ガイド（焼き付き対策・画面設定・用途別の選び方）
 ├── clocks/             # 各時計デザイン（Web・デスクトップ共有）
 │   ├── neon/           # ネオン風デジタル時計
 │   ├── minimal/        # ミニマルデザイン
@@ -42,7 +43,7 @@ web7-clock/
 ├── manifest.webmanifest # PWAマニフェスト（トップ用。時計ページ用は clocks/<id>/ に個別配置）
 ├── sw.js               # Service Worker（Web版のみ・キャッシュ／オフライン対応）
 ├── robots.txt          # クロール許可 + sitemap 参照（Web版のみ）
-├── sitemap.xml         # 13URL（トップ + 時計12ページ）（Web版のみ）
+├── sitemap.xml         # 14URL（トップ + ガイド + 時計12ページ）（Web版のみ）
 ├── llms.txt            # AIO向け構造化サマリ（Web版のみ）
 ├── .htaccess           # gzip圧縮・キャッシュ制御（Web版のみ）
 ├── package.json        # Tauri CLI 依存
@@ -110,11 +111,12 @@ npx tauri build
 ## SEO / AIO 対策
 
 ### 構成
-- **メタ情報**: 全13ページ（トップ + 時計12種）に title / description / canonical / OGP / Twitter Card を個別設定
+- **メタ情報**: 全14ページ（トップ + ガイド + 時計12種）に title / description / canonical / OGP / Twitter Card を個別設定
 - **OGP画像**: トップは `images/og.png`、時計12ページは `images/social/<id>.jpg` の個別画像（すべて1200x630）。`summary_large_image`
 - **構造化データ（JSON-LD）**:
   - トップ: `Organization` / `WebSite` / `WebApplication` / `SoftwareApplication`（アプリ版）/ `ItemList`（12デザイン）/ `FAQPage`
   - 各時計ページ: `WebApplication` / `BreadcrumbList`
+  - ガイド: `Article` / `BreadcrumbList`（トップの `WebSite` から `hasPart` で参照）
 - **クロール制御**: `robots.txt` で検索エンジンとAIクローラ（GPTBot, ClaudeBot, PerplexityBot 等）を明示的に許可、`sitemap.xml` を参照
 - **AIO**: `llms.txt` にサイト概要・12デザインの説明・アプリ版の機能・FAQ をプレーンテキストで記述
 - **本文コンテンツ**: トップページに特徴 / 使い方 / 用途 / FAQ セクションを配置（AIに抽出させるための本文を確保）
@@ -123,6 +125,27 @@ npx tauri build
   以前は「← COLLECTION」だけの行き止まりだった。現在ページは `<span aria-current="page">` にして自己リンクを作らない。
   ライトテーマの MINIMAL だけ CSS変数（`--switcher-fg` 等）を上書きして配色を反転させている。
   デスクトップ版では `src-tauri/src/main.rs` の初期化スクリプトで非表示にする（切替は右クリックメニュー）
+
+### コンテンツ（`guide/`）
+技術的な対策だけでは順位が付かないので、実用情報のページを持たせている。
+
+- `guide/index.html` — 常時表示ガイド。約3,700文字、時計12ページへの内部リンク36本
+- 内容: 有機ELの焼き付き対策 / 消費電力 / 画面の自動消灯対策 / フルスクリーンの出し方 /
+  ホーム画面への追加 / デザイン早見表（秒表示・背景の動き・明るさ）/ 用途別のおすすめ
+- 早見表の「秒表示あり／なし」は推測ではなく実測して埋めた
+  （時計ページを2.2秒空けて2回テキスト取得し、変化したかで判定）。
+  **デザインを追加・変更したら早見表も更新する**
+- OGP画像は共通の `images/og.png` を使用（専用画像は未作成）
+- 導線: トップの「使い方」セクションとフッター、`llms.txt`、`sitemap.xml`
+
+### 画面の自動消灯対策（Screen Wake Lock）
+常時表示が主用途なので `js/clock.js` で `navigator.wakeLock` を取得する。
+
+- 取得するのは**フルスクリーン中**、または**インストール済みアプリとして起動中**
+  （`display-mode: fullscreen` / `standalone`）のときだけ。
+  常に取得しないのはバッテリーを勝手に消費しないため
+- `fullscreenchange` と `visibilitychange` で取り直す（タブを離れるとロックは自動解放される）
+- 非対応ブラウザや拒否時は何もしない。その場合はOS側の設定で対応する旨をガイドに書いている
 
 ### 表示設定（24H / 12H）
 - 切替UI: 時計ページ右上の「24H / 12H」ボタン。`js/clock.js` が生成し `body:hover` で表示する
@@ -218,12 +241,14 @@ npx tauri build
    Google Fonts を直接 `<link>` で読み込まないこと（表示速度が落ちる）
 8. `scripts/generate-manifests.js` の `CLOCKS` に追加して再実行（マニフェストを生成）
 9. `sw.js` の `PRECACHE` に `/clocks/<id>/` とプレビュー画像を追加し、`VERSION` を上げる
-10. 時計ロジックは必ず `DigitalClock` を使う（24H/12H切替とAM/PM表示が共通側にあるため）。
+10. `guide/index.html` のデザイン早見表と用途別セクションに追記する
+11. 時計ロジックは必ず `DigitalClock` を使う（24H/12H切替・AM/PM表示・画面消灯対策が共通側にあるため）。
     ミリ秒や滑らかなバーが必要な場合だけ `precision: 'frame'` を指定する
 
 ### 未対応・任意項目
 - HTTP → HTTPS 転送はロリポップのコントロールパネル側で設定する（`.htaccess` には入れていない）
 - Google Search Console / Bing Webmaster Tools への `sitemap.xml` 登録は手動
+- ガイドページ専用のOGP画像は未作成（共通の `og.png` を使用）
 - タイムゾーン切替・秒表示のON/OFF は未実装
   （秒は7ページが独自に描画しているため、共通の切替を入れるには各ページの `onTick` 修正が必要）
 - 英語版・hreflang は未対応（日本語のみ）

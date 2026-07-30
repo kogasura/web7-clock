@@ -51,7 +51,8 @@
         "name": "Web7 Clock",
         "description": "ブラウザで使える無料デジタル時計コレクション",
         "inLanguage": "ja",
-        "publisher": { "@id": "https://web7.tokyo/#organization" }
+        "publisher": { "@id": "https://web7.tokyo/#organization" },
+        "hasPart": { "@id": "https://clock.web7.tokyo/guide/#article" }
       },
       {
         "@type": "WebApplication",
@@ -422,6 +423,15 @@
       color: rgba(255, 255, 255, 0.4) !important;
     }
 
+    .note-text a {
+      color: #00d4ff;
+      text-decoration: none;
+    }
+
+    .note-text a:hover {
+      text-decoration: underline;
+    }
+
     .usecase-list {
       margin-top: 24px;
       list-style: none;
@@ -766,7 +776,8 @@
       <li>画面にマウスを乗せると右上にボタンが出ます。クリックするとフルスクリーンになります。</li>
       <li>一覧に戻るときは、画面左上の「← COLLECTION」をクリックします。</li>
     </ol>
-    <p class="note-text">表示される時刻は、閲覧している端末のシステム時刻（ローカルタイムゾーン）です。24時間表記で、日付と曜日も合わせて表示します。</p>
+    <p class="note-text">表示される時刻は、閲覧している端末のシステム時刻（ローカルタイムゾーン）です。24時間表記が既定で、画面右上のボタンから12時間表記（AM / PM）にも切り替えられます。</p>
+    <p class="note-text">出しっぱなしで使うときのコツは <a href="guide/">常時表示ガイド</a> にまとめています（有機ELの焼き付き対策、画面が消えないようにする設定、用途別のデザイン選び）。</p>
   </section>
 
   <section id="use-cases" class="content-section">
@@ -828,6 +839,7 @@
     <nav class="footer-nav" aria-label="フッターナビゲーション">
       <a href="#clocks">時計一覧</a>
       <a href="#download">アプリ版</a>
+      <a href="guide/">常時表示ガイド</a>
       <a href="#faq">よくある質問</a>
       <a href="https://github.com/kogasura/web7-clock" rel="noopener">GitHub</a>
     </nav>

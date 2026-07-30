@@ -14,16 +14,17 @@
  * ★ css/js/fonts/画像を変更したら VERSION を上げること。
  *   上げ忘れると古いアセットが配信され続ける。
  */
-const VERSION = 'v2';
+const VERSION = 'v3';
 const STATIC_CACHE = `web7clock-static-${VERSION}`;
 const RUNTIME_CACHE = `web7clock-runtime-${VERSION}`;
 const OFFLINE_FALLBACK = '/';
 
-// インストール時に取りに行くもの。全13ページがオフラインで完結する範囲（gzip前で約600KB）。
+// インストール時に取りに行くもの。全14ページがオフラインで完結する範囲（gzip前で約620KB）。
 // 時計ページを入れていないと、未訪問のデザインをオフラインで開いたときに
 // URLだけ /clocks/xxx/ でトップページの中身が出るという分かりにくい状態になる。
 const PRECACHE = [
   '/',
+  '/guide/',
   '/clocks/neon/',
   '/clocks/minimal/',
   '/clocks/retro/',

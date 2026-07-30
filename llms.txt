@@ -10,6 +10,7 @@
 - 時刻表示形式: 24時間表記と12時間表記（AM/PM）を切り替え可能。年月日と曜日を併記。切替は時計ページ右上の「24H」ボタン、またはURLパラメータ ?h=12 / ?h=24。設定はブラウザに保存されデザインを変えても引き継がれる
 - インストール: 不要（ブラウザで開くだけ）。PWA対応のため、任意でホーム画面・デスクトップにアイコンとして追加もできる
 - オフライン: 一度サイトを開けば12デザインすべてが端末内に保存され、以降は通信なしで表示できる
+- 画面の自動消灯: フルスクリーン中とインストール済みアプリでの起動中は Screen Wake Lock API で防ぐ（対応ブラウザのみ）
 - 技術: HTML5 / CSS3 / Vanilla JavaScript（フレームワーク不使用）。PWA（Service Worker）対応。デスクトップ版は Tauri v2
 - ソースコード: https://github.com/kogasura/web7-clock
 
@@ -67,9 +68,20 @@
 - **焼き付き（バーンイン）は心配ないですか？** 常時表示用途では有機ELディスプレイの焼き付きに注意してください。GRADIENT や MATRIX など背景が動くデザインの方がリスクを抑えられます。
 - **商用利用や店頭ディスプレイで使えますか？** ブラウザで表示して使う分には制限していません。ソースコードの再配布・改変については GitHub リポジトリを確認してください。
 
+## 常時表示ガイド
+
+https://clock.web7.tokyo/guide/ に、時計を出しっぱなしで使うための実用情報をまとめています。
+
+- **有機ELの焼き付き対策**: 時計は数字の位置が動かないため焼き付きが起きやすい条件になる。対策は「背景が動き続けるデザイン（MATRIX / GRADIENT / OCEAN / FIREPLACE / FOREST）を選ぶ」「画面の明るさを下げる」「暗い背景を選ぶ」「ときどきデザインを切り替える」。液晶（LCD）では焼き付きはほぼ心配ない
+- **消費電力**: 有機ELは黒い画素が消灯するため暗い背景のほうが省電力。液晶はバックライトが常時点灯なので表示内容による差は小さく、明るさ設定のほうが効く
+- **画面の自動消灯対策**: フルスクリーン中とインストール済みアプリでの起動中は Screen Wake Lock API で自動消灯を防ぐ（対応ブラウザのみ）。確実にしたい場合は Windows / macOS / iOS / Android それぞれのスリープ設定を変更する
+- **デザイン早見表**: 秒表示があるのは NEON・RETRO LED・MATRIX・FLIP・CYBER（ミリ秒まで）・TERMINAL・GLASS の7種類。秒を出さないのは MINIMAL・GRADIENT・FOREST・FIREPLACE・OCEAN の5種類
+- **用途別のおすすめ**: 作業用サブモニター→NEON / MINIMAL / TERMINAL、寝室→OCEAN / FOREST、リビング→GLASS / GRADIENT、店頭→RETRO LED / MINIMAL、配信画面に重ねる→NEON / CYBER（デスクトップ版で透過）、環境映像→FIREPLACE / FOREST / OCEAN
+
 ## リンク
 
 - [トップページ（時計一覧）](https://clock.web7.tokyo/): 12デザインをプレビュー付きで一覧表示
+- [常時表示ガイド](https://clock.web7.tokyo/guide/): 焼き付き対策・画面設定・用途別のデザイン選び
 - [デスクトップアプリのダウンロード](https://clock.web7.tokyo/#download): Windows版インストーラーの入手
 - [GitHub リポジトリ](https://github.com/kogasura/web7-clock): ソースコード・リリース履歴・不具合報告
 - [運営元 web7.tokyo](https://web7.tokyo): 提供元 WeBanana.SP のサイト
