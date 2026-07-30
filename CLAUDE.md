@@ -34,7 +34,8 @@ web7-clock/
 │   ├── og.png          # OGP画像 1200x630（Web版専用・dist へは非同梱）
 │   ├── favicon.svg     # ファビコン
 │   ├── apple-touch-icon.png
-│   └── previews/       # トップのカード画像 12枚（Web版専用・dist へは非同梱）
+│   ├── previews/       # トップのカード画像 12枚（Web版専用・dist へは非同梱）
+│   └── social/         # 時計ページ個別のOGP画像 12枚 1200x630（同上）
 ├── fonts/              # セルフホストWebフォント（latin woff2 7種 + fonts.css）
 ├── robots.txt          # クロール許可 + sitemap 参照（Web版のみ）
 ├── sitemap.xml         # 13URL（トップ + 時計12ページ）（Web版のみ）
@@ -44,7 +45,8 @@ web7-clock/
 ├── scripts/
 │   ├── copy-assets.js       # ビルド時に dist/ へWebアセットをコピー
 │   ├── fetch-fonts.js       # Google Fonts から woff2 を取得して fonts/ を再生成
-│   └── generate-previews.js # 時計12種を撮影して images/previews/ を再生成
+│   ├── generate-previews.js # 時計12種を撮影して images/previews/ を再生成
+│   └── generate-og-images.js # 時計12種の個別OGP画像 images/social/ を再生成
 ├── src-tauri/          # デスクトップアプリ（Rust）
 │   ├── src/main.rs     # メインロジック（トレイ、メニュー、設定）
 │   ├── tauri.conf.json # Tauri設定
@@ -103,7 +105,7 @@ npx tauri build
 
 ### 構成
 - **メタ情報**: 全13ページ（トップ + 時計12種）に title / description / canonical / OGP / Twitter Card を個別設定
-- **OGP画像**: `images/og.png`（1200x630）を全ページ共通で使用。`summary_large_image`
+- **OGP画像**: トップは `images/og.png`、時計12ページは `images/social/<id>.jpg` の個別画像（すべて1200x630）。`summary_large_image`
 - **構造化データ（JSON-LD）**:
   - トップ: `Organization` / `WebSite` / `WebApplication` / `SoftwareApplication`（アプリ版）/ `ItemList`（12デザイン）/ `FAQPage`
   - 各時計ページ: `WebApplication` / `BreadcrumbList`
@@ -111,6 +113,10 @@ npx tauri build
 - **AIO**: `llms.txt` にサイト概要・12デザインの説明・アプリ版の機能・FAQ をプレーンテキストで記述
 - **本文コンテンツ**: トップページに特徴 / 使い方 / 用途 / FAQ セクションを配置（AIに抽出させるための本文を確保）
 - **時計ページの本文**: 画面は時計のみのため、`.visually-hidden` の h1 と説明文でページ内容を伝える。JS無効時は `noscript` で案内
+- **内部リンク**: 時計ページ下部にホバーで出る `.design-switcher`（他11デザインへのリンク）を配置。
+  以前は「← COLLECTION」だけの行き止まりだった。現在ページは `<span aria-current="page">` にして自己リンクを作らない。
+  ライトテーマの MINIMAL だけ CSS変数（`--switcher-fg` 等）を上書きして配色を反転させている。
+  デスクトップ版では `src-tauri/src/main.rs` の初期化スクリプトで非表示にする（切替は右クリックメニュー）
 
 ### 表示速度対策（流入に直結するので落とさないこと）
 4倍CPUスロットリング環境での計測値:
@@ -142,15 +148,18 @@ npx tauri build
 3. `llms.txt` — デザイン一覧に追記
 4. `clocks/<id>/index.html` — 他ページと同じメタ情報一式（title / description / canonical / OGP / JSON-LD）と、`.visually-hidden` の h1・説明文
 5. `src-tauri/src/main.rs` の `CLOCKS`、`scripts/copy-assets.js` の `TRANSPARENT_CLOCKS`（透過対応する場合）
-6. **プレビュー画像の再生成** — ローカルに静的サーバーを立てて `node scripts/generate-previews.js`
-   （`scripts/generate-previews.js` の `CLOCKS` 配列にもIDを追加する）
+   および `css/common.css` の `.design-switcher` に載せる全12ページ分のリンク（各ページのHTML内）
+6. **プレビュー画像とOGP画像の再生成** — ローカルに静的サーバーを立てて
+   `node scripts/generate-previews.js` と `node scripts/generate-og-images.js`
+   （両スクリプトの `CLOCKS` 配列にもIDを追加する）
+   ※ `Date` を自前で差し替えると FLIP のめくり途中が写るため、時刻の固定は `page.clock` を使うこと
 7. 新しいWebフォントを使う場合は `scripts/fetch-fonts.js` の `FAMILIES` に追加して再実行。
    Google Fonts を直接 `<link>` で読み込まないこと（表示速度が落ちる）
 
 ### 未対応・任意項目
 - HTTP → HTTPS 転送はロリポップのコントロールパネル側で設定する（`.htaccess` には入れていない）
 - Google Search Console / Bing Webmaster Tools への `sitemap.xml` 登録は手動
-- 時計ページごとの個別OGP画像は未作成（共通の `og.png` を使用）
+- 英語版・hreflang は未対応（日本語のみ）
 
 ## 開発フロー
 - GitHub Flow（main + feature ブランチ）

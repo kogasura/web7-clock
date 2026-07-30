@@ -106,6 +106,69 @@ body:hover .back-link {
   opacity: 1;
 }
 
+/* Design switcher — 他の11デザインへのリンク（ホバーで表示） */
+.design-switcher {
+  --switcher-fg: rgba(255, 255, 255, 0.42);
+  --switcher-fg-active: rgba(255, 255, 255, 0.95);
+  --switcher-bg-active: rgba(255, 255, 255, 0.14);
+  --switcher-scrim: rgba(0, 0, 0, 0.5);
+
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  display: flex;
+  gap: 2px;
+  justify-content: center;
+  padding: 14px 12px 12px;
+  background: linear-gradient(to top, var(--switcher-scrim), transparent);
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scrollbar-width: none;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.design-switcher::-webkit-scrollbar {
+  display: none;
+}
+
+body:hover .design-switcher {
+  opacity: 1;
+}
+
+.design-switcher a,
+.design-switcher .current {
+  flex: 0 0 auto;
+  padding: 5px 10px;
+  border-radius: 6px;
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-decoration: none;
+  white-space: nowrap;
+  color: var(--switcher-fg);
+  transition: color 0.2s ease, background 0.2s ease;
+}
+
+.design-switcher a:hover,
+.design-switcher a:focus-visible {
+  color: var(--switcher-fg-active);
+  background: var(--switcher-bg-active);
+}
+
+.design-switcher .current {
+  color: var(--switcher-fg-active);
+  background: var(--switcher-bg-active);
+}
+
+/* 画面が狭いときは中央寄せをやめて左から詰める（横スクロールで全件見える） */
+@media (max-width: 760px) {
+  .design-switcher {
+    justify-content: flex-start;
+  }
+}
+
 /* Clock container */
 .clock-container {
   width: 100%;

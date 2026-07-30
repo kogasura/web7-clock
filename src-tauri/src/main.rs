@@ -135,6 +135,9 @@ fn build_init_script(opacity: f64, clock_id: &str) -> String {
             if (backLink) backLink.style.display = 'none';
             var fsBtn = document.querySelector('.fullscreen-btn');
             if (fsBtn) fsBtn.style.display = 'none';
+            // デザイン切替はWeb版向けのバー。デスクトップ版は右クリックメニューを使う
+            var switcher = document.querySelector('.design-switcher');
+            if (switcher) switcher.style.display = 'none';
 
             {apply_opacity}
 

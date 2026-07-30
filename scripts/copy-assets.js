@@ -10,8 +10,8 @@ const ROOT = path.resolve(__dirname, '..');
 const DIST = path.join(ROOT, 'dist');
 
 const INCLUDE = ['clocks', 'css', 'js', 'fonts', 'images', 'index.html', 'desktop'];
-// og.png / previews/ はWeb版のOGP・カード用のためデスクトップ版には同梱しない
-const EXCLUDE = new Set(['node_modules', 'src-tauri', 'dist', 'scripts', '.git', 'target', 'app-icon.png', 'og.png', 'previews']);
+// og.png / previews/ / social/ はWeb版のOGP・カード用のためデスクトップ版には同梱しない
+const EXCLUDE = new Set(['node_modules', 'src-tauri', 'dist', 'scripts', '.git', 'target', 'app-icon.png', 'og.png', 'previews', 'social']);
 
 // Clocks that support transparent backgrounds
 const TRANSPARENT_CLOCKS = new Set([
