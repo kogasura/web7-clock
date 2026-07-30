@@ -13,7 +13,7 @@ const INCLUDE = ['clocks', 'css', 'js', 'fonts', 'images', 'index.html', 'deskto
 // og.png / previews/ / social/ はWeb版のOGP・カード用のためデスクトップ版には同梱しない
 const EXCLUDE = new Set(['node_modules', 'src-tauri', 'dist', 'scripts', '.git', 'target', 'app-icon.png', 'og.png', 'previews', 'social',
   // PWA用。Web版のみで使う
-  'manifest.webmanifest', 'pwa.js', 'icon-192.png', 'icon-512.png', 'icon-maskable-512.png']);
+  'manifest.webmanifest', 'pwa.js', 'analytics.js', 'icon-192.png', 'icon-512.png', 'icon-maskable-512.png']);
 
 // Clocks that support transparent backgrounds
 const TRANSPARENT_CLOCKS = new Set([
@@ -54,10 +54,11 @@ function injectTransparentCSS(distDir) {
 }
 
 /**
- * Remove web-only PWA tags from the copied HTML.
- * The desktop app loads bundled assets directly, so the manifest and the
- * service worker registration are dead weight (and would 404 in the webview
- * because manifest.webmanifest / pwa.js are excluded from dist).
+ * Remove web-only tags from the copied HTML.
+ * The desktop app loads bundled assets directly, so the manifest, the service
+ * worker registration and the analytics tag are dead weight (and would 404 in
+ * the webview because those files are excluded from dist).
+ * Analytics in particular must not ship with the desktop app.
  */
 function stripWebOnlyTags(distDir) {
   const files = [path.join(distDir, 'index.html')];
@@ -75,12 +76,13 @@ function stripWebOnlyTags(distDir) {
     const before = html;
     html = html.replace(/^[ \t]*<link rel="manifest"[^>]*>[ \t]*\r?\n/m, '');
     html = html.replace(/^[ \t]*<script src="[^"]*js\/pwa\.js"><\/script>[ \t]*\r?\n/m, '');
+    html = html.replace(/^[ \t]*<script src="[^"]*js\/analytics\.js"><\/script>[ \t]*\r?\n/m, '');
     if (html !== before) {
       fs.writeFileSync(file, html, 'utf-8');
       stripped++;
     }
   }
-  console.log(`PWA tags stripped from ${stripped} HTML files`);
+  console.log(`Web-only tags stripped from ${stripped} HTML files`);
 }
 
 // Clean and recreate dist

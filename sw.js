@@ -14,7 +14,7 @@
  * ★ css/js/fonts/画像を変更したら VERSION を上げること。
  *   上げ忘れると古いアセットが配信され続ける。
  */
-const VERSION = 'v3';
+const VERSION = 'v4';
 const STATIC_CACHE = `web7clock-static-${VERSION}`;
 const RUNTIME_CACHE = `web7clock-runtime-${VERSION}`;
 const OFFLINE_FALLBACK = '/';
@@ -40,6 +40,7 @@ const PRECACHE = [
   '/css/common.css',
   '/js/clock.js',
   '/js/pwa.js',
+  '/js/analytics.js',
   '/fonts/fonts.css',
   '/fonts/orbitron.woff2',
   '/fonts/inter.woff2',

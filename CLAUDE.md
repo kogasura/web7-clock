@@ -31,7 +31,8 @@ web7-clock/
 │   └── common.css      # 共通スタイル
 ├── js/
 │   ├── clock.js        # 共通時計ロジック（DigitalClock クラス）
-│   └── pwa.js          # Service Worker 登録（Web版のみ・dist へは非同梱）
+│   ├── pwa.js          # Service Worker 登録（Web版のみ・dist へは非同梱）
+│   └── analytics.js    # GA4 タグ（Web版のみ・dist へは非同梱）
 ├── images/             # OGP画像・favicon・カード用プレビュー
 │   ├── og.png          # OGP画像 1200x630（Web版専用・dist へは非同梱）
 │   ├── favicon.svg     # ファビコン
@@ -125,6 +126,21 @@ npx tauri build
   以前は「← COLLECTION」だけの行き止まりだった。現在ページは `<span aria-current="page">` にして自己リンクを作らない。
   ライトテーマの MINIMAL だけ CSS変数（`--switcher-fg` 等）を上書きして配色を反転させている。
   デスクトップ版では `src-tauri/src/main.rs` の初期化スクリプトで非表示にする（切替は右クリックメニュー）
+
+### アクセス解析（Google Analytics 4）
+- 測定ID: `G-SJ2XB775N9`。`js/analytics.js` に1箇所だけ定義する
+  （14ページに素のスニペットを貼るとID変更時に漏れるため、共通ファイルにして各ページから読み込む）
+- `gtag.js` は `async` で追加するのでレンダリングはブロックしない
+- **送信しない条件**（`analytics.js` 内でガード）:
+  - デスクトップ版（`window.__TAURI_INTERNALS__` あり）
+  - ローカル開発（`localhost` / `127.0.0.1` / `[::1]` / `file://`）— 開発中のアクセスでレポートを汚さないため
+- `copy-assets.js` で dist から除外し、コピー後のHTMLからも `<script>` を削除する。
+  デスクトップ版に解析タグを同梱しないこと
+- 動作確認はホスト名の解決を差し替えて行う:
+  `--host-resolver-rules=MAP clock.web7.tokyo 127.0.0.1:8899`
+  （ローカルではガードで止まるため、そのままでは検証できない）
+- **未対応**: プライバシーポリシーの記載。GA の利用規約は解析ツールの使用と
+  Cookie についての開示を求めているため、公開ページに一文足すことを検討する
 
 ### コンテンツ（`guide/`）
 技術的な対策だけでは順位が付かないので、実用情報のページを持たせている。
