@@ -17,6 +17,38 @@ html, body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+/* Screen-reader / crawler only text (visually hidden but readable) */
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Fallback message when JavaScript is disabled */
+.noscript-message {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 200;
+  padding: 14px 20px;
+  background: rgba(0, 0, 0, 0.85);
+  color: rgba(255, 255, 255, 0.85);
+  font-size: 14px;
+  line-height: 1.7;
+  text-align: center;
+}
+
+.noscript-message a {
+  color: #00d4ff;
+}
+
 /* Fullscreen button */
 .fullscreen-btn {
   position: fixed;
@@ -52,6 +84,51 @@ body:hover .fullscreen-btn {
   fill: currentColor;
 }
 
+/* 24H / 12H 切り替え（フルスクリーンボタンの隣。ホバーで表示） */
+.format-toggle {
+  position: fixed;
+  top: 16px;
+  right: 64px;
+  z-index: 100;
+  height: 40px;
+  min-width: 44px;
+  padding: 0 10px;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 8px;
+  color: rgba(255, 255, 255, 0.6);
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  opacity: 0;
+}
+
+.format-toggle:hover {
+  background: rgba(255, 255, 255, 0.2);
+  color: rgba(255, 255, 255, 0.9);
+}
+
+body:hover .format-toggle {
+  opacity: 1;
+}
+
+/* 12時間表記のときだけ出る AM / PM。配色は各デザインの文字色を継承する */
+.meridiem-display {
+  margin-top: 12px;
+  font-size: clamp(11px, 1.6vw, 16px);
+  font-weight: 400;
+  letter-spacing: 0.35em;
+  text-indent: 0.35em;
+  opacity: 0.45;
+}
+
+.meridiem-display:empty {
+  display: none;
+}
+
 /* Back to top link */
 .back-link {
   position: fixed;
@@ -72,6 +149,69 @@ body:hover .fullscreen-btn {
 
 body:hover .back-link {
   opacity: 1;
+}
+
+/* Design switcher — 他の11デザインへのリンク（ホバーで表示） */
+.design-switcher {
+  --switcher-fg: rgba(255, 255, 255, 0.42);
+  --switcher-fg-active: rgba(255, 255, 255, 0.95);
+  --switcher-bg-active: rgba(255, 255, 255, 0.14);
+  --switcher-scrim: rgba(0, 0, 0, 0.5);
+
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  display: flex;
+  gap: 2px;
+  justify-content: center;
+  padding: 14px 12px 12px;
+  background: linear-gradient(to top, var(--switcher-scrim), transparent);
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scrollbar-width: none;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.design-switcher::-webkit-scrollbar {
+  display: none;
+}
+
+body:hover .design-switcher {
+  opacity: 1;
+}
+
+.design-switcher a,
+.design-switcher .current {
+  flex: 0 0 auto;
+  padding: 5px 10px;
+  border-radius: 6px;
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-decoration: none;
+  white-space: nowrap;
+  color: var(--switcher-fg);
+  transition: color 0.2s ease, background 0.2s ease;
+}
+
+.design-switcher a:hover,
+.design-switcher a:focus-visible {
+  color: var(--switcher-fg-active);
+  background: var(--switcher-bg-active);
+}
+
+.design-switcher .current {
+  color: var(--switcher-fg-active);
+  background: var(--switcher-bg-active);
+}
+
+/* 画面が狭いときは中央寄せをやめて左から詰める（横スクロールで全件見える） */
+@media (max-width: 760px) {
+  .design-switcher {
+    justify-content: flex-start;
+  }
 }
 
 /* Clock container */

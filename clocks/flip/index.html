@@ -3,10 +3,88 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>FLIP Clock - Web7 Clock</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
+  <title>FLIP デジタル時計 - パタパタ時計風フリップアニメーション | Web7 Clock</title>
+  <meta name="description" content="パタパタ時計（フリップクロック）風のデジタル時計。数字がめくれるアニメーションを再現。フルスクリーン常時表示対応、インストール不要・無料。">
+  <meta name="author" content="WeBanana.SP">
+  <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1">
+  <link rel="canonical" href="https://clock.web7.tokyo/clocks/flip/">
+  <meta name="theme-color" content="#1a1a2e">
+  <link rel="icon" href="../../images/favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="../../images/apple-touch-icon.png">
+  <link rel="manifest" href="manifest.webmanifest">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="FLIP">
+  <meta property="og:title" content="FLIP — パタパタ時計風フリップアニメーションのデジタル時計 | Web7 Clock">
+  <meta property="og:description" content="パタパタ時計（フリップクロック）風のデジタル時計。数字がめくれるアニメーションを再現。フルスクリーン常時表示対応、インストール不要・無料。">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://clock.web7.tokyo/clocks/flip/">
+  <meta property="og:site_name" content="Web7 Clock">
+  <meta property="og:locale" content="ja_JP">
+  <meta property="og:image" content="https://clock.web7.tokyo/images/social/flip.jpg">
+  <meta property="og:image:type" content="image/jpeg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="FLIP — パタパタ時計風フリップアニメーションのデジタル時計（Web7 Clock）">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="FLIP — パタパタ時計風フリップアニメーションのデジタル時計 | Web7 Clock">
+  <meta name="twitter:description" content="パタパタ時計（フリップクロック）風のデジタル時計。数字がめくれるアニメーションを再現。フルスクリーン常時表示対応、インストール不要・無料。">
+  <meta name="twitter:image" content="https://clock.web7.tokyo/images/social/flip.jpg">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebApplication",
+        "@id": "https://clock.web7.tokyo/clocks/flip/#webapp",
+        "name": "FLIP - Web7 Clock",
+        "alternateName": "FLIP デジタル時計",
+        "url": "https://clock.web7.tokyo/clocks/flip/",
+        "description": "FLIP は、数字が上下にめくれる「パタパタ時計」＝フリップクロックの動きをCSSアニメーションで再現したデジタル時計です。分が変わるたびにカードがめくれるので、時間の経過が視覚と動きで伝わります。レトロな据え置き時計の雰囲気が好きな方に向いています。",
+        "applicationCategory": "UtilitiesApplication",
+        "operatingSystem": "Any",
+        "browserRequirements": "JavaScript が有効なモダンブラウザ",
+        "isAccessibleForFree": true,
+        "inLanguage": "ja",
+        "image": "https://clock.web7.tokyo/images/social/flip.jpg",
+        "isPartOf": {
+          "@id": "https://clock.web7.tokyo/#website"
+        },
+        "publisher": {
+          "@type": "Organization",
+          "name": "WeBanana.SP",
+          "url": "https://web7.tokyo"
+        },
+        "offers": {
+          "@type": "Offer",
+          "price": "0",
+          "priceCurrency": "JPY"
+        }
+      },
+      {
+        "@type": "BreadcrumbList",
+        "@id": "https://clock.web7.tokyo/clocks/flip/#breadcrumb",
+        "itemListElement": [
+          {
+            "@type": "ListItem",
+            "position": 1,
+            "name": "Web7 Clock（時計一覧）",
+            "item": "https://clock.web7.tokyo/"
+          },
+          {
+            "@type": "ListItem",
+            "position": 2,
+            "name": "FLIP - パタパタ時計風フリップアニメーション",
+            "item": "https://clock.web7.tokyo/clocks/flip/"
+          }
+        ]
+      }
+    ]
+  }
+  </script>
+  <link rel="preload" href="../../fonts/bebas-neue.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="../../fonts/fonts.css">
   <link rel="stylesheet" href="../../css/common.css">
   <style>
     body {
@@ -151,10 +229,29 @@
   </style>
 </head>
 <body>
+  <h1 class="visually-hidden">FLIP — パタパタ時計風フリップアニメーションのデジタル時計</h1>
+  <p class="visually-hidden">FLIP は、数字が上下にめくれる「パタパタ時計」＝フリップクロックの動きをCSSアニメーションで再現したデジタル時計です。分が変わるたびにカードがめくれるので、時間の経過が視覚と動きで伝わります。レトロな据え置き時計の雰囲気が好きな方に向いています。</p>
+  <noscript>
+    <p class="noscript-message">この時計は JavaScript で時刻を描画しています。ブラウザの JavaScript を有効にしてご覧ください。 <a href="../../">ほかの時計デザインを見る</a></p>
+  </noscript>
   <a href="../../" class="back-link">← COLLECTION</a>
   <button class="fullscreen-btn" onclick="toggleFullscreen()" aria-label="Toggle fullscreen">
     <svg viewBox="0 0 24 24"><path d="M7 14H5v5h5v-2H7v-3zm-2-4h2V7h3V5H5v5zm12 7h-3v2h5v-5h-2v3zM14 5v2h3v3h2V5h-5z"/></svg>
   </button>
+  <nav class="design-switcher" aria-label="時計デザインの切り替え">
+      <a href="../neon/" title="NEON — ネオンサイン風グロウエフェクト">NEON</a>
+      <a href="../minimal/" title="MINIMAL — 洗練されたミニマルデザイン">MINIMAL</a>
+      <a href="../retro/" title="RETRO — レトロ LED セグメントディスプレイ">RETRO</a>
+      <a href="../matrix/" title="MATRIX — マトリックスコードレイン">MATRIX</a>
+      <a href="../gradient/" title="GRADIENT — 時間で変化するグラデーション背景">GRADIENT</a>
+      <span class="current" aria-current="page">FLIP</span>
+      <a href="../cyber/" title="CYBER — サイバーパンク／グリッチエフェクト">CYBER</a>
+      <a href="../terminal/" title="TERMINAL — ターミナル風コマンドライン時計">TERMINAL</a>
+      <a href="../glass/" title="GLASS — グラスモーフィズム＋浮遊背景">GLASS</a>
+      <a href="../forest/" title="FOREST — 深い森の木漏れ日と霧">FOREST</a>
+      <a href="../fireplace/" title="FIREPLACE — 揺れる炎と舞う火の粉">FIREPLACE</a>
+      <a href="../ocean/" title="OCEAN — 月夜の海と波のアニメーション">OCEAN</a>
+  </nav>
 
   <div class="clock-container">
     <div class="flip-clock">
@@ -180,7 +277,6 @@
   <script>
     const cards = { h1: document.getElementById('h1'), h2: document.getElementById('h2'), m1: document.getElementById('m1'), m2: document.getElementById('m2'), s1: document.getElementById('s1'), s2: document.getElementById('s2') };
     const dateEl = document.getElementById('date');
-    let prev = {};
 
     function flipCard(card, newVal) {
       const top = card.querySelector('.top span');
@@ -204,25 +300,26 @@
       flipBottomEl.addEventListener('animationend', onAnimEnd);
     }
 
-    function tick() {
-      const now = new Date();
-      const h = String(now.getHours()).padStart(2, '0');
-      const m = String(now.getMinutes()).padStart(2, '0');
-      const s = String(now.getSeconds()).padStart(2, '0');
+    // 共通の DigitalClock を使う（独自の setInterval だと 24H/12H 切替と
+    // AM/PM 表示が他デザインと揃わないため）
+    const clock = new DigitalClock(null, {
+      showSeconds: true,
+      use24Hour: true,
+      onTick(data) {
+        flipCard(cards.h1, data.hours[0]);
+        flipCard(cards.h2, data.hours[1]);
+        flipCard(cards.m1, data.minutes[0]);
+        flipCard(cards.m2, data.minutes[1]);
+        flipCard(cards.s1, data.seconds[0]);
+        flipCard(cards.s2, data.seconds[1]);
 
-      flipCard(cards.h1, h[0]);
-      flipCard(cards.h2, h[1]);
-      flipCard(cards.m1, m[0]);
-      flipCard(cards.m2, m[1]);
-      flipCard(cards.s1, s[0]);
-      flipCard(cards.s2, s[1]);
+        dateEl.textContent = `${data.date.year}.${data.date.month}.${data.date.day}  ${data.date.dayOfWeek}`;
+      }
+    });
 
-      const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
-      dateEl.textContent = `${now.getFullYear()}.${String(now.getMonth()+1).padStart(2,'0')}.${String(now.getDate()).padStart(2,'0')}  ${days[now.getDay()]}`;
-    }
-
-    tick();
-    setInterval(tick, 1000);
+    clock.start();
   </script>
+  <script src="../../js/analytics.js"></script>
+  <script src="../../js/pwa.js"></script>
 </body>
 </html>

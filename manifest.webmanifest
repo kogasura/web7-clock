@@ -1,0 +1,69 @@
+{
+  "id": "/",
+  "name": "Web7 Clock — デジタル時計コレクション",
+  "short_name": "Web7 Clock",
+  "description": "ブラウザで開くだけで使える無料のデジタル時計。12デザインから選んで全画面で常時表示できます。",
+  "lang": "ja",
+  "dir": "ltr",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#0a0a0f",
+  "theme_color": "#0a0a0f",
+  "categories": [
+    "utilities",
+    "productivity"
+  ],
+  "icons": [
+    {
+      "src": "/images/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/images/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/images/icon-maskable-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "/images/og.png",
+      "sizes": "1200x630",
+      "type": "image/png",
+      "form_factor": "wide",
+      "label": "Web7 Clock のデジタル時計一覧"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "NEON — ネオンサイン風グロウエフェクト",
+      "short_name": "NEON",
+      "url": "/clocks/neon/"
+    },
+    {
+      "name": "MINIMAL — 洗練されたミニマルデザイン",
+      "short_name": "MINIMAL",
+      "url": "/clocks/minimal/"
+    },
+    {
+      "name": "FLIP — パタパタ時計風フリップアニメーション",
+      "short_name": "FLIP",
+      "url": "/clocks/flip/"
+    },
+    {
+      "name": "OCEAN — 月夜の海と波のアニメーション",
+      "short_name": "OCEAN",
+      "url": "/clocks/ocean/"
+    }
+  ]
+}
