@@ -102,18 +102,18 @@
         "numberOfItems": 12,
         "itemListOrder": "https://schema.org/ItemListOrderAscending",
         "itemListElement": [
-          { "@type": "ListItem", "position": 1, "url": "https://clock.web7.tokyo/clocks/neon/", "name": "NEON - ネオンサイン風グロウエフェクト" },
-          { "@type": "ListItem", "position": 2, "url": "https://clock.web7.tokyo/clocks/minimal/", "name": "MINIMAL - 洗練されたミニマルデザイン" },
-          { "@type": "ListItem", "position": 3, "url": "https://clock.web7.tokyo/clocks/retro/", "name": "RETRO LED - レトロLEDセグメントディスプレイ" },
-          { "@type": "ListItem", "position": 4, "url": "https://clock.web7.tokyo/clocks/matrix/", "name": "MATRIX - マトリックスコードレイン" },
-          { "@type": "ListItem", "position": 5, "url": "https://clock.web7.tokyo/clocks/gradient/", "name": "GRADIENT - 時間で変化するグラデーション背景" },
-          { "@type": "ListItem", "position": 6, "url": "https://clock.web7.tokyo/clocks/flip/", "name": "FLIP - パタパタ時計風フリップアニメーション" },
-          { "@type": "ListItem", "position": 7, "url": "https://clock.web7.tokyo/clocks/cyber/", "name": "CYBER - サイバーパンク／グリッチエフェクト" },
-          { "@type": "ListItem", "position": 8, "url": "https://clock.web7.tokyo/clocks/terminal/", "name": "TERMINAL - ターミナル風コマンドライン時計" },
-          { "@type": "ListItem", "position": 9, "url": "https://clock.web7.tokyo/clocks/glass/", "name": "GLASS - グラスモーフィズム＋浮遊背景" },
-          { "@type": "ListItem", "position": 10, "url": "https://clock.web7.tokyo/clocks/forest/", "name": "FOREST - 深い森の木漏れ日と霧" },
-          { "@type": "ListItem", "position": 11, "url": "https://clock.web7.tokyo/clocks/fireplace/", "name": "FIREPLACE - 揺れる炎と舞う火の粉" },
-          { "@type": "ListItem", "position": 12, "url": "https://clock.web7.tokyo/clocks/ocean/", "name": "OCEAN - 月夜の海と波のアニメーション" }
+          { "@type": "ListItem", "position": 1, "url": "https://clock.web7.tokyo/clocks/neon/", "image": "https://clock.web7.tokyo/images/previews/neon.jpg", "name": "NEON - ネオンサイン風グロウエフェクト" },
+          { "@type": "ListItem", "position": 2, "url": "https://clock.web7.tokyo/clocks/minimal/", "image": "https://clock.web7.tokyo/images/previews/minimal.jpg", "name": "MINIMAL - 洗練されたミニマルデザイン" },
+          { "@type": "ListItem", "position": 3, "url": "https://clock.web7.tokyo/clocks/retro/", "image": "https://clock.web7.tokyo/images/previews/retro.jpg", "name": "RETRO LED - レトロLEDセグメントディスプレイ" },
+          { "@type": "ListItem", "position": 4, "url": "https://clock.web7.tokyo/clocks/matrix/", "image": "https://clock.web7.tokyo/images/previews/matrix.jpg", "name": "MATRIX - マトリックスコードレイン" },
+          { "@type": "ListItem", "position": 5, "url": "https://clock.web7.tokyo/clocks/gradient/", "image": "https://clock.web7.tokyo/images/previews/gradient.jpg", "name": "GRADIENT - 時間で変化するグラデーション背景" },
+          { "@type": "ListItem", "position": 6, "url": "https://clock.web7.tokyo/clocks/flip/", "image": "https://clock.web7.tokyo/images/previews/flip.jpg", "name": "FLIP - パタパタ時計風フリップアニメーション" },
+          { "@type": "ListItem", "position": 7, "url": "https://clock.web7.tokyo/clocks/cyber/", "image": "https://clock.web7.tokyo/images/previews/cyber.jpg", "name": "CYBER - サイバーパンク／グリッチエフェクト" },
+          { "@type": "ListItem", "position": 8, "url": "https://clock.web7.tokyo/clocks/terminal/", "image": "https://clock.web7.tokyo/images/previews/terminal.jpg", "name": "TERMINAL - ターミナル風コマンドライン時計" },
+          { "@type": "ListItem", "position": 9, "url": "https://clock.web7.tokyo/clocks/glass/", "image": "https://clock.web7.tokyo/images/previews/glass.jpg", "name": "GLASS - グラスモーフィズム＋浮遊背景" },
+          { "@type": "ListItem", "position": 10, "url": "https://clock.web7.tokyo/clocks/forest/", "image": "https://clock.web7.tokyo/images/previews/forest.jpg", "name": "FOREST - 深い森の木漏れ日と霧" },
+          { "@type": "ListItem", "position": 11, "url": "https://clock.web7.tokyo/clocks/fireplace/", "image": "https://clock.web7.tokyo/images/previews/fireplace.jpg", "name": "FIREPLACE - 揺れる炎と舞う火の粉" },
+          { "@type": "ListItem", "position": 12, "url": "https://clock.web7.tokyo/clocks/ocean/", "image": "https://clock.web7.tokyo/images/previews/ocean.jpg", "name": "OCEAN - 月夜の海と波のアニメーション" }
         ]
       },
       {
@@ -158,16 +158,15 @@
           {
             "@type": "Question",
             "name": "オフラインでも動きますか？",
-            "acceptedAnswer": { "@type": "Answer", "text": "一度読み込んだあとはJavaScriptが端末内で時刻を描画するため動作します。ただしWebフォントの読み込みに通信が必要なため、初回アクセスはオンラインで行ってください。" }
+            "acceptedAnswer": { "@type": "Answer", "text": "一度ページを読み込んだあとは動作します。時刻はJavaScriptが端末内で描画し、Webフォントもサイト内に同梱しているため、外部サービスへの通信は発生しません。" }
           }
         ]
       }
     ]
   }
   </script>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Orbitron:wght@400;500;700;900&display=swap" rel="stylesheet">
+  <link rel="preload" href="fonts/orbitron.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="fonts/fonts.css">
   <style>
     *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
@@ -276,11 +275,28 @@
       box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
     }
 
+    /* 静的プレビュー画像（既定の表示） */
+    .clock-card img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    /* ホバー時だけ差し込むライブ時計。画像の上・オーバーレイの下に重なる */
     .clock-card iframe {
+      position: absolute;
+      inset: 0;
       width: 100%;
       height: 100%;
       border: none;
       pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.35s ease;
+    }
+
+    .clock-card.is-live iframe {
+      opacity: 1;
     }
 
     .clock-card .overlay {
@@ -592,96 +608,108 @@
   <section id="clocks" class="clock-section">
     <h2 class="section-title">時計デザイン一覧<span class="section-count">（全12種類）</span></h2>
     <div class="clock-grid">
-    <a href="clocks/neon/" class="clock-card" id="card-neon" aria-label="NEON — ネオンサイン風グロウエフェクトのデジタル時計を開く">
-        <iframe src="clocks/neon/" loading="lazy" tabindex="-1" title="NEON デジタル時計のプレビュー"></iframe>
+    <a href="clocks/neon/" class="clock-card" id="card-neon" data-clock="clocks/neon/" aria-label="NEON — ネオンサイン風グロウエフェクトのデジタル時計を開く">
+        <img src="images/previews/neon.jpg" width="768" height="432" loading="eager" fetchpriority="high" decoding="async"
+             alt="NEON デジタル時計のプレビュー — ネオンサイン風グロウエフェクト">
         <div class="overlay">
           <h3 class="card-title">NEON</h3>
           <p class="card-desc">ネオンサイン風グロウエフェクト</p>
         </div>
       </a>
 
-    <a href="clocks/minimal/" class="clock-card" id="card-minimal" aria-label="MINIMAL — 洗練されたミニマルデザインのデジタル時計を開く">
-        <iframe src="clocks/minimal/" loading="lazy" tabindex="-1" title="MINIMAL デジタル時計のプレビュー"></iframe>
+    <a href="clocks/minimal/" class="clock-card" id="card-minimal" data-clock="clocks/minimal/" aria-label="MINIMAL — 洗練されたミニマルデザインのデジタル時計を開く">
+        <img src="images/previews/minimal.jpg" width="768" height="432" loading="eager" decoding="async"
+             alt="MINIMAL デジタル時計のプレビュー — 洗練されたミニマルデザイン">
         <div class="overlay">
           <h3 class="card-title">MINIMAL</h3>
           <p class="card-desc">洗練されたミニマルデザイン</p>
         </div>
       </a>
 
-    <a href="clocks/retro/" class="clock-card" id="card-retro" aria-label="RETRO LED — レトロ LED セグメントディスプレイのデジタル時計を開く">
-        <iframe src="clocks/retro/" loading="lazy" tabindex="-1" title="RETRO LED デジタル時計のプレビュー"></iframe>
+    <a href="clocks/retro/" class="clock-card" id="card-retro" data-clock="clocks/retro/" aria-label="RETRO LED — レトロ LED セグメントディスプレイのデジタル時計を開く">
+        <img src="images/previews/retro.jpg" width="768" height="432" loading="eager" decoding="async"
+             alt="RETRO LED デジタル時計のプレビュー — レトロ LED セグメントディスプレイ">
         <div class="overlay">
           <h3 class="card-title">RETRO LED</h3>
           <p class="card-desc">レトロ LED セグメントディスプレイ</p>
         </div>
       </a>
 
-    <a href="clocks/matrix/" class="clock-card" id="card-matrix" aria-label="MATRIX — マトリックスコードレイン + 時計のデジタル時計を開く">
-        <iframe src="clocks/matrix/" loading="lazy" tabindex="-1" title="MATRIX デジタル時計のプレビュー"></iframe>
+    <a href="clocks/matrix/" class="clock-card" id="card-matrix" data-clock="clocks/matrix/" aria-label="MATRIX — マトリックスコードレイン + 時計のデジタル時計を開く">
+        <img src="images/previews/matrix.jpg" width="768" height="432" loading="lazy" decoding="async"
+             alt="MATRIX デジタル時計のプレビュー — マトリックスコードレイン + 時計">
         <div class="overlay">
           <h3 class="card-title">MATRIX</h3>
           <p class="card-desc">マトリックスコードレイン + 時計</p>
         </div>
       </a>
 
-    <a href="clocks/gradient/" class="clock-card" id="card-gradient" aria-label="GRADIENT — 時間で変化するグラデーション背景のデジタル時計を開く">
-        <iframe src="clocks/gradient/" loading="lazy" tabindex="-1" title="GRADIENT デジタル時計のプレビュー"></iframe>
+    <a href="clocks/gradient/" class="clock-card" id="card-gradient" data-clock="clocks/gradient/" aria-label="GRADIENT — 時間で変化するグラデーション背景のデジタル時計を開く">
+        <img src="images/previews/gradient.jpg" width="768" height="432" loading="lazy" decoding="async"
+             alt="GRADIENT デジタル時計のプレビュー — 時間で変化するグラデーション背景">
         <div class="overlay">
           <h3 class="card-title">GRADIENT</h3>
           <p class="card-desc">時間で変化するグラデーション背景</p>
         </div>
       </a>
 
-    <a href="clocks/flip/" class="clock-card" id="card-flip" aria-label="FLIP — パタパタ時計風フリップアニメーションのデジタル時計を開く">
-        <iframe src="clocks/flip/" loading="lazy" tabindex="-1" title="FLIP デジタル時計のプレビュー"></iframe>
+    <a href="clocks/flip/" class="clock-card" id="card-flip" data-clock="clocks/flip/" aria-label="FLIP — パタパタ時計風フリップアニメーションのデジタル時計を開く">
+        <img src="images/previews/flip.jpg" width="768" height="432" loading="lazy" decoding="async"
+             alt="FLIP デジタル時計のプレビュー — パタパタ時計風フリップアニメーション">
         <div class="overlay">
           <h3 class="card-title">FLIP</h3>
           <p class="card-desc">パタパタ時計風フリップアニメーション</p>
         </div>
       </a>
 
-    <a href="clocks/cyber/" class="clock-card" id="card-cyber" aria-label="CYBER — サイバーパンク / グリッチエフェクトのデジタル時計を開く">
-        <iframe src="clocks/cyber/" loading="lazy" tabindex="-1" title="CYBER デジタル時計のプレビュー"></iframe>
+    <a href="clocks/cyber/" class="clock-card" id="card-cyber" data-clock="clocks/cyber/" aria-label="CYBER — サイバーパンク / グリッチエフェクトのデジタル時計を開く">
+        <img src="images/previews/cyber.jpg" width="768" height="432" loading="lazy" decoding="async"
+             alt="CYBER デジタル時計のプレビュー — サイバーパンク / グリッチエフェクト">
         <div class="overlay">
           <h3 class="card-title">CYBER</h3>
           <p class="card-desc">サイバーパンク / グリッチエフェクト</p>
         </div>
       </a>
 
-    <a href="clocks/terminal/" class="clock-card" id="card-terminal" aria-label="TERMINAL — ターミナル風コマンドライン時計のデジタル時計を開く">
-        <iframe src="clocks/terminal/" loading="lazy" tabindex="-1" title="TERMINAL デジタル時計のプレビュー"></iframe>
+    <a href="clocks/terminal/" class="clock-card" id="card-terminal" data-clock="clocks/terminal/" aria-label="TERMINAL — ターミナル風コマンドライン時計のデジタル時計を開く">
+        <img src="images/previews/terminal.jpg" width="768" height="432" loading="lazy" decoding="async"
+             alt="TERMINAL デジタル時計のプレビュー — ターミナル風コマンドライン時計">
         <div class="overlay">
           <h3 class="card-title">TERMINAL</h3>
           <p class="card-desc">ターミナル風コマンドライン時計</p>
         </div>
       </a>
 
-    <a href="clocks/glass/" class="clock-card" id="card-glass" aria-label="GLASS — グラスモーフィズム + 浮遊背景のデジタル時計を開く">
-        <iframe src="clocks/glass/" loading="lazy" tabindex="-1" title="GLASS デジタル時計のプレビュー"></iframe>
+    <a href="clocks/glass/" class="clock-card" id="card-glass" data-clock="clocks/glass/" aria-label="GLASS — グラスモーフィズム + 浮遊背景のデジタル時計を開く">
+        <img src="images/previews/glass.jpg" width="768" height="432" loading="lazy" decoding="async"
+             alt="GLASS デジタル時計のプレビュー — グラスモーフィズム + 浮遊背景">
         <div class="overlay">
           <h3 class="card-title">GLASS</h3>
           <p class="card-desc">グラスモーフィズム + 浮遊背景</p>
         </div>
       </a>
 
-    <a href="clocks/forest/" class="clock-card" id="card-forest" aria-label="FOREST — 深い森の木漏れ日と霧のデジタル時計を開く">
-        <iframe src="clocks/forest/" loading="lazy" tabindex="-1" title="FOREST デジタル時計のプレビュー"></iframe>
+    <a href="clocks/forest/" class="clock-card" id="card-forest" data-clock="clocks/forest/" aria-label="FOREST — 深い森の木漏れ日と霧のデジタル時計を開く">
+        <img src="images/previews/forest.jpg" width="768" height="432" loading="lazy" decoding="async"
+             alt="FOREST デジタル時計のプレビュー — 深い森の木漏れ日と霧">
         <div class="overlay">
           <h3 class="card-title">FOREST</h3>
           <p class="card-desc">深い森の木漏れ日と霧</p>
         </div>
       </a>
 
-    <a href="clocks/fireplace/" class="clock-card" id="card-fireplace" aria-label="FIREPLACE — 揺れる炎と舞う火の粉のデジタル時計を開く">
-        <iframe src="clocks/fireplace/" loading="lazy" tabindex="-1" title="FIREPLACE デジタル時計のプレビュー"></iframe>
+    <a href="clocks/fireplace/" class="clock-card" id="card-fireplace" data-clock="clocks/fireplace/" aria-label="FIREPLACE — 揺れる炎と舞う火の粉のデジタル時計を開く">
+        <img src="images/previews/fireplace.jpg" width="768" height="432" loading="lazy" decoding="async"
+             alt="FIREPLACE デジタル時計のプレビュー — 揺れる炎と舞う火の粉">
         <div class="overlay">
           <h3 class="card-title">FIREPLACE</h3>
           <p class="card-desc">揺れる炎と舞う火の粉</p>
         </div>
       </a>
 
-    <a href="clocks/ocean/" class="clock-card" id="card-ocean" aria-label="OCEAN — 月夜の海と波のアニメーションのデジタル時計を開く">
-        <iframe src="clocks/ocean/" loading="lazy" tabindex="-1" title="OCEAN デジタル時計のプレビュー"></iframe>
+    <a href="clocks/ocean/" class="clock-card" id="card-ocean" data-clock="clocks/ocean/" aria-label="OCEAN — 月夜の海と波のアニメーションのデジタル時計を開く">
+        <img src="images/previews/ocean.jpg" width="768" height="432" loading="lazy" decoding="async"
+             alt="OCEAN デジタル時計のプレビュー — 月夜の海と波のアニメーション">
         <div class="overlay">
           <h3 class="card-title">OCEAN</h3>
           <p class="card-desc">月夜の海と波のアニメーション</p>
@@ -766,7 +794,7 @@
       <dd>有機EL（OLED）ディスプレイで長時間表示する場合は焼き付きにご注意ください。GRADIENT や MATRIX のように背景が動き続けるデザインを選ぶと、リスクを抑えられます。</dd>
 
       <dt>オフラインでも動きますか？</dt>
-      <dd>一度読み込んだあとは JavaScript が端末内で時刻を描画するため動作します。ただし Web フォントの読み込みに通信が必要なため、初回アクセスはオンラインで行ってください。</dd>
+      <dd>一度ページを読み込んだあとは動作します。時刻は JavaScript が端末内で描画し、Web フォントもサイト内に同梱しているため、外部サービスへの通信は発生しません。</dd>
     </dl>
   </section>
   </main>
@@ -784,6 +812,56 @@
   </footer>
 
   <script>
+    /*
+     * カードは静的プレビュー画像で表示し、ホバーしたカードだけライブ時計に差し替える。
+     * 以前は12個の iframe を常時動かしていたため、スロットリングした端末で
+     * メインスレッドが飽和し36fpsまで低下していた。同時に生かすのは1枚だけ。
+     * タッチ端末とアニメーション低減設定では画像のまま（タップで時計ページへ遷移する）。
+     */
+    (() => {
+      const canHover = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+      const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if (!canHover || reduceMotion) return;
+
+      let liveCard = null;
+      let timer = null;
+
+      function deactivate() {
+        if (!liveCard) return;
+        const frame = liveCard.querySelector('iframe');
+        if (frame) frame.remove();
+        liveCard.classList.remove('is-live');
+        liveCard = null;
+      }
+
+      function activate(card) {
+        if (liveCard === card) return;
+        deactivate();
+        const frame = document.createElement('iframe');
+        frame.tabIndex = -1;
+        frame.setAttribute('aria-hidden', 'true');
+        frame.title = card.querySelector('.card-title').textContent + ' デジタル時計のプレビュー';
+        // 読み込み完了後にクラスを付けてフェードインさせる（白い一瞬を出さない）
+        frame.addEventListener('load', () => {
+          if (liveCard === card) card.classList.add('is-live');
+        });
+        frame.src = card.dataset.clock;
+        card.insertBefore(frame, card.firstChild);
+        liveCard = card;
+      }
+
+      document.querySelectorAll('.clock-card[data-clock]').forEach((card) => {
+        card.addEventListener('mouseenter', () => {
+          clearTimeout(timer);
+          timer = setTimeout(() => activate(card), 120);
+        });
+        card.addEventListener('mouseleave', () => {
+          clearTimeout(timer);
+          timer = setTimeout(deactivate, 260);
+        });
+      });
+    })();
+
     (async () => {
       const container = document.getElementById('download-content');
       const API_URL = 'https://api.github.com/repos/kogasura/web7-clock/releases/latest';

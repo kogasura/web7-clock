@@ -30,17 +30,21 @@ web7-clock/
 │   └── common.css      # 共通スタイル
 ├── js/
 │   └── clock.js        # 共通時計ロジック（DigitalClock クラス）
-├── images/             # OGP画像・favicon
+├── images/             # OGP画像・favicon・カード用プレビュー
 │   ├── og.png          # OGP画像 1200x630（Web版専用・dist へは非同梱）
 │   ├── favicon.svg     # ファビコン
-│   └── apple-touch-icon.png
+│   ├── apple-touch-icon.png
+│   └── previews/       # トップのカード画像 12枚（Web版専用・dist へは非同梱）
+├── fonts/              # セルフホストWebフォント（latin woff2 7種 + fonts.css）
 ├── robots.txt          # クロール許可 + sitemap 参照（Web版のみ）
 ├── sitemap.xml         # 13URL（トップ + 時計12ページ）（Web版のみ）
 ├── llms.txt            # AIO向け構造化サマリ（Web版のみ）
 ├── .htaccess           # gzip圧縮・キャッシュ制御（Web版のみ）
 ├── package.json        # Tauri CLI 依存
 ├── scripts/
-│   └── copy-assets.js  # ビルド時に dist/ へWebアセットをコピー
+│   ├── copy-assets.js       # ビルド時に dist/ へWebアセットをコピー
+│   ├── fetch-fonts.js       # Google Fonts から woff2 を取得して fonts/ を再生成
+│   └── generate-previews.js # 時計12種を撮影して images/previews/ を再生成
 ├── src-tauri/          # デスクトップアプリ（Rust）
 │   ├── src/main.rs     # メインロジック（トレイ、メニュー、設定）
 │   ├── tauri.conf.json # Tauri設定
@@ -51,7 +55,7 @@ web7-clock/
 ```
 
 ## コード共有の仕組み
-- `clocks/`, `css/`, `js/` は Web版・デスクトップ版で完全共有
+- `clocks/`, `css/`, `js/`, `fonts/` は Web版・デスクトップ版で完全共有
 - 時計デザインを更新すると両方に自動反映
 - デスクトップ固有の機能は `src-tauri/` に分離
 - Web版デプロイ時は `src-tauri/`, `node_modules/`, `dist/` 等を除外
@@ -108,6 +112,29 @@ npx tauri build
 - **本文コンテンツ**: トップページに特徴 / 使い方 / 用途 / FAQ セクションを配置（AIに抽出させるための本文を確保）
 - **時計ページの本文**: 画面は時計のみのため、`.visually-hidden` の h1 と説明文でページ内容を伝える。JS無効時は `noscript` で案内
 
+### 表示速度対策（流入に直結するので落とさないこと）
+4倍CPUスロットリング環境での計測値:
+
+| | 対策前 | フォント同梱後 | プレビュー画像化後 |
+|---|---|---|---|
+| DOMContentLoaded | 13,232ms | 778ms | **82ms** |
+| リクエスト数 | 51 | 114 | **15** |
+| 外部フォント取得 | 13 | 0 | **0** |
+| FPS（定常） | 60※ | 36 | **60** |
+| メインスレッド占有 | 1.23s | 6.88s | **0.64s** |
+| DOMノード数 | 1,963 | 5,870 | **550** |
+
+※ 対策前の60fpsは iframe の読み込みがフォント待ちで完了していなかったため。実際に12個が動き出すと36fpsまで落ちていた。
+
+やったこと:
+1. **Webフォントのセルフホスト** — Google Fonts への `<link>` をやめ `fonts/fonts.css` を参照。
+   トップページは iframe 12個 + 親の計13ドキュメントから個別に外部フォントを取得しており、これがレンダリングブロックの主因だった。
+   `unicode-range` を残しているので日本語は端末のシステムフォントで描画される。
+2. **トップのカードを静的プレビュー画像化** — ライブ `iframe` 12個をやめ `images/previews/*.jpg` に置換。
+   `<img alt>` になるので Google画像検索の流入経路にもなる。
+   PCでホバーしたカードだけライブ `iframe` に差し替える（同時に生かすのは常に1枚）。
+   タッチ端末と `prefers-reduced-motion: reduce` では画像のまま。
+
 ### 時計デザインを追加・変更したときの更新箇所
 新しい時計を追加した場合は、`clocks/<id>/` の作成だけでなく以下も必ず更新する:
 1. `index.html` — カード追加 + JSON-LD の `ItemList`（`numberOfItems` と `itemListElement`）
@@ -115,6 +142,10 @@ npx tauri build
 3. `llms.txt` — デザイン一覧に追記
 4. `clocks/<id>/index.html` — 他ページと同じメタ情報一式（title / description / canonical / OGP / JSON-LD）と、`.visually-hidden` の h1・説明文
 5. `src-tauri/src/main.rs` の `CLOCKS`、`scripts/copy-assets.js` の `TRANSPARENT_CLOCKS`（透過対応する場合）
+6. **プレビュー画像の再生成** — ローカルに静的サーバーを立てて `node scripts/generate-previews.js`
+   （`scripts/generate-previews.js` の `CLOCKS` 配列にもIDを追加する）
+7. 新しいWebフォントを使う場合は `scripts/fetch-fonts.js` の `FAMILIES` に追加して再実行。
+   Google Fonts を直接 `<link>` で読み込まないこと（表示速度が落ちる）
 
 ### 未対応・任意項目
 - HTTP → HTTPS 転送はロリポップのコントロールパネル側で設定する（`.htaccess` には入れていない）
@@ -133,7 +164,8 @@ npx tauri build
 - **重要**: `ai-services/` 以外のフォルダは絶対に触らない
 - デプロイは必ず `~/web/ai-services/clock/` 配下のみに対して行う
 - デプロイ対象外: `src-tauri/`, `node_modules/`, `dist/`, `scripts/`, `package.json`, `package-lock.json`
-- デプロイ対象に含める: `robots.txt`, `sitemap.xml`, `llms.txt`, `.htaccess`, `images/`（SEO/AIO用。ドットファイルなので rsync 等で漏れやすい点に注意）
+- デプロイ対象に含める: `robots.txt`, `sitemap.xml`, `llms.txt`, `.htaccess`, `images/`, `fonts/`
+  （`.htaccess` はドットファイルなので rsync 等で漏れやすい。`fonts/` が抜けると全ページのフォントが崩れる）
 
 ## デスクトップアプリ リリース手順
 1. バージョン番号を更新: `tauri.conf.json`, `Cargo.toml`, `package.json`
