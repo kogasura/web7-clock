@@ -13,6 +13,11 @@
   <meta name="format-detection" content="telephone=no">
   <link rel="icon" href="images/favicon.svg" type="image/svg+xml">
   <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+  <link rel="manifest" href="manifest.webmanifest">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Web7 Clock">
   <meta property="og:title" content="Web7 Clock - ブラウザで使える無料デジタル時計 12デザイン">
   <meta property="og:description" content="ネオン、サイバーパンク、フリップ、ターミナル風など12デザインから選べるブラウザ時計。フルスクリーン・常時表示対応。インストール不要・無料。">
   <meta property="og:type" content="website">
@@ -66,7 +71,9 @@
           "ワンクリックでフルスクリーン表示",
           "端末のローカルタイムゾーンで24時間表記の時刻・日付・曜日を表示",
           "画面幅に追従するレスポンシブ表示",
-          "インストール・会員登録不要"
+          "インストール・会員登録不要",
+          "ホーム画面・デスクトップに追加できる（PWA対応）",
+          "一度開いたあとはオフラインでも動作"
         ],
         "isPartOf": { "@id": "https://clock.web7.tokyo/#website" },
         "publisher": { "@id": "https://web7.tokyo/#organization" },
@@ -157,8 +164,13 @@
           },
           {
             "@type": "Question",
+            "name": "スマホのホーム画面やPCのデスクトップに追加できますか？",
+            "acceptedAnswer": { "@type": "Answer", "text": "できます。PWAに対応しているため、ブラウザのメニューから「ホーム画面に追加」「アプリをインストール」を選ぶとアイコンから起動できます。時計ページから追加した場合は、そのデザインが全画面で直接開きます。" }
+          },
+          {
+            "@type": "Question",
             "name": "オフラインでも動きますか？",
-            "acceptedAnswer": { "@type": "Answer", "text": "一度ページを読み込んだあとは動作します。時刻はJavaScriptが端末内で描画し、Webフォントもサイト内に同梱しているため、外部サービスへの通信は発生しません。" }
+            "acceptedAnswer": { "@type": "Answer", "text": "動作します。一度サイトを開くと12デザインすべてとフォントが端末内に保存されるため、その後は通信がなくても時計が表示できます。時刻の描画も端末内で行っており、外部サービスへの通信は発生しません。" }
           }
         ]
       }
@@ -724,6 +736,7 @@
       <article class="feature-card">
         <h3>インストール不要・完全無料</h3>
         <p>ブラウザで開くだけで時計が動きます。会員登録もログインも課金もありません。デザインごとに個別のURLがあるので、ブックマークやキオスク端末の起動URLに直接指定できます。</p>
+        <p>ホーム画面やデスクトップに追加すればアイコンから起動でき、一度開いたあとはオフラインでも表示できます。</p>
       </article>
       <article class="feature-card">
         <h3>12デザインから選べる</h3>
@@ -793,8 +806,11 @@
       <dt>常時表示させても画面の焼き付きは心配ありませんか？</dt>
       <dd>有機EL（OLED）ディスプレイで長時間表示する場合は焼き付きにご注意ください。GRADIENT や MATRIX のように背景が動き続けるデザインを選ぶと、リスクを抑えられます。</dd>
 
+      <dt>スマホのホーム画面やPCのデスクトップに追加できますか？</dt>
+      <dd>できます。PWA に対応しているため、ブラウザのメニューから「ホーム画面に追加」「アプリをインストール」を選ぶとアイコンから起動できます。時計ページから追加した場合は、そのデザインが全画面で直接開きます。</dd>
+
       <dt>オフラインでも動きますか？</dt>
-      <dd>一度ページを読み込んだあとは動作します。時刻は JavaScript が端末内で描画し、Web フォントもサイト内に同梱しているため、外部サービスへの通信は発生しません。</dd>
+      <dd>動作します。一度サイトを開くと 12 デザインすべてとフォントが端末内に保存されるため、その後は通信がなくても時計が表示できます。時刻の描画も端末内で行っており、外部サービスへの通信は発生しません。</dd>
     </dl>
   </section>
   </main>
@@ -898,5 +914,6 @@
       }
     })();
   </script>
+  <script src="js/pwa.js"></script>
 </body>
 </html>

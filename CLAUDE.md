@@ -29,14 +29,18 @@ web7-clock/
 ├── css/
 │   └── common.css      # 共通スタイル
 ├── js/
-│   └── clock.js        # 共通時計ロジック（DigitalClock クラス）
+│   ├── clock.js        # 共通時計ロジック（DigitalClock クラス）
+│   └── pwa.js          # Service Worker 登録（Web版のみ・dist へは非同梱）
 ├── images/             # OGP画像・favicon・カード用プレビュー
 │   ├── og.png          # OGP画像 1200x630（Web版専用・dist へは非同梱）
 │   ├── favicon.svg     # ファビコン
 │   ├── apple-touch-icon.png
+│   ├── icon-192.png / icon-512.png / icon-maskable-512.png  # PWA用（dist へは非同梱）
 │   ├── previews/       # トップのカード画像 12枚（Web版専用・dist へは非同梱）
 │   └── social/         # 時計ページ個別のOGP画像 12枚 1200x630（同上）
 ├── fonts/              # セルフホストWebフォント（latin woff2 7種 + fonts.css）
+├── manifest.webmanifest # PWAマニフェスト（トップ用。時計ページ用は clocks/<id>/ に個別配置）
+├── sw.js               # Service Worker（Web版のみ・キャッシュ／オフライン対応）
 ├── robots.txt          # クロール許可 + sitemap 参照（Web版のみ）
 ├── sitemap.xml         # 13URL（トップ + 時計12ページ）（Web版のみ）
 ├── llms.txt            # AIO向け構造化サマリ（Web版のみ）
@@ -46,7 +50,9 @@ web7-clock/
 │   ├── copy-assets.js       # ビルド時に dist/ へWebアセットをコピー
 │   ├── fetch-fonts.js       # Google Fonts から woff2 を取得して fonts/ を再生成
 │   ├── generate-previews.js # 時計12種を撮影して images/previews/ を再生成
-│   └── generate-og-images.js # 時計12種の個別OGP画像 images/social/ を再生成
+│   ├── generate-og-images.js # 時計12種の個別OGP画像 images/social/ を再生成
+│   ├── generate-pwa-icons.js # favicon.svg から PWA アイコンを生成
+│   └── generate-manifests.js # 13個の manifest.webmanifest を生成
 ├── src-tauri/          # デスクトップアプリ（Rust）
 │   ├── src/main.rs     # メインロジック（トレイ、メニュー、設定）
 │   ├── tauri.conf.json # Tauri設定
@@ -118,6 +124,28 @@ npx tauri build
   ライトテーマの MINIMAL だけ CSS変数（`--switcher-fg` 等）を上書きして配色を反転させている。
   デスクトップ版では `src-tauri/src/main.rs` の初期化スクリプトで非表示にする（切替は右クリックメニュー）
 
+### PWA（再訪流入とオフライン対応）
+常時表示が主用途なので、タブレットやサブモニターに「置きっぱなし」にできることを重視している。
+
+- **マニフェストは13個**（`scripts/generate-manifests.js` で生成）
+  - トップ用: `start_url: "/"` / `display: standalone`
+  - 時計ページ用: `start_url: "/clocks/<id>/"` / `display: fullscreen` / `theme_color` は各デザインの背景色
+  - → 時計ページからインストールすると、そのデザインが全画面で直接起動する
+  - `scope` は全て `"/"`。アプリ内から一覧や他デザインへ移動してもブラウザに飛び出さない。
+    アプリの同一性は `id` で区別している
+- **Service Worker（`sw.js`）**
+  - HTML（ナビゲーション）は network-first。更新をすぐ反映させるため
+  - 静的アセットは cache-first
+  - プリキャッシュは全13ページ + CSS/JS/フォント7種/プレビュー12枚の計37エントリ（約600KB）。
+    時計ページを含めているのは、未訪問デザインをオフラインで開いたときに
+    URLだけ `/clocks/xxx/` でトップの中身が出る状態を避けるため
+  - **★ css / js / fonts / 画像を変更したら `sw.js` の `VERSION` を上げること。**
+    上げ忘れると古いアセットが配信され続ける
+- **`.htaccess`**: `sw.js` は `no-store`（ここをキャッシュすると更新版SWが届かない）。
+  `.webmanifest` は 1時間
+- **デスクトップ版には入れない**: `copy-assets.js` がマニフェスト・`pwa.js`・PWAアイコンを除外し、
+  コピー後のHTMLから `<link rel="manifest">` と `pwa.js` の `<script>` を削除する（`stripWebOnlyTags`）
+
 ### 表示速度対策（流入に直結するので落とさないこと）
 4倍CPUスロットリング環境での計測値:
 
@@ -155,6 +183,8 @@ npx tauri build
    ※ `Date` を自前で差し替えると FLIP のめくり途中が写るため、時刻の固定は `page.clock` を使うこと
 7. 新しいWebフォントを使う場合は `scripts/fetch-fonts.js` の `FAMILIES` に追加して再実行。
    Google Fonts を直接 `<link>` で読み込まないこと（表示速度が落ちる）
+8. `scripts/generate-manifests.js` の `CLOCKS` に追加して再実行（マニフェストを生成）
+9. `sw.js` の `PRECACHE` に `/clocks/<id>/` とプレビュー画像を追加し、`VERSION` を上げる
 
 ### 未対応・任意項目
 - HTTP → HTTPS 転送はロリポップのコントロールパネル側で設定する（`.htaccess` には入れていない）
@@ -173,8 +203,10 @@ npx tauri build
 - **重要**: `ai-services/` 以外のフォルダは絶対に触らない
 - デプロイは必ず `~/web/ai-services/clock/` 配下のみに対して行う
 - デプロイ対象外: `src-tauri/`, `node_modules/`, `dist/`, `scripts/`, `package.json`, `package-lock.json`
-- デプロイ対象に含める: `robots.txt`, `sitemap.xml`, `llms.txt`, `.htaccess`, `images/`, `fonts/`
-  （`.htaccess` はドットファイルなので rsync 等で漏れやすい。`fonts/` が抜けると全ページのフォントが崩れる）
+- デプロイ対象に含める: `robots.txt`, `sitemap.xml`, `llms.txt`, `.htaccess`, `images/`, `fonts/`,
+  `sw.js`, `manifest.webmanifest`（+ `clocks/<id>/manifest.webmanifest`）
+  （`.htaccess` はドットファイルなので rsync 等で漏れやすい。`fonts/` が抜けると全ページのフォントが崩れる。
+  `sw.js` が抜けると既存の訪問者に古いキャッシュが残り続ける）
 
 ## デスクトップアプリ リリース手順
 1. バージョン番号を更新: `tauri.conf.json`, `Cargo.toml`, `package.json`

@@ -11,7 +11,9 @@ const DIST = path.join(ROOT, 'dist');
 
 const INCLUDE = ['clocks', 'css', 'js', 'fonts', 'images', 'index.html', 'desktop'];
 // og.png / previews/ / social/ はWeb版のOGP・カード用のためデスクトップ版には同梱しない
-const EXCLUDE = new Set(['node_modules', 'src-tauri', 'dist', 'scripts', '.git', 'target', 'app-icon.png', 'og.png', 'previews', 'social']);
+const EXCLUDE = new Set(['node_modules', 'src-tauri', 'dist', 'scripts', '.git', 'target', 'app-icon.png', 'og.png', 'previews', 'social',
+  // PWA用。Web版のみで使う
+  'manifest.webmanifest', 'pwa.js', 'icon-192.png', 'icon-512.png', 'icon-maskable-512.png']);
 
 // Clocks that support transparent backgrounds
 const TRANSPARENT_CLOCKS = new Set([
@@ -51,6 +53,36 @@ function injectTransparentCSS(distDir) {
   console.log('Transparent CSS injected into clock HTML files');
 }
 
+/**
+ * Remove web-only PWA tags from the copied HTML.
+ * The desktop app loads bundled assets directly, so the manifest and the
+ * service worker registration are dead weight (and would 404 in the webview
+ * because manifest.webmanifest / pwa.js are excluded from dist).
+ */
+function stripWebOnlyTags(distDir) {
+  const files = [path.join(distDir, 'index.html')];
+  const clocksDir = path.join(distDir, 'clocks');
+  if (fs.existsSync(clocksDir)) {
+    for (const id of fs.readdirSync(clocksDir)) {
+      files.push(path.join(clocksDir, id, 'index.html'));
+    }
+  }
+
+  let stripped = 0;
+  for (const file of files) {
+    if (!fs.existsSync(file)) continue;
+    let html = fs.readFileSync(file, 'utf-8');
+    const before = html;
+    html = html.replace(/^[ \t]*<link rel="manifest"[^>]*>[ \t]*\r?\n/m, '');
+    html = html.replace(/^[ \t]*<script src="[^"]*js\/pwa\.js"><\/script>[ \t]*\r?\n/m, '');
+    if (html !== before) {
+      fs.writeFileSync(file, html, 'utf-8');
+      stripped++;
+    }
+  }
+  console.log(`PWA tags stripped from ${stripped} HTML files`);
+}
+
 // Clean and recreate dist
 if (fs.existsSync(DIST)) {
   fs.rmSync(DIST, { recursive: true, force: true });
@@ -67,5 +99,6 @@ for (const item of INCLUDE) {
 
 // Inject transparent CSS into copied clock HTML files
 injectTransparentCSS(DIST);
+stripWebOnlyTags(DIST);
 
 console.log('Assets copied to dist/');

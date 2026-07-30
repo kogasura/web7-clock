@@ -39,6 +39,7 @@ AddDefaultCharset UTF-8
   ExpiresByType image/jpeg "access plus 1 months"
   ExpiresByType image/webp "access plus 1 months"
   ExpiresByType font/woff2 "access plus 1 years"
+  ExpiresByType application/manifest+json "access plus 1 hours"
 </IfModule>
 
 <IfModule mod_headers.c>
@@ -49,6 +50,18 @@ AddDefaultCharset UTF-8
 
   # robots.txt / sitemap.xml / llms.txt は更新をすぐ拾わせる
   <FilesMatch "^(robots\.txt|sitemap\.xml|llms\.txt)$">
+    Header set Cache-Control "public, max-age=3600"
+  </FilesMatch>
+
+  # Service Worker は絶対にキャッシュさせない。
+  # ここをキャッシュすると更新版のSWが配信されず、古いアセットが残り続ける。
+  <FilesMatch "^sw\.js$">
+    Header set Cache-Control "no-cache, no-store, must-revalidate"
+    Header set Service-Worker-Allowed "/"
+  </FilesMatch>
+
+  # マニフェストは短めに（インストール情報の更新を拾わせる）
+  <FilesMatch "\.webmanifest$">
     Header set Cache-Control "public, max-age=3600"
   </FilesMatch>
 </IfModule>
