@@ -207,14 +207,17 @@
       position: relative;
       z-index: 3;
       text-align: center;
+      /* Cormorant Garamond の既定はオールドスタイル数字（1 が I に見え、9 が下に垂れる）。
+         時計として読めるよう、高さの揃ったライニング数字・等幅数字に切り替える */
+      font-variant-numeric: lining-nums tabular-nums;
       margin-top: -10%;
     }
 
     .time-display {
       font-family: 'Cormorant Garamond', serif;
       font-size: clamp(56px, 16vw, 220px);
-      font-weight: 300;
-      color: rgba(200, 220, 240, 0.85);
+      font-weight: 500;
+      color: rgba(212, 228, 245, 0.95);
       letter-spacing: 0.02em;
       line-height: 1;
       text-shadow:
@@ -229,8 +232,8 @@
     .date-display {
       font-family: 'Cormorant Garamond', serif;
       font-size: clamp(13px, 2.2vw, 22px);
-      font-weight: 400;
-      color: rgba(160, 190, 220, 0.3);
+      font-weight: 500;
+      color: rgba(170, 198, 228, 0.6);
       letter-spacing: 0.25em;
       margin-top: 20px;
     }
@@ -238,7 +241,7 @@
     .tide-label {
       font-family: 'Cormorant Garamond', serif;
       font-size: clamp(10px, 1.5vw, 14px);
-      color: rgba(140, 170, 210, 0.2);
+      color: rgba(150, 180, 218, 0.45);
       letter-spacing: 0.3em;
       margin-top: 12px;
     }

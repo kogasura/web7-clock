@@ -112,89 +112,106 @@
       width: clamp(50px, 12vw, 140px);
       height: clamp(70px, 16vw, 190px);
       perspective: 600px;
-    }
-
-    .flip-card .top,
-    .flip-card .bottom {
-      position: absolute;
-      left: 0;
-      right: 0;
-      background: #2a2a4a;
-      color: #e0e0ff;
       font-family: 'Bebas Neue', sans-serif;
-      font-size: clamp(48px, 12vw, 130px);
-      line-height: 0;
-      overflow: hidden;
-      border-radius: 8px;
+      font-size: clamp(56px, 13vw, 150px);
+      color: #eef0ff;
     }
 
-    .flip-card .top {
-      top: 0;
-      height: 50%;
-      border-bottom: 1px solid rgba(0, 0, 0, 0.3);
-      border-radius: 8px 8px 0 0;
-      display: flex;
-      align-items: flex-end;
-      justify-content: center;
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-    }
-
-    .flip-card .bottom {
-      bottom: 0;
-      height: 50%;
-      border-top: 1px solid rgba(255, 255, 255, 0.05);
-      border-radius: 0 0 8px 8px;
-      display: flex;
-      align-items: flex-start;
-      justify-content: center;
-      background: #252545;
-    }
-
-    /* Flip animation overlay */
+    /* 上半分・下半分はどちらも「カード全高の数字」を半分だけ見せる。
+       数字の位置をフォントのメトリクスに頼らず揃えるため、
+       span をカード全高で中央揃えし、下半分は1枚分上にずらして切り抜く */
+    .flip-card .top,
+    .flip-card .bottom,
     .flip-card .flip-top,
     .flip-card .flip-bottom {
       position: absolute;
       left: 0;
       right: 0;
-      background: #2a2a4a;
-      color: #e0e0ff;
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: clamp(48px, 12vw, 130px);
-      line-height: 0;
+      height: 50%;
       overflow: hidden;
+      background: #2c2c50;
+    }
+
+    .flip-card span {
+      position: absolute;
+      left: 0;
+      right: 0;
+      height: 200%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      line-height: 1;
+    }
+
+    .flip-card .top,
+    .flip-card .flip-top {
+      top: 0;
+      border-radius: 8px 8px 0 0;
+    }
+
+    .flip-card .top span,
+    .flip-card .flip-top span {
+      top: 0;
+    }
+
+    .flip-card .bottom,
+    .flip-card .flip-bottom {
+      bottom: 0;
+      border-radius: 0 0 8px 8px;
+      background: #26264a;
+    }
+
+    .flip-card .bottom span,
+    .flip-card .flip-bottom span {
+      top: -100%;
+    }
+
+    /* 中央のヒンジ（切れ目） */
+    .flip-card .top {
+      box-shadow: inset 0 -1px 0 rgba(0, 0, 0, 0.45);
+    }
+
+    .flip-card::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 50%;
+      height: 2px;
+      margin-top: -1px;
+      background: rgba(10, 10, 25, 0.7);
+      z-index: 3;
+    }
+
+    /* めくり用のパネルは、めくっている間だけ表示する
+       （常時表示していると上半分に前の数字が残り、時刻が読めなくなる） */
+    .flip-card .flip-top,
+    .flip-card .flip-bottom {
       z-index: 2;
+      visibility: hidden;
+      backface-visibility: hidden;
     }
 
     .flip-card .flip-top {
-      top: 0;
-      height: 50%;
-      border-radius: 8px 8px 0 0;
-      display: flex;
-      align-items: flex-end;
-      justify-content: center;
       transform-origin: bottom;
-      backface-visibility: hidden;
     }
 
     .flip-card .flip-bottom {
-      bottom: 0;
-      height: 50%;
-      border-radius: 0 0 8px 8px;
-      display: flex;
-      align-items: flex-start;
-      justify-content: center;
       transform-origin: top;
       transform: rotateX(90deg);
-      backface-visibility: hidden;
-      background: #252545;
+    }
+
+    .flip-card.flipping .flip-top,
+    .flip-card.flipping .flip-bottom {
+      visibility: visible;
     }
 
     .flip-card.flipping .flip-top {
-      animation: flipTop 0.4s ease-in forwards;
+      animation: flipTop 0.3s ease-in forwards;
     }
 
     .flip-card.flipping .flip-bottom {
-      animation: flipBottom 0.4s 0.2s ease-out forwards;
+      animation: flipBottom 0.3s 0.3s ease-out forwards;
     }
 
     @keyframes flipTop {
@@ -210,19 +227,19 @@
     .flip-separator {
       font-family: 'Bebas Neue', sans-serif;
       font-size: clamp(36px, 8vw, 80px);
-      color: rgba(224, 224, 255, 0.4);
+      color: rgba(224, 224, 255, 0.6);
       animation: separatorPulse 1s ease-in-out infinite;
     }
 
     @keyframes separatorPulse {
-      0%, 100% { opacity: 0.4; }
+      0%, 100% { opacity: 0.5; }
       50% { opacity: 1; }
     }
 
     .date-display {
       font-family: 'Bebas Neue', sans-serif;
       font-size: clamp(14px, 2.5vw, 28px);
-      color: rgba(224, 224, 255, 0.3);
+      color: rgba(224, 224, 255, 0.55);
       letter-spacing: 0.3em;
       margin-top: 24px;
     }
@@ -278,27 +295,49 @@
     const cards = { h1: document.getElementById('h1'), h2: document.getElementById('h2'), m1: document.getElementById('m1'), m2: document.getElementById('m2'), s1: document.getElementById('s1'), s2: document.getElementById('s2') };
     const dateEl = document.getElementById('date');
 
-    function flipCard(card, newVal) {
+    // めくりの手順:
+    //   上半分（静止）  … すぐ新しい数字にする（めくれた後ろから見える面）
+    //   下半分（静止）  … めくり終わるまで古い数字のまま
+    //   flip-top       … 古い数字の上半分が手前に倒れる
+    //   flip-bottom    … 新しい数字の下半分が降りてきて下半分を覆う
+    function flipCard(card, newVal, animate = true) {
       const top = card.querySelector('.top span');
       const bottom = card.querySelector('.bottom span');
       const flipTop = card.querySelector('.flip-top span');
       const flipBottom = card.querySelector('.flip-bottom span');
 
+      if (card._finish) card._finish(); // 前のめくりが途中なら確定させる
       if (top.textContent === newVal) return;
+
+      if (!animate) {
+        top.textContent = bottom.textContent = newVal;
+        return;
+      }
 
       flipTop.textContent = top.textContent;
       flipBottom.textContent = newVal;
+      top.textContent = newVal;
+
+      // 同じクラスを付け直してもアニメーションが再生されるよう reflow を挟む
+      card.classList.remove('flipping');
+      void card.offsetWidth;
       card.classList.add('flipping');
 
       const flipBottomEl = card.querySelector('.flip-bottom');
-      function onAnimEnd() {
-        top.textContent = newVal;
+      // 非表示タブでは animationend が来ないことがあるので、タイマーでも確定させる
+      const timer = setTimeout(finish, 700);
+      function finish() {
+        clearTimeout(timer);
+        flipBottomEl.removeEventListener('animationend', finish);
         bottom.textContent = newVal;
         card.classList.remove('flipping');
-        flipBottomEl.removeEventListener('animationend', onAnimEnd);
+        card._finish = null;
       }
-      flipBottomEl.addEventListener('animationend', onAnimEnd);
+      card._finish = finish;
+      flipBottomEl.addEventListener('animationend', finish);
     }
+
+    let firstTick = true;
 
     // 共通の DigitalClock を使う（独自の setInterval だと 24H/12H 切替と
     // AM/PM 表示が他デザインと揃わないため）
@@ -306,12 +345,15 @@
       showSeconds: true,
       use24Hour: true,
       onTick(data) {
-        flipCard(cards.h1, data.hours[0]);
-        flipCard(cards.h2, data.hours[1]);
-        flipCard(cards.m1, data.minutes[0]);
-        flipCard(cards.m2, data.minutes[1]);
-        flipCard(cards.s1, data.seconds[0]);
-        flipCard(cards.s2, data.seconds[1]);
+        // 初回はめくらずに現在時刻を出す（全桁が 0 からめくれて読めない瞬間を作らない）
+        const animate = !firstTick;
+        firstTick = false;
+        flipCard(cards.h1, data.hours[0], animate);
+        flipCard(cards.h2, data.hours[1], animate);
+        flipCard(cards.m1, data.minutes[0], animate);
+        flipCard(cards.m2, data.minutes[1], animate);
+        flipCard(cards.s1, data.seconds[0], animate);
+        flipCard(cards.s2, data.seconds[1], animate);
 
         dateEl.textContent = `${data.date.year}.${data.date.month}.${data.date.day}  ${data.date.dayOfWeek}`;
       }
